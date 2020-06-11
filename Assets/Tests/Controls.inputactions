@@ -1,0 +1,75 @@
+{
+    "name": "Controls",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "73872dc0-7217-436d-a757-5eb92e271905",
+            "actions": [
+                {
+                    "name": "Move Lux",
+                    "type": "Value",
+                    "id": "7176d496-568d-403c-9093-b9425ce4f830",
+                    "expectedControlType": "Stick",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Move Ban",
+                    "type": "Value",
+                    "id": "e0a65473-36af-4947-95d9-33f8f4151b06",
+                    "expectedControlType": "Stick",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "93c2c993-6d1c-475d-baff-d5c3f9674775",
+                    "path": "<Gamepad>/leftStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox controller 1",
+                    "action": "Move Lux",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e84735ed-1660-41c7-93f6-f917a92eb82d",
+                    "path": "<Gamepad>/leftStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox controller 2",
+                    "action": "Move Ban",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Xbox controller 1",
+            "bindingGroup": "Xbox controller 1",
+            "devices": [
+                {
+                    "devicePath": "<XInputController>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "Xbox controller 2",
+            "bindingGroup": "Xbox controller 2",
+            "devices": [
+                {
+                    "devicePath": "<XInputController>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
