@@ -45,7 +45,11 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 5}
+<<<<<<< HEAD
   m_MinSize: {x: 875, y: 300}
+=======
+  m_MinSize: {x: 875, y: 392}
+>>>>>>> Hugo
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 1
 --- !u!114 &3
@@ -97,7 +101,11 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 121}
   m_MaxSize: {x: 4000, y: 4021}
   vertical: 0
+<<<<<<< HEAD
   controlID: 166
+=======
+  controlID: 20
+>>>>>>> Hugo
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -190,7 +198,11 @@ MonoBehaviour:
   m_MinSize: {x: 911, y: 342}
   m_MaxSize: {x: 22006, y: 10021}
   vertical: 0
+<<<<<<< HEAD
   controlID: 162
+=======
+  controlID: 187
+>>>>>>> Hugo
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -208,7 +220,11 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< HEAD
     width: 285
+=======
+    width: 310
+>>>>>>> Hugo
     height: 947
   m_MinSize: {x: 231, y: 271}
   m_MaxSize: {x: 10001, y: 10021}
@@ -234,14 +250,24 @@ MonoBehaviour:
   - {fileID: 14}
   m_Position:
     serializedVersion: 2
+<<<<<<< HEAD
     x: 285
     y: 0
     width: 1207
+=======
+    x: 310
+    y: 0
+    width: 1034
+>>>>>>> Hugo
     height: 947
   m_MinSize: {x: 404, y: 342}
   m_MaxSize: {x: 8004, y: 8042}
   vertical: 1
+<<<<<<< HEAD
   controlID: 100
+=======
+  controlID: 125
+>>>>>>> Hugo
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -261,12 +287,20 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< HEAD
     width: 1207
+=======
+    width: 1034
+>>>>>>> Hugo
     height: 727
   m_MinSize: {x: 404, y: 221}
   m_MaxSize: {x: 8004, y: 4021}
   vertical: 0
+<<<<<<< HEAD
   controlID: 101
+=======
+  controlID: 126
+>>>>>>> Hugo
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -284,7 +318,11 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< HEAD
     width: 389
+=======
+    width: 337
+>>>>>>> Hugo
     height: 727
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
@@ -308,12 +346,21 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
+<<<<<<< HEAD
     x: 389
     y: 0
     width: 818
     height: 727
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
+=======
+    x: 337
+    y: 0
+    width: 697
+    height: 727
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
+>>>>>>> Hugo
   m_ActualView: {fileID: 21}
   m_Panes:
   - {fileID: 21}
@@ -338,10 +385,17 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 727
+<<<<<<< HEAD
     width: 1207
     height: 220
   m_MinSize: {x: 102, y: 121}
   m_MaxSize: {x: 4002, y: 4021}
+=======
+    width: 1034
+    height: 220
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+>>>>>>> Hugo
   m_ActualView: {fileID: 24}
   m_Panes:
   - {fileID: 24}
@@ -363,9 +417,15 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
+<<<<<<< HEAD
     x: 1492
     y: 0
     width: 428
+=======
+    x: 1344
+    y: 0
+    width: 576
+>>>>>>> Hugo
     height: 947
   m_MinSize: {x: 276, y: 71}
   m_MaxSize: {x: 4001, y: 4021}
@@ -669,7 +729,11 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 73
+<<<<<<< HEAD
     width: 284
+=======
+    width: 309
+>>>>>>> Hugo
     height: 926
   m_ViewDataDictionary: {fileID: 0}
   m_SearchFilter:
@@ -685,20 +749,26 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Tests
+    - Assets
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Tests
+  - Assets
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\HugoG\OneDrive\Documents\Wasabi
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
+<<<<<<< HEAD
     m_SelectedIDs: 0c370000
     m_LastClickedID: 14092
     m_ExpandedIDs: 000000000437000000ca9a3b
+=======
+    m_SelectedIDs: 00370000
+    m_LastClickedID: 14080
+    m_ExpandedIDs: 000000000037000000ca9a3b
+>>>>>>> Hugo
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -726,7 +796,11 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
+<<<<<<< HEAD
     m_ExpandedIDs: 0000000004370000
+=======
+    m_ExpandedIDs: 0000000000370000
+>>>>>>> Hugo
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -803,9 +877,15 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
+<<<<<<< HEAD
     x: 285
     y: 73
     width: 387
+=======
+    x: 310
+    y: 73
+    width: 335
+>>>>>>> Hugo
     height: 706
   m_ViewDataDictionary: {fileID: 0}
   m_SceneHierarchy:
@@ -858,9 +938,15 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
+<<<<<<< HEAD
     x: 674
     y: 73
     width: 816
+=======
+    x: 647
+    y: 73
+    width: 695
+>>>>>>> Hugo
     height: 706
   m_ViewDataDictionary: {fileID: 0}
   m_ShowContextualTools: 0
@@ -1063,9 +1149,15 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
+<<<<<<< HEAD
     x: 285
     y: 800
     width: 1205
+=======
+    x: 310
+    y: 800
+    width: 1032
+>>>>>>> Hugo
     height: 199
   m_ViewDataDictionary: {fileID: 0}
 --- !u!114 &25
@@ -1118,9 +1210,15 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
+<<<<<<< HEAD
     x: 1492
     y: 73
     width: 427
+=======
+    x: 1344
+    y: 73
+    width: 575
+>>>>>>> Hugo
     height: 926
   m_ViewDataDictionary: {fileID: 0}
   m_OpenAddComponentMenu: 0
