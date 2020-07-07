@@ -390,7 +390,7 @@ MonoBehaviour:
     m_ActionId: e0a65473-36af-4947-95d9-33f8f4151b06
     m_ActionName: Player/Move Ban[/XInputControllerWindows/leftStick/x,/XInputControllerWindows/leftStick/x]
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Xbox controller 1
+  m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -536,7 +536,7 @@ MonoBehaviour:
     m_ActionId: e0a65473-36af-4947-95d9-33f8f4151b06
     m_ActionName: Player/Move Ban[/XInputControllerWindows/leftStick/x,/XInputControllerWindows/leftStick/x]
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Xbox controller 2
+  m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
