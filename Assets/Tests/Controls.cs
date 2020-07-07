@@ -204,6 +204,17 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""isOR"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Debug 2"",
+            ""bindingGroup"": ""Debug 2"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         }
     ]
 }");
@@ -322,6 +333,15 @@ public class @Controls : IInputActionCollection, IDisposable
         {
             if (m_DebugSchemeIndex == -1) m_DebugSchemeIndex = asset.FindControlSchemeIndex("Debug");
             return asset.controlSchemes[m_DebugSchemeIndex];
+        }
+    }
+    private int m_Debug2SchemeIndex = -1;
+    public InputControlScheme Debug2Scheme
+    {
+        get
+        {
+            if (m_Debug2SchemeIndex == -1) m_Debug2SchemeIndex = asset.FindControlSchemeIndex("Debug 2");
+            return asset.controlSchemes[m_Debug2SchemeIndex];
         }
     }
     public interface IPlayerActions
