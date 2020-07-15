@@ -63,10 +63,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Tests\Camera\Scripts\MainCam.cs" />
-    <Compile Include="Assets\Tests\Camera\Scripts\SecondCam.cs" />
+    <Compile Include="Assets\Tests\Camera\Scripts\V1\MainCam.cs" />
+    <Compile Include="Assets\Tests\Camera\Scripts\V1\SecondCam.cs" />
     <Compile Include="Assets\Tests\Controls.cs" />
     <Compile Include="Assets\Tests\Script base\WSB_Player.cs" />
+    <None Include="Assets\Tests\Camera\Materials\StencilBufferRead.shader" />
+    <None Include="Assets\Tests\Camera\Materials\StencilBufferWrite.shader" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.2f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

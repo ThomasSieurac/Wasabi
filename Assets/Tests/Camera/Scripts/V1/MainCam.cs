@@ -20,6 +20,8 @@ public class MainCam : MonoBehaviour
     [SerializeField] float minCamZoom = 5;
     [SerializeField] float maxCamZoom = 10;
 
+    [SerializeField] GameObject split = null;
+
 
     private void Start()
     {
@@ -106,6 +108,10 @@ public class MainCam : MonoBehaviour
     {
         if (!ban || !lux) return;
         if (Vector2.Distance(ban.position, lux.position) < maxCamZoom) SwitchCamType(CamType.Dynamic);
+        Vector3 _dir = lux.position - ban.position;
+        float _angle = Mathf.Atan2(_dir.y, _dir.x) * Mathf.Rad2Deg;
+        split.transform.eulerAngles = new Vector3(0, 0, _angle - 90);
+        camBan.transform.eulerAngles = new Vector3(0, 0, _angle + 90);
     }
 
 }
