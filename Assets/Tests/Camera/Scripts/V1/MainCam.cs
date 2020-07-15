@@ -110,8 +110,9 @@ public class MainCam : MonoBehaviour
         if (Vector2.Distance(ban.position, lux.position) < maxCamZoom) SwitchCamType(CamType.Dynamic);
         Vector3 _dir = lux.position - ban.position;
         float _angle = Mathf.Atan2(_dir.y, _dir.x) * Mathf.Rad2Deg;
+        //Debug.Log(_angle + 180);
         split.transform.eulerAngles = new Vector3(0, 0, _angle - 90);
-        camBan.transform.eulerAngles = new Vector3(0, 0, _angle + 90);
+        //camBan.transform.eulerAngles = new Vector3(0, 0, _angle + 90);
     }
 
 }

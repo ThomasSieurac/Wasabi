@@ -30,8 +30,8 @@ public class WSB_Player : MonoBehaviour
 
     private void Update()
     {
-        if(Mathf.Abs(horizontalMovement) > .1f) transform.position += (Vector3.right * horizontalMovement) * Time.deltaTime * 2;
-        if(Mathf.Abs(verticalMovement) > .1f) transform.position += (Vector3.up * verticalMovement) * Time.deltaTime * 2;
+        if(Mathf.Abs(horizontalMovement) > .1f) transform.position += (Vector3.right * horizontalMovement) * Time.deltaTime * 5;
+        if(Mathf.Abs(verticalMovement) > .1f) transform.position += (Vector3.up * verticalMovement) * Time.deltaTime * 5;
     }
 
 
