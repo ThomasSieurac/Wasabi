@@ -21,6 +21,7 @@ public class MainCam : MonoBehaviour
     [SerializeField] float maxCamZoom = 10;
 
     [SerializeField] GameObject split = null;
+    [SerializeField] GameObject bigSplit = null;
 
 
     private void Start()
@@ -51,35 +52,31 @@ public class MainCam : MonoBehaviour
     {
         StopAllCoroutines();
         currentCamType = _t;
-        if(_t == CamType.SplitDynamic)
+        if (_t == CamType.SplitDynamic)
         {
-            cam.enabled = false;
-            camLux.GetComponent<Camera>().enabled = true;
-            camBan.GetComponent<Camera>().enabled = true;
+            bigSplit.SetActive(true);
+            EnableCam(false);
         }
         else if (_t == CamType.Dynamic)
         {
-            cam.enabled = true;
-            camLux.GetComponent<Camera>().enabled = false;
-            camBan.GetComponent<Camera>().enabled = false;
+            bigSplit.SetActive(false);
+            EnableCam(true);
         }
     }
     public void SwitchCamType(CamType _t, float _angle) // SplitFixe
     {
+        bigSplit.SetActive(true);
         StopAllCoroutines();
         currentCamType = _t;
-        cam.enabled = false;
-        camLux.GetComponent<Camera>().enabled = true;
-        camBan.GetComponent<Camera>().enabled = true;
+        EnableCam(false);
     }
     #region Fixe
     public void SwitchCamType(CamType _t, Vector2 _position, float _size)
     {
+        bigSplit.SetActive(false);
         StopAllCoroutines();
         currentCamType = _t;
-        cam.enabled = true;
-        camLux.GetComponent<Camera>().enabled = false;
-        camBan.GetComponent<Camera>().enabled = false;
+        EnableCam(true);
         StartCoroutine(MoveFixeCam(_position, _size));
     }
     IEnumerator MoveFixeCam(Vector2 _position, float _size)
@@ -92,6 +89,13 @@ public class MainCam : MonoBehaviour
         }
     }
     #endregion
+
+    void EnableCam(bool _mainCam)
+    {
+        cam.enabled = _mainCam;
+        camLux.GetComponent<Camera>().enabled = !_mainCam;
+        camBan.GetComponent<Camera>().enabled = !_mainCam;
+    }
 
     void Dynamic()
     {
@@ -112,7 +116,6 @@ public class MainCam : MonoBehaviour
         float _angle = Mathf.Atan2(_dir.y, _dir.x) * Mathf.Rad2Deg;
         //Debug.Log(_angle + 180);
         split.transform.eulerAngles = new Vector3(0, 0, _angle - 90);
-        //camBan.transform.eulerAngles = new Vector3(0, 0, _angle + 90);
     }
 
 }
