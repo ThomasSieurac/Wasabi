@@ -11,8 +11,7 @@ public class MainCam : MonoBehaviour
     [SerializeField] Transform ban = null;
     [SerializeField] Transform lux = null;
 
-    [SerializeField] SecondCam camBan = null;
-    [SerializeField] SecondCam camLux = null;
+    [SerializeField] GameObject camBan = null;
 
     [SerializeField] float camMoveSpeed = 2;
     [SerializeField] float camZoomSpeed = 2;
@@ -22,6 +21,8 @@ public class MainCam : MonoBehaviour
 
     [SerializeField] GameObject split = null;
     [SerializeField] GameObject bigSplit = null;
+
+    [SerializeField] float splitAngle = 0;
 
 
     private void Start()
@@ -36,17 +37,17 @@ public class MainCam : MonoBehaviour
             case CamType.Dynamic: Dynamic();
                 break;
             case CamType.SplitFixe:
-                Split();
-                camBan.FollowCharacter();
-                camLux.FollowCharacter();
+                split.transform.eulerAngles = new Vector3(0, 0, splitAngle - 90);
+                camBan.transform.position = new Vector3(ban.position.x, ban.position.y, transform.position.z);
+                transform.position = new Vector3(lux.position.x, lux.position.y, transform.position.z);
                 break;
             case CamType.SplitDynamic:
                 Split();
-                camBan.FollowCharacter();
-                camLux.FollowCharacter();
                 break;
         }
     }
+
+
 
     public void SwitchCamType(CamType _t) // Dynamic && SplitDynamic
     {
@@ -54,13 +55,12 @@ public class MainCam : MonoBehaviour
         currentCamType = _t;
         if (_t == CamType.SplitDynamic)
         {
+            cam.orthographicSize = maxCamZoom;
             bigSplit.SetActive(true);
-            EnableCam(false);
         }
         else if (_t == CamType.Dynamic)
         {
             bigSplit.SetActive(false);
-            EnableCam(true);
         }
     }
     public void SwitchCamType(CamType _t, float _angle) // SplitFixe
@@ -68,17 +68,15 @@ public class MainCam : MonoBehaviour
         bigSplit.SetActive(true);
         StopAllCoroutines();
         currentCamType = _t;
-        EnableCam(false);
     }
-    #region Fixe
     public void SwitchCamType(CamType _t, Vector2 _position, float _size)
     {
         bigSplit.SetActive(false);
         StopAllCoroutines();
         currentCamType = _t;
-        EnableCam(true);
         StartCoroutine(MoveFixeCam(_position, _size));
     }
+
     IEnumerator MoveFixeCam(Vector2 _position, float _size)
     {
         while(Vector3.Distance(transform.position, _position) != 0 || cam.orthographicSize != _size)
@@ -88,18 +86,12 @@ public class MainCam : MonoBehaviour
             yield return new WaitForSeconds(.01f);
         }
     }
-    #endregion
 
-    void EnableCam(bool _mainCam)
-    {
-        cam.enabled = _mainCam;
-        camLux.GetComponent<Camera>().enabled = !_mainCam;
-        camBan.GetComponent<Camera>().enabled = !_mainCam;
-    }
 
     void Dynamic()
     {
         if (!ban || !lux || !cam) return;
+        camBan.transform.position = transform.position;
         Vector3 _dir = ban.position - lux.position;
         float _dist = Vector2.Distance(ban.position, lux.position);
         transform.position = new Vector3(ban.position.x, ban.position.y, transform.position.z) - _dir / 2;
@@ -111,13 +103,38 @@ public class MainCam : MonoBehaviour
     void Split()
     {
         if (!ban || !lux) return;
+        float _dist = Vector2.Distance(ban.position, lux.position);
+        Vector3 _dir = lux.position - ban.position; // ban --> lux
+        Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * 10), lux.position.y - (_dir.normalized.y * 5), transform.position.z);
+        Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * 10), ban.position.y + (_dir.normalized.y * 5), camBan.transform.position.z);
+        if (_dist <= maxCamZoom * 1.5f)
+        {
+            float _normalizedDist = _dist / (maxCamZoom * 1.5f);
+            Vector3 a = _luxOffset - transform.position;
+            float magnitude = a.magnitude;
+            transform.position = transform.position + a / magnitude * _normalizedDist;
+        }
+        else
+        {
+            camBan.transform.position = _banOffset;
+            transform.position = _luxOffset;
+        }
         if (Vector2.Distance(ban.position, lux.position) < maxCamZoom) SwitchCamType(CamType.Dynamic);
-        Vector3 _dir = lux.position - ban.position;
         float _angle = Mathf.Atan2(_dir.y, _dir.x) * Mathf.Rad2Deg;
-        //Debug.Log(_angle + 180);
         split.transform.eulerAngles = new Vector3(0, 0, _angle - 90);
     }
 
+
+
+    /*
+     * 
+     * offset des deux joueurs      DONE
+     * 
+     * smooth split avec movetowards    
+     * 
+     * résolutions
+     * 
+     */
 }
 
 public enum CamType
