@@ -6,11 +6,12 @@ using UnityEngine.InputSystem;
 
 public class WSB_Player : MonoBehaviour
 {
-    Controls controls = null;
+    [SerializeField] Controls controls = null;
 
     [SerializeField] bool isLux = true;
 
     float horizontalMovement = 0;
+    float verticalMovement = 0;
 
     private void OnEnable()
     {
@@ -24,28 +25,26 @@ public class WSB_Player : MonoBehaviour
 
     private void Start()
     {
-        //if (isLux)
-        //{
-        //    controls.Player.MoveLux.performed += Move;
-        //    controls.Player.MoveLux.Enable();
-        //}
-        //else
-        //{
-        //    controls.Player.MoveBan.performed += Move;
-        //    controls.Player.MoveBan.Enable();
-        //}
+
     }
 
     private void Update()
     {
-        if(Mathf.Abs(horizontalMovement) > .1f) transform.position += (Vector3.right * horizontalMovement) * Time.deltaTime;
+        if(Mathf.Abs(horizontalMovement) > .1f) transform.position += (Vector3.right * horizontalMovement) * Time.deltaTime * 10;
+        if(Mathf.Abs(verticalMovement) > .1f) transform.position += (Vector3.up * verticalMovement) * Time.deltaTime * 10;
     }
 
 
 
     public void Move(InputAction.CallbackContext _context)
     {
-        horizontalMovement = _context.ReadValue<float>();
+        if(_context.valueType == typeof(float))
+            horizontalMovement = _context.ReadValue<float>();
+        else if(_context.valueType == typeof(Vector2))
+        {
+            horizontalMovement = _context.ReadValue<Vector2>().x;
+            verticalMovement = _context.ReadValue<Vector2>().y;
+        }
     }
 
 

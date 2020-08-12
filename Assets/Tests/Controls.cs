@@ -48,6 +48,61 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""952fd4f5-0ae0-4555-af3c-1be34e4f12e0"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move Lux"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""dd0290da-98a6-4dfe-baaa-46186977839e"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Debug"",
+                    ""action"": ""Move Lux"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""9fc38612-bc31-4640-8ff3-0c042c809d56"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Debug"",
+                    ""action"": ""Move Lux"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""7c118569-b475-4f88-850a-01dec554d0a8"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Debug"",
+                    ""action"": ""Move Lux"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""e2431d44-2335-499f-9357-ed028d5eb117"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Debug"",
+                    ""action"": ""Move Lux"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""e84735ed-1660-41c7-93f6-f917a92eb82d"",
                     ""path"": ""<Gamepad>/leftStick/x"",
@@ -57,6 +112,61 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""action"": ""Move Ban"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""ccf26170-b19b-46b0-93a4-3b0daad89995"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move Ban"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""895832d1-d301-4449-85e7-a21174cec691"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Debug"",
+                    ""action"": ""Move Ban"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""30692b95-12ea-4278-932f-ba1b2984cac1"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Debug"",
+                    ""action"": ""Move Ban"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""24790a94-6a7b-4c71-8ff7-eaf7acc34cc2"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Debug"",
+                    ""action"": ""Move Ban"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""2a6e9601-28f9-4fd3-ad49-5f3a456d07f1"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Debug"",
+                    ""action"": ""Move Ban"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -79,6 +189,28 @@ public class @Controls : IInputActionCollection, IDisposable
             ""devices"": [
                 {
                     ""devicePath"": ""<XInputController>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Debug"",
+            ""bindingGroup"": ""Debug"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Debug 2"",
+            ""bindingGroup"": ""Debug 2"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
                     ""isOptional"": false,
                     ""isOR"": false
                 }
@@ -192,6 +324,24 @@ public class @Controls : IInputActionCollection, IDisposable
         {
             if (m_Xboxcontroller2SchemeIndex == -1) m_Xboxcontroller2SchemeIndex = asset.FindControlSchemeIndex("Xbox controller 2");
             return asset.controlSchemes[m_Xboxcontroller2SchemeIndex];
+        }
+    }
+    private int m_DebugSchemeIndex = -1;
+    public InputControlScheme DebugScheme
+    {
+        get
+        {
+            if (m_DebugSchemeIndex == -1) m_DebugSchemeIndex = asset.FindControlSchemeIndex("Debug");
+            return asset.controlSchemes[m_DebugSchemeIndex];
+        }
+    }
+    private int m_Debug2SchemeIndex = -1;
+    public InputControlScheme Debug2Scheme
+    {
+        get
+        {
+            if (m_Debug2SchemeIndex == -1) m_Debug2SchemeIndex = asset.FindControlSchemeIndex("Debug 2");
+            return asset.controlSchemes[m_Debug2SchemeIndex];
         }
     }
     public interface IPlayerActions
