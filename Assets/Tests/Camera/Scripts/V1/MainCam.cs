@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class MainCam : MonoBehaviour
 {
+    const int BUILT_WIDTH = 1920;
+    const int BUILT_HEIGHT = 1080;
+
+
     [SerializeField] CamType currentCamType = CamType.Dynamic;
+
+    [SerializeField] RenderTexture cam2RenderTexture = null;
 
     [SerializeField] Camera cam = null;
 
@@ -19,6 +25,7 @@ public class MainCam : MonoBehaviour
     [SerializeField] float minCamZoom = 5;
     [SerializeField] float maxCamZoom = 10;
 
+    [SerializeField] GameObject render = null;
     [SerializeField] GameObject split = null;
     [SerializeField] GameObject bigSplit = null;
 
@@ -28,6 +35,7 @@ public class MainCam : MonoBehaviour
     private void Start()
     {
         if (!cam) cam = Camera.main;
+        SetResolution();
     }
 
     private void LateUpdate()
@@ -48,6 +56,19 @@ public class MainCam : MonoBehaviour
     }
 
 
+    
+    void SetResolution()
+    {
+        float _width = Screen.width;
+        float _height = Screen.height;
+
+        cam2RenderTexture.width = (int)_width;
+        cam2RenderTexture.height = (int)_height;
+
+        float _ratio = _width / _height;
+
+        render.transform.localScale = new Vector3(cam.orthographicSize / 10 * _ratio * 2, 1, cam.orthographicSize / 10 * 2) * 2;
+    }
 
     public void SwitchCamType(CamType _t) // Dynamic && SplitDynamic
     {

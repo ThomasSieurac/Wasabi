@@ -226,8 +226,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 344941616}
   m_LocalRotation: {x: 0.00000019861236, y: -0.7071068, z: 0.7071068, w: 0.00000019861236}
-  m_LocalPosition: {x: 0, y: 0, z: 6}
-  m_LocalScale: {x: 3.6159217, y: 1.8832918, z: 2.0339553}
+  m_LocalPosition: {x: 0, y: 0, z: 8}
+  m_LocalScale: {x: 3.5500004, y: 1, z: 2}
   m_Children: []
   m_Father: {fileID: 121253377}
   m_RootOrder: 0
@@ -387,7 +387,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.23851903, g: 0.372204, b: 0.754717, a: 1}
+  m_BackGroundColor: {r: 0.2713154, g: 0.6320754, b: 0.33027303, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -448,6 +448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentCamType: 1
+  cam2RenderTexture: {fileID: 8400000, guid: 6fdc4cf20df47984d9e76ebdadd29189, type: 2}
   cam: {fileID: 519420031}
   ban: {fileID: 1803645184}
   lux: {fileID: 1221982847}
@@ -456,6 +457,7 @@ MonoBehaviour:
   camZoomSpeed: 2
   minCamZoom: 5
   maxCamZoom: 10
+  render: {fileID: 344941616}
   split: {fileID: 746613669}
   bigSplit: {fileID: 121253376}
   splitAngle: 0
