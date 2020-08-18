@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainCam : MonoBehaviour
 {
@@ -11,13 +12,14 @@ public class MainCam : MonoBehaviour
     [SerializeField] CamType currentCamType = CamType.Dynamic;
 
     [SerializeField] RenderTexture cam2RenderTexture = null;
+    [SerializeField] Material readMaterial = null;
 
     [SerializeField] Camera cam = null;
 
     [SerializeField] Transform ban = null;
     [SerializeField] Transform lux = null;
 
-    [SerializeField] GameObject camBan = null;
+    [SerializeField] Camera camBan = null;
 
     [SerializeField] float camMoveSpeed = 2;
     [SerializeField] float camZoomSpeed = 2;
@@ -25,7 +27,7 @@ public class MainCam : MonoBehaviour
     [SerializeField] float minCamZoom = 5;
     [SerializeField] float maxCamZoom = 10;
 
-    [SerializeField] GameObject render = null;
+    [SerializeField] RawImage render = null;
     [SerializeField] GameObject split = null;
     [SerializeField] GameObject bigSplit = null;
 
@@ -59,15 +61,20 @@ public class MainCam : MonoBehaviour
     
     void SetResolution()
     {
-        float _width = Screen.width;
-        float _height = Screen.height;
+        int _width = Screen.width;
+        int _height = Screen.height;
 
-        cam2RenderTexture.width = (int)_width;
-        cam2RenderTexture.height = (int)_height;
 
-        float _ratio = _width / _height;
-
-        render.transform.localScale = new Vector3(cam.orthographicSize / 10 * _ratio * 2, 1, cam.orthographicSize / 10 * 2) * 2;
+        if(cam2RenderTexture.width != _width || cam2RenderTexture.height != _height)
+        {
+            cam2RenderTexture.Release();
+            cam2RenderTexture.Create();
+            cam2RenderTexture = new RenderTexture(_width, _height, 24);
+            camBan.targetTexture = cam2RenderTexture;
+            readMaterial.SetTexture("TexBanCam", cam2RenderTexture);
+            render.texture = cam2RenderTexture;
+            render.material = readMaterial;
+        }
     }
 
     public void SwitchCamType(CamType _t) // Dynamic && SplitDynamic
@@ -128,18 +135,18 @@ public class MainCam : MonoBehaviour
         Vector3 _dir = lux.position - ban.position; // ban --> lux
         Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * 10), lux.position.y - (_dir.normalized.y * 5), transform.position.z);
         Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * 10), ban.position.y + (_dir.normalized.y * 5), camBan.transform.position.z);
-        if (_dist <= maxCamZoom * 1.5f)
-        {
-            float _normalizedDist = _dist / (maxCamZoom * 1.5f);
-            Vector3 a = _luxOffset - transform.position;
-            float magnitude = a.magnitude;
-            transform.position = transform.position + a / magnitude * _normalizedDist;
-        }
-        else
-        {
+        //if (_dist <= maxCamZoom * 1.5f)
+        //{
+        //    float _normalizedDist = _dist / (maxCamZoom * 1.5f);
+        //    Vector3 a = _luxOffset - transform.position;
+        //    float magnitude = a.magnitude;
+        //    transform.position = transform.position + a / magnitude * _normalizedDist;
+        //}
+        //else
+        //{
             camBan.transform.position = _banOffset;
             transform.position = _luxOffset;
-        }
+        //}
         if (Vector2.Distance(ban.position, lux.position) < maxCamZoom) SwitchCamType(CamType.Dynamic);
         float _angle = Mathf.Atan2(_dir.y, _dir.x) * Mathf.Rad2Deg;
         split.transform.eulerAngles = new Vector3(0, 0, _angle - 90);
@@ -153,7 +160,9 @@ public class MainCam : MonoBehaviour
      * 
      * smooth split avec movetowards    
      * 
-     * résolutions
+     * résolutions      DONE
+     * 
+     * gérer les culling mask pour cacher ban quand il y a le split
      * 
      */
 }
