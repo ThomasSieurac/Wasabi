@@ -6,8 +6,6 @@ using UnityEngine.InputSystem;
 
 public class WSB_Player : MonoBehaviour
 {
-    [SerializeField] Controls controls = null;
-
     [SerializeField] bool isLux = true;
 
     float horizontalMovement = 0;
@@ -15,12 +13,12 @@ public class WSB_Player : MonoBehaviour
 
     private void OnEnable()
     {
-        controls.Enable();
+        //controls.Enable();
     }
 
     private void Awake()
     {
-        controls = new Controls();
+        //controls = new Controls();
     }
 
     private void Start()

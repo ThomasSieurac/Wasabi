@@ -2,22 +2,14 @@
     "name": "Controls",
     "maps": [
         {
-            "name": "Player",
-            "id": "73872dc0-7217-436d-a757-5eb92e271905",
+            "name": "Ban",
+            "id": "37a53b9b-1fe8-4345-b723-16b5cc3ee895",
             "actions": [
-                {
-                    "name": "Move Lux",
-                    "type": "Value",
-                    "id": "7176d496-568d-403c-9093-b9425ce4f830",
-                    "expectedControlType": "Stick",
-                    "processors": "",
-                    "interactions": ""
-                },
                 {
                     "name": "Move Ban",
                     "type": "Value",
-                    "id": "e0a65473-36af-4947-95d9-33f8f4151b06",
-                    "expectedControlType": "Stick",
+                    "id": "9ceb26d7-b960-4dc6-ab2e-1f6be6013488",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": ""
                 }
@@ -25,74 +17,8 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "93c2c993-6d1c-475d-baff-d5c3f9674775",
-                    "path": "<Gamepad>/leftStick/x",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Xbox controller 1",
-                    "action": "Move Lux",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "2D Vector",
-                    "id": "952fd4f5-0ae0-4555-af3c-1be34e4f12e0",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move Lux",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "dd0290da-98a6-4dfe-baaa-46186977839e",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Debug",
-                    "action": "Move Lux",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "9fc38612-bc31-4640-8ff3-0c042c809d56",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Debug",
-                    "action": "Move Lux",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "7c118569-b475-4f88-850a-01dec554d0a8",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Debug",
-                    "action": "Move Lux",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "e2431d44-2335-499f-9357-ed028d5eb117",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Debug",
-                    "action": "Move Lux",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "e84735ed-1660-41c7-93f6-f917a92eb82d",
-                    "path": "<Gamepad>/leftStick/x",
+                    "id": "abec1317-33f6-464f-bb9c-6fdf047e01b0",
+                    "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "Xbox controller 2",
@@ -102,7 +28,7 @@
                 },
                 {
                     "name": "2D Vector",
-                    "id": "ccf26170-b19b-46b0-93a4-3b0daad89995",
+                    "id": "e1cd9337-9537-4e92-ad84-233b494604a3",
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
@@ -113,45 +39,127 @@
                 },
                 {
                     "name": "up",
-                    "id": "895832d1-d301-4449-85e7-a21174cec691",
+                    "id": "45aca6be-168d-408b-9291-286318cca84b",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Debug",
+                    "groups": "Debug 1",
                     "action": "Move Ban",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "down",
-                    "id": "30692b95-12ea-4278-932f-ba1b2984cac1",
+                    "id": "0cf4fb4a-cb70-4eea-82d0-e1c7ee293176",
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Debug",
+                    "groups": "Debug 1",
                     "action": "Move Ban",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "left",
-                    "id": "24790a94-6a7b-4c71-8ff7-eaf7acc34cc2",
+                    "id": "f35b3d17-cd0c-4ca8-86cb-bb0dd5733b8d",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Debug",
+                    "groups": "Debug 1",
                     "action": "Move Ban",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "right",
-                    "id": "2a6e9601-28f9-4fd3-ad49-5f3a456d07f1",
+                    "id": "7a81865d-f80b-4ec8-8ba6-d472bd95df5c",
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Debug",
+                    "groups": "Debug 1",
                     "action": "Move Ban",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Lux",
+            "id": "e758516e-7977-49c4-92f4-148c5e40f028",
+            "actions": [
+                {
+                    "name": "Move Lux",
+                    "type": "Value",
+                    "id": "fb760b1e-cf7c-48ff-84c9-7723b0a57029",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c70133ec-6644-4db2-9ad5-4934237acb2d",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller 1",
+                    "action": "Move Lux",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "62566a7f-219b-47aa-befb-7ac646c7bc2b",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move Lux",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "2e57508d-66a4-451e-ac76-5aa2ea12008b",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Debug 2",
+                    "action": "Move Lux",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "0fa67fe9-ca0e-4b94-a26a-440913496219",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Debug 2",
+                    "action": "Move Lux",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "eb2c4bbc-93e7-4533-b048-925b9b1fb634",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Debug 2",
+                    "action": "Move Lux",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "0c2dbe6e-f7ba-48ab-bf9f-aa59fff5b858",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Debug 2",
+                    "action": "Move Lux",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
@@ -160,11 +168,11 @@
     ],
     "controlSchemes": [
         {
-            "name": "Xbox controller 1",
-            "bindingGroup": "Xbox controller 1",
+            "name": "Xbox Controller 1",
+            "bindingGroup": "Xbox Controller 1",
             "devices": [
                 {
-                    "devicePath": "<XInputController>",
+                    "devicePath": "<Gamepad>",
                     "isOptional": false,
                     "isOR": false
                 }
@@ -175,15 +183,15 @@
             "bindingGroup": "Xbox controller 2",
             "devices": [
                 {
-                    "devicePath": "<XInputController>",
+                    "devicePath": "<Gamepad>",
                     "isOptional": false,
                     "isOR": false
                 }
             ]
         },
         {
-            "name": "Debug",
-            "bindingGroup": "Debug",
+            "name": "Debug 1",
+            "bindingGroup": "Debug 1",
             "devices": [
                 {
                     "devicePath": "<Keyboard>",
