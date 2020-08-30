@@ -19,27 +19,31 @@
 
 		CGPROGRAM
 
-		#pragma surface surf Standard fullforwardshadows
+		#pragma surface surf NoLighting noambiant
 		#pragma target 3.0
 
 		sampler2D _MainTex;
-		fixed4 _Color;
+		//fixed4 _Color;
 
-		half _Smoothness;
-		half _Metallic;
-		half3 _Emission;
+		//half _Smoothness;
+		//half _Metallic;
+		//half3 _Emission;
 
 		struct Input {
 			float2 uv_MainTex;
 		};
 
-		void surf (Input i, inout SurfaceOutputStandard o) {
-			fixed4 col = tex2D(_MainTex, i.uv_MainTex);
-			col *= _Color;
-			o.Albedo = col.rgb;
-			o.Metallic = _Metallic;
-			o.Smoothness = _Smoothness;
-			o.Emission = _Emission;
+		fixed4 LightingNoLighting(SurfaceOutput s, fixed3 lightDir, fixed atten) {
+			return fixed4(0, 0, 0, 0);//half4(s.Albedo, s.Alpha);
+		}
+
+		void surf (Input i, inout SurfaceOutput o) {
+			o.Emission = tex2D(_MainTex, i.uv_MainTex);
+			//col *= _Color;
+			//o.Albedo = col.rgb;
+			//o.Metallic = _Metallic;
+			//o.Smoothness = _Smoothness;
+			//o.Emission = _Emission;
 		}
 		ENDCG
 	}
