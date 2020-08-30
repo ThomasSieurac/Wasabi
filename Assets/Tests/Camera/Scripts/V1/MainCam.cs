@@ -173,7 +173,7 @@ public class MainCam : MonoBehaviour
      * 
      * résolutions      DONE
      * 
-     * gérer les culling mask pour cacher ban quand il y a le split
+     * gérer les culling mask pour cacher ban quand il y a le split     PTET PLUS BESOIN A VOIR
      * 
      * Gérer la cam en fonction d'ortho ou persp  --> à voir avec la team quand il y aura un début d'assets 3D
      * 

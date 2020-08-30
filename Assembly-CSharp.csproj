@@ -67,7 +67,6 @@
     <Compile Include="Assets\Tests\Controls.cs" />
     <Compile Include="Assets\Tests\Script base\WSB_Player.cs" />
     <None Include="Assets\Tests\Camera\Materials\StencilBufferRead.shader" />
-    <None Include="Assets\Tests\Camera\Materials\NewUnlitShader.shader" />
     <None Include="Assets\Tests\Camera\Materials\StencilBufferWrite.shader" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.8f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
