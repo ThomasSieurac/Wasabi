@@ -916,7 +916,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 12cb78c1ab6636044a42c946f7e948b2,
+  m_Actions: {fileID: -944628639613478452, guid: 63e435c4d9da78041a83a775ca2e52e5,
     type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
@@ -931,9 +931,20 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9ceb26d7-b960-4dc6-ab2e-1f6be6013488
-    m_ActionName: Player/Move Ban[/XInputControllerWindows/leftStick/x,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+      m_Calls:
+      - m_Target: {fileID: 1221982848}
+        m_MethodName: Move
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 16434301-5d73-4477-ad14-8c957ee81dc5
+    m_ActionName: Debug/Move[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1221982848}
@@ -947,11 +958,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: fb760b1e-cf7c-48ff-84c9-7723b0a57029
-    m_ActionName: Lux/Move Lux[/XInputControllerWindows/leftStick/x,/Keyboard/w,/Keyboard/s,/Keyboard/q,/Keyboard/d]
+    m_ActionId: 4ef44be5-84e2-4270-a730-17964cb44cb7
+    m_ActionName: Controler/Move[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/right]
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Xbox Controller 1
-  m_DefaultActionMap: Lux
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: b53390b1-26dc-4737-8195-7c3da98bd360
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &1803645182
@@ -1062,7 +1073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 12cb78c1ab6636044a42c946f7e948b2,
+  m_Actions: {fileID: -944628639613478452, guid: 45e4c72b96983bf4c97bada9f2cf2b04,
     type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
@@ -1089,14 +1100,25 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 9ceb26d7-b960-4dc6-ab2e-1f6be6013488
-    m_ActionName: Player/Move Ban[/XInputControllerWindows/leftStick/x,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+    m_ActionId: 4788a6d1-79b7-4203-8651-06a389621fc6
+    m_ActionName: Debug/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: fb760b1e-cf7c-48ff-84c9-7723b0a57029
-    m_ActionName: Lux/Move Lux[/XInputControllerWindows/leftStick/x,/Keyboard/w,/Keyboard/s,/Keyboard/q,/Keyboard/d]
+      m_Calls:
+      - m_Target: {fileID: 1803645185}
+        m_MethodName: Move
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4aa7c317-4985-4cb2-b76e-49531872e96e
+    m_ActionName: Controler/Move[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/right]
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Xbox controller 2
-  m_DefaultActionMap: Ban
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Debug
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}

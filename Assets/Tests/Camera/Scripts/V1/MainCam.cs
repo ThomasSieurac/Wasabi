@@ -29,14 +29,13 @@ public class MainCam : MonoBehaviour
 
     [SerializeField] float splitAngle = 0;
 
-    bool isOrtho = true;
+    public bool IsOrtho { get { return cam.orthographic; } }
 
 
 
     private void Start()
     {
         if (!cam) cam = Camera.main;
-        isOrtho = cam.orthographic;
         SetResolution();
     }
 
@@ -83,28 +82,23 @@ public class MainCam : MonoBehaviour
         currentCamType = _t;
         if (_t == CamType.SplitDynamic)
         {
-            // culling mask --> -ban
-
             // persp
             cam.orthographicSize = maxCamZoom;
             bigSplit.SetActive(true);
         }
         else if (_t == CamType.Dynamic)
         {
-            // culling mask --> +ban
             bigSplit.SetActive(false);
         }
     }
     public void SwitchCamType(CamType _t, float _angle) // SplitFixe
     {
-        // culling mask --> -ban
         bigSplit.SetActive(true);
         StopAllCoroutines();
         currentCamType = _t;
     }
     public void SwitchCamType(CamType _t, Vector2 _position, float _size)
     {
-        // culling mask --> +ban
         bigSplit.SetActive(false);
         StopAllCoroutines();
         currentCamType = _t;
@@ -148,10 +142,15 @@ public class MainCam : MonoBehaviour
         if (_dist <= maxCamZoom * 1.5f)
         {
             if (_dist < maxCamZoom) SwitchCamType(CamType.Dynamic);
-            //float _normalizedDist = _dist / (maxCamZoom * 1.5f);
-            //Vector3 a = _luxOffset - transform.position;
-            //float magnitude = a.magnitude;
-            //transform.position = transform.position + a / magnitude * _normalizedDist;
+
+            Vector3 _dirOffset = _luxOffset - _banOffset;
+
+            camBan.transform.position = _luxOffset - (_dirOffset * (_dist / (maxCamZoom * 1.5f)));
+            camBan.transform.position = new Vector3(camBan.transform.position.x, camBan.transform.position.y, -10);
+
+            transform.position = _banOffset + (_dirOffset * (_dist / (maxCamZoom * 1.5f)));
+            transform.position = new Vector3(transform.position.x, transform.position.y, -10);
+
         }
         //
         else
@@ -169,13 +168,11 @@ public class MainCam : MonoBehaviour
      * 
      * offset des deux joueurs      DONE
      * 
-     * smooth split avec movetowards    
+     * smooth split     DONE
      * 
      * résolutions      DONE
      * 
-     * gérer les culling mask pour cacher ban quand il y a le split     PTET PLUS BESOIN A VOIR
-     * 
-     * Gérer la cam en fonction d'ortho ou persp  --> à voir avec la team quand il y aura un début d'assets 3D
+     * Gérer la cam en fonction d'ortho ou persp
      * 
      */
 }

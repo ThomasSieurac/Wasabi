@@ -56,6 +56,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Tests\Camera\Scripts\V1\MainCam.cs" />
+     <Compile Include="Assets\Tests\Controls Ban.cs" />
+     <Compile Include="Assets\Tests\Controls Lux.cs" />
      <Compile Include="Assets\Tests\Controls.cs" />
      <Compile Include="Assets\Tests\Script base\WSB_Player.cs" />
      <None Include="Assets\Tests\Camera\Materials\StencilBufferRead.shader" />
