@@ -98,18 +98,21 @@ public class WSB_CameraManager : MonoBehaviour
 
     public void SwitchCamType(CamType _t)
     {
+        if (_t != CamType.Dynamic && _t != CamType.SplitDynamic) return;
         currentCamType = _t;
         if(currentCamType == CamType.SplitDynamic) ToggleSplit(true);
         else if(currentCamType == CamType.Dynamic) ToggleSplit(false);
     } // Dynamic && SplitDynamic
     public void SwitchCamType(CamType _t, float _angle)
     {
+        if (_t != CamType.SplitFixe) return;
         currentCamType = _t;
         SplitAngle = _angle;
         ToggleSplit(true);
     } // SplitFixe
     public void SwitchCamType(CamType _t, Vector2 _position, float _zoom)
     {
+        if (_t != CamType.Fixe) return;
         currentCamType = _t;
         camLux.SetCam(_position, _zoom);
         ToggleSplit(true);
@@ -221,6 +224,7 @@ public enum CamType
     Fixe,
     Dynamic,
     SplitFixe,
-    SplitDynamic
+    SplitDynamic,
+    None
 }
 
