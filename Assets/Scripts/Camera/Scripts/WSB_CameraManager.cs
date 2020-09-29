@@ -1,0 +1,219 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class WSB_CameraManager : MonoBehaviour
+{
+    public static WSB_CameraManager I { get; private set; }
+
+
+    [SerializeField] CamType currentCamType = CamType.Dynamic;
+        public CamType CurrentCamType { get { return currentCamType; } }
+
+    [SerializeField] Transform lux = null;
+    [SerializeField] Transform ban = null;
+
+    #region Cameras
+    [SerializeField] bool isOrtho = false;
+        public bool IsOrtho { get { return isOrtho; } }
+
+    [SerializeField] WSB_Camera camLux = null;
+    [SerializeField] WSB_Camera camBan = null;
+
+    [SerializeField] float camMoveSpeed = 2;
+    public float CamMoveSpeed { get { return camMoveSpeed; } }
+    [SerializeField] float camZoomSpeed = 2;
+    public float CamZoomSpeed { get { return camZoomSpeed; } }
+
+    [SerializeField] float minCamZoom = 5;
+    public float MinCamZoom { get { return minCamZoom; } }
+    [SerializeField] float maxCamZoom = 10;
+    public float MaxCamZoom { get { return maxCamZoom; } }
+    #endregion
+
+    #region Split
+    [SerializeField] RenderTexture cam2RenderTexture = null;
+    [SerializeField] Material readMaterial = null;
+    [SerializeField] RawImage render = null;
+    [SerializeField] GameObject split = null;
+    [SerializeField] GameObject bigSplit = null;
+    public float SplitAngle { get; private set; } = 0;
+    #endregion
+
+    public bool IsReady => ban && lux && camBan && camLux && cam2RenderTexture && readMaterial && render && split && bigSplit;
+
+
+
+    private void Awake()
+    {
+        I = this;
+    }
+
+    private void Start()
+    {
+        if(!IsReady)
+        {
+            Debug.LogError("Erreur, paramètres manquant sur WSB_CameraManager");
+            Destroy(this);
+        }
+        SetResolution();
+    }
+
+    public void LateUpdate()
+    {
+        switch(currentCamType)
+        {
+            case CamType.Dynamic:
+                Dynamic();
+                break;
+            case CamType.SplitFixe:
+                SplitFixe();
+                break;
+            case CamType.SplitDynamic:
+                SplitDynamic();
+                break;
+        }
+    }
+    
+
+    public void SetResolution()
+    {
+        int _width = Screen.width;
+        int _height = Screen.height;
+
+
+        if (cam2RenderTexture.width != _width || cam2RenderTexture.height != _height)
+        {
+            cam2RenderTexture.Release();
+            cam2RenderTexture.Create();
+            cam2RenderTexture = new RenderTexture(_width, _height, 24);
+            camBan.Cam.targetTexture = cam2RenderTexture;
+            readMaterial.SetTexture("TexBanCam", cam2RenderTexture);
+            render.texture = cam2RenderTexture;
+            render.material = readMaterial;
+        }
+    }
+
+    public void SwitchCamType(CamType _t)
+    {
+        currentCamType = _t;
+        if(currentCamType == CamType.SplitDynamic) ToggleSplit(true);
+        else if(currentCamType == CamType.Dynamic) ToggleSplit(false);
+    } // Dynamic && SplitDynamic
+    public void SwitchCamType(CamType _t, float _angle)
+    {
+        currentCamType = _t;
+        SplitAngle = _angle;
+        ToggleSplit(true);
+    } // SplitFixe
+    public void SwitchCamType(CamType _t, Vector2 _position, float _zoom)
+    {
+        currentCamType = _t;
+        camLux.SetCam(_position, _zoom);
+        ToggleSplit(true);
+    } // Fixe
+
+
+
+    void Dynamic()
+    {
+        camBan.SetCam(camLux.transform.position);
+        Vector3 _dir = ban.position - lux.position;
+        float _dist = Vector2.Distance(ban.position, lux.position);
+        float _zoom = 0;
+        if(IsOrtho)
+        {
+            if (_dist < MinCamZoom) _zoom = MinCamZoom;
+            else if (_dist > MaxCamZoom) SwitchCamType(CamType.SplitDynamic);
+            else _zoom = _dist;
+            camLux.SetCam(new Vector2(lux.position.x, lux.position.y) - (Vector2)_dir / 2, _zoom);
+        }
+        else
+        {
+            if (_dist < MinCamZoom) _zoom = -MinCamZoom;
+            else if (_dist > MaxCamZoom) SwitchCamType(CamType.SplitDynamic);
+            else _zoom = -_dist * 2;
+            camLux.SetCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, _zoom));
+        }
+    }
+
+    void SplitFixe()
+    {
+        split.transform.eulerAngles = new Vector3(0, 0, SplitAngle - 90);
+        Vector3 _dir = lux.position - ban.position;
+        Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * 10), lux.position.y - (_dir.normalized.y * 5), camLux.transform.position.z);
+        Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * 10), ban.position.y + (_dir.normalized.y * 5), camBan.transform.position.z);
+        if (IsOrtho)
+        {
+            camBan.SetCam((Vector2)_banOffset, camBan.Cam.orthographicSize);
+            camLux.SetCam((Vector2)_luxOffset, camLux.Cam.orthographicSize);
+        }
+        else
+        {
+            camBan.SetCam(_banOffset);
+            camLux.SetCam(_luxOffset);
+        }
+    }
+
+    void SplitDynamic()
+    {
+        float _dist = Vector2.Distance(ban.position, lux.position);
+        Vector3 _dir = lux.position - ban.position;
+        Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * MaxCamZoom), lux.position.y - (_dir.normalized.y * MinCamZoom), camLux.transform.position.z);
+        Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * MaxCamZoom), ban.position.y + (_dir.normalized.y * MinCamZoom), camBan.transform.position.z);
+        if(_dist <= MaxCamZoom * 1.5f)
+        {
+            if (_dist < MaxCamZoom) SwitchCamType(CamType.Dynamic);
+
+            Vector3 _dirOffset = _luxOffset - _banOffset;
+
+            if(isOrtho)
+            {
+                camBan.SetCam(new Vector2(_luxOffset.x - (_dirOffset.x * (_dist / (MaxCamZoom * 1.5f))), _luxOffset.y - (_dirOffset.y * (_dist / (MaxCamZoom * 1.5f)))), camBan.Cam.orthographicSize);
+                camLux.SetCam(new Vector2(_banOffset.x + (_dirOffset.x * (_dist / (MaxCamZoom * 1.5f))), _banOffset.y + (_dirOffset.y * (_dist / (MaxCamZoom * 1.5f)))), camLux.Cam.orthographicSize);
+            }
+            else
+            {
+                camBan.SetCam(new Vector3(_luxOffset.x - (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))), _luxOffset.y - (_dirOffset.y * (_dist / (maxCamZoom * 1.5f))), camBan.transform.position.z));
+                camLux.SetCam(new Vector3(_banOffset.x + (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))), _banOffset.y + (_dirOffset.y * (_dist / (maxCamZoom * 1.5f))), camLux.transform.position.z));
+            }
+        }
+        else
+        {
+            if(isOrtho)
+            {
+                camBan.SetCam((Vector2)_banOffset, MaxCamZoom);
+                camLux.SetCam((Vector2)_luxOffset, MaxCamZoom);
+            }
+            else
+            {
+                camBan.SetCam(_banOffset);
+                camLux.SetCam(_luxOffset);
+            }
+        }
+        float _angle = Mathf.Atan2(_dir.y, _dir.x) * Mathf.Rad2Deg;
+        split.transform.eulerAngles = new Vector3(0, 0, _angle - 90);
+    }
+
+
+
+
+    void ToggleSplit(bool _status) => bigSplit.SetActive(_status);
+}
+
+/*
+ * 
+ * sur le trigger enter, lancer les updates des paramètres de cam depuis içi en lisant les paramètres enregistrés sur le trigger
+ * 
+ */
+
+
+public enum CamType
+{
+    Fixe,
+    Dynamic,
+    SplitFixe,
+    SplitDynamic
+}
+

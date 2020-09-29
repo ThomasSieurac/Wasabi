@@ -180,11 +180,3 @@ public class MainCam : MonoBehaviour
      * 
      */
 }
-
-public enum CamType
-{
-    Fixe,
-    Dynamic,
-    SplitFixe,
-    SplitDynamic
-}
