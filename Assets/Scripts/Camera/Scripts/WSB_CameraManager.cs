@@ -164,9 +164,14 @@ public class WSB_CameraManager : MonoBehaviour
         Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * MaxCamZoom), ban.position.y + (_dir.normalized.y * MinCamZoom), camBan.transform.position.z);
         if(_dist <= MaxCamZoom * 1.5f)
         {
-            if (_dist < MaxCamZoom) SwitchCamType(CamType.Dynamic);
+            if (_dist < MaxCamZoom)
+            {
+                camBan.SetCam(camLux.transform.position, true);
+                camLux.SetCam(camBan.transform.position, false);
+                return;
+            }
 
-            Vector3 _dirOffset = _luxOffset - _banOffset;
+                Vector3 _dirOffset = _luxOffset - _banOffset;
 
             if(isOrtho)
             {

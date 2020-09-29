@@ -159,7 +159,7 @@ MonoBehaviour:
   camMoveSpeed: 20
   camZoomSpeed: 2
   minCamZoom: 10
-  maxCamZoom: 25
+  maxCamZoom: 20
   cam2RenderTexture: {fileID: 8400000, guid: 6fdc4cf20df47984d9e76ebdadd29189, type: 2}
   readMaterial: {fileID: 2100000, guid: fd26efde33698ab49b9305f359d36246, type: 2}
   render: {fileID: 686739865}
