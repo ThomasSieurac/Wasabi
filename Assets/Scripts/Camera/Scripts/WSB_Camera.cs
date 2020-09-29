@@ -48,9 +48,9 @@ public class WSB_Camera : MonoBehaviour
 
     IEnumerator MoveCam(Vector2 _pos, float _zoom)
     {
-        while(Vector2.Distance(transform.position, _pos) != 0 && Cam.orthographicSize != _zoom)
+        while(Vector2.Distance(transform.position, _pos) != 0 || Cam.orthographicSize != _zoom)
         {
-            transform.position = Vector2.MoveTowards(transform.position, _pos, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(_pos.x, _pos.y, transform.position.z), Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed);
             Cam.orthographicSize = Mathf.MoveTowards(Cam.orthographicSize, _zoom, Time.deltaTime * WSB_CameraManager.I.CamZoomSpeed);
             yield return new WaitForEndOfFrame();
         }
@@ -58,7 +58,7 @@ public class WSB_Camera : MonoBehaviour
 
     IEnumerator MoveCam(Vector3 _pos)
     {
-        while(Vector3.Distance(transform.position, _pos) != 0)
+        while (Vector3.Distance(transform.position, _pos) != 0)
         {
             transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * (WSB_CameraManager.I.CamMoveSpeed));
             yield return new WaitForEndOfFrame();

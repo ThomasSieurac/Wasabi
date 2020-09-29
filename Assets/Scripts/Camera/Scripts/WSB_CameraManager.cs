@@ -82,6 +82,7 @@ public class WSB_CameraManager : MonoBehaviour
         int _width = Screen.width;
         int _height = Screen.height;
 
+        camBan.Cam.orthographic = camLux.Cam.orthographic = IsOrtho;
 
         if (cam2RenderTexture.width != _width || cam2RenderTexture.height != _height)
         {
@@ -118,7 +119,6 @@ public class WSB_CameraManager : MonoBehaviour
 
     void Dynamic()
     {
-        camBan.SetCam(camLux.transform.position);
         Vector3 _dir = ban.position - lux.position;
         float _dist = Vector2.Distance(ban.position, lux.position);
         float _zoom = 0;
@@ -127,7 +127,8 @@ public class WSB_CameraManager : MonoBehaviour
             if (_dist < MinCamZoom) _zoom = MinCamZoom;
             else if (_dist > MaxCamZoom) SwitchCamType(CamType.SplitDynamic);
             else _zoom = _dist;
-            camLux.SetCam(new Vector2(lux.position.x, lux.position.y) - (Vector2)_dir / 2, _zoom);
+            camLux.SetCam(new Vector2(lux.position.x, lux.position.y) + (Vector2)_dir / 2, _zoom);
+            camBan.SetCam(camLux.transform.position, _zoom);
         }
         else
         {
@@ -135,6 +136,7 @@ public class WSB_CameraManager : MonoBehaviour
             else if (_dist > MaxCamZoom) SwitchCamType(CamType.SplitDynamic);
             else _zoom = -_dist * 2;
             camLux.SetCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, _zoom));
+            camBan.SetCam(camLux.transform.position);
         }
     }
 
@@ -142,8 +144,8 @@ public class WSB_CameraManager : MonoBehaviour
     {
         split.transform.eulerAngles = new Vector3(0, 0, SplitAngle - 90);
         Vector3 _dir = lux.position - ban.position;
-        Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * 10), lux.position.y - (_dir.normalized.y * 5), camLux.transform.position.z);
-        Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * 10), ban.position.y + (_dir.normalized.y * 5), camBan.transform.position.z);
+        Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * MaxCamZoom), lux.position.y - (_dir.normalized.y * MinCamZoom), camLux.transform.position.z);
+        Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * MaxCamZoom), ban.position.y + (_dir.normalized.y * MinCamZoom), camBan.transform.position.z);
         if (IsOrtho)
         {
             camBan.SetCam((Vector2)_banOffset, camBan.Cam.orthographicSize);
