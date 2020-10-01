@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class WSB_TriggerCam : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class WSB_TriggerCam : MonoBehaviour
         public CamType Type { get { return changeTypeTo; } }
     [Header("Camera position"), SerializeField] Vector3 changePositionTo = Vector3.zero;
         public Vector3 Position { get { return changePositionTo; } }
+    [Header("Split angle for SplitFixe"), SerializeField] float changeAngleTo = 0;
+        public float Angle { get { return changeAngleTo; } }
     [Header("Camera Zoom ORTHOGRAPHIC ONLY"), SerializeField] float changeZoomTo = 0;
         public float Zoom { get { return changeZoomTo; } }
     [Header("Camera FOV PERSPECTIVE ONLY"), SerializeField] float changeFOVTo = 0;
@@ -41,6 +44,12 @@ public class WSB_TriggerCam : MonoBehaviour
                 break;
         }
         Gizmos.DrawCube(transform.position, new Vector3(triggerSize.x, triggerSize.y, 1));
+        if(Type == CamType.Fixe)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(Position, .25f);
+            Gizmos.DrawLine(Position, transform.position);
+        }
     }
 
     private void Awake()
@@ -61,7 +70,7 @@ public class WSB_TriggerCam : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        //if(col.tag != "Player") // check tag ? check component ? check layer ? check other ?
+        if (col.GetComponent<PlayerInput>()) WSB_CameraManager.I.TriggerEntered(this);
     }
 
 

@@ -7,6 +7,9 @@ public class WSB_Camera : MonoBehaviour
     [SerializeField] Camera cam = null;
         public Camera Cam { get { return cam; } }
 
+    Coroutine moveCam = null;
+    Coroutine moveFOV = null;
+
 
     private void Awake()
     {
@@ -18,32 +21,38 @@ public class WSB_Camera : MonoBehaviour
         }
     }
 
+    public void SetFOV(float _fov)
+    {
+        if (moveFOV != null) StopCoroutine(moveFOV);
+        moveFOV = StartCoroutine(MoveFOV(_fov));
+    }
+
+    IEnumerator MoveFOV(float _fov)
+    {
+        while (Cam.fieldOfView != _fov)
+        {
+            Cam.fieldOfView = Mathf.MoveTowards(Cam.fieldOfView, _fov, Time.deltaTime * 2);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+
     public void SetCam(Vector2 _pos, float _zoom) // ortho
     {
-        StopAllCoroutines();
-        StartCoroutine(MoveCam(_pos, _zoom));
+        if (moveCam != null) StopCoroutine(moveCam);
+        moveCam = StartCoroutine(MoveCam(_pos, _zoom));
     }
 
     public void SetCam(Vector3 _pos) // persp
     {
-        StopAllCoroutines();
-        StartCoroutine(MoveCam(_pos));
+        if (moveCam != null) StopCoroutine(moveCam);
+        moveCam = StartCoroutine(MoveCam(_pos));
     }
 
     public void SetCam(Vector3 _pos, bool _needCallBack)
     {
-        StopAllCoroutines();
-        StartCoroutine(MoveCam(_pos, _needCallBack));
-    }
-
-    IEnumerator MoveCam(Vector3 _pos, bool _needCallBack)
-    {
-        while (Vector2.Distance(transform.position, _pos) != 0)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * (WSB_CameraManager.I.CamMoveSpeed));
-            yield return new WaitForEndOfFrame();
-        }
-        if(_needCallBack) WSB_CameraManager.I.SwitchCamType(CamType.Dynamic);
+        if (moveCam != null) StopCoroutine(moveCam);
+        moveCam = StartCoroutine(MoveCam(_pos, _needCallBack));
     }
 
     IEnumerator MoveCam(Vector2 _pos, float _zoom)
@@ -63,6 +72,16 @@ public class WSB_Camera : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * (WSB_CameraManager.I.CamMoveSpeed));
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    IEnumerator MoveCam(Vector3 _pos, bool _needCallBack)
+    {
+        while (Vector2.Distance(transform.position, _pos) != 0)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * (WSB_CameraManager.I.CamMoveSpeed));
+            yield return new WaitForEndOfFrame();
+        }
+        if (_needCallBack) WSB_CameraManager.I.SwitchCamType(CamType.Dynamic);
     }
 
 }

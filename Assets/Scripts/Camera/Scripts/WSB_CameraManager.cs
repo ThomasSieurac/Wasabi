@@ -41,6 +41,8 @@ public class WSB_CameraManager : MonoBehaviour
     public float SplitAngle { get; private set; } = 0;
     #endregion
 
+    WSB_TriggerCam lastTriggered = null;
+
     public bool IsReady => ban && lux && camBan && camLux && cam2RenderTexture && readMaterial && render && split && bigSplit;
 
 
@@ -96,6 +98,33 @@ public class WSB_CameraManager : MonoBehaviour
         }
     }
 
+    public void TriggerEntered(WSB_TriggerCam _trigger)
+    {
+        if (lastTriggered != _trigger)
+        {
+            if(lastTriggered) lastTriggered.gameObject.SetActive(true);
+            _trigger.gameObject.SetActive(false);
+            lastTriggered = _trigger;
+        }
+        if (!IsOrtho && camBan.Cam.fieldOfView != _trigger.FOV) camBan.SetFOV(_trigger.FOV);
+        if (!IsOrtho && camLux.Cam.fieldOfView != _trigger.FOV) camLux.SetFOV(_trigger.FOV);
+        switch (_trigger.Type)
+        {
+            case CamType.Fixe:
+                SwitchCamType(CamType.Fixe, _trigger.Position, _trigger.Zoom);
+                break;
+            case CamType.Dynamic:
+                SwitchCamType(CamType.Dynamic);
+                break;
+            case CamType.SplitFixe:
+                SwitchCamType(CamType.SplitFixe, _trigger.Angle);
+                break;
+            case CamType.SplitDynamic:
+                SwitchCamType(CamType.SplitDynamic);
+                break;
+        }
+    }
+
     public void SwitchCamType(CamType _t)
     {
         if (_t != CamType.Dynamic && _t != CamType.SplitDynamic) return;
@@ -110,14 +139,14 @@ public class WSB_CameraManager : MonoBehaviour
         SplitAngle = _angle;
         ToggleSplit(true);
     } // SplitFixe
-    public void SwitchCamType(CamType _t, Vector2 _position, float _zoom)
+    public void SwitchCamType(CamType _t, Vector3 _position, float _zoom)
     {
         if (_t != CamType.Fixe) return;
         currentCamType = _t;
-        camLux.SetCam(_position, _zoom);
-        ToggleSplit(true);
+        if (IsOrtho) camLux.SetCam((Vector2)_position, _zoom);
+        else camLux.SetCam(_position);
+        ToggleSplit(false);
     } // Fixe
-
 
 
     void Dynamic()
@@ -142,7 +171,6 @@ public class WSB_CameraManager : MonoBehaviour
             camBan.SetCam(camLux.transform.position);
         }
     }
-
     void SplitFixe()
     {
         split.transform.eulerAngles = new Vector3(0, 0, SplitAngle - 90);
@@ -160,7 +188,6 @@ public class WSB_CameraManager : MonoBehaviour
             camLux.SetCam(_luxOffset);
         }
     }
-
     void SplitDynamic()
     {
         float _dist = Vector2.Distance(ban.position, lux.position);
@@ -205,9 +232,6 @@ public class WSB_CameraManager : MonoBehaviour
         float _angle = Mathf.Atan2(_dir.y, _dir.x) * Mathf.Rad2Deg;
         split.transform.eulerAngles = new Vector3(0, 0, _angle - 90);
     }
-
-
-
 
     void ToggleSplit(bool _status) => bigSplit.SetActive(_status);
 }
