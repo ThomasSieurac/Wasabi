@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Tests/Controls Lux.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Scripts/Controls/Controls Lux.inputactions'
 
 using System;
 using System.Collections;
@@ -23,6 +23,14 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""16434301-5d73-4477-ad14-8c957ee81dc5"",
                     ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Value"",
+                    ""id"": ""ccbf410b-2e49-42bb-9d66-b57488bbfa79"",
+                    ""expectedControlType"": ""Analog"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -80,6 +88,39 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""9f33260e-2533-40f5-aaf7-42f15c9912d2"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""29071c4b-4718-444b-8dd2-aa074acb45dd"",
+                    ""path"": ""<Keyboard>/numpad4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""691ad44e-11d3-4838-a64d-f1ba252daea4"",
+                    ""path"": ""<Keyboard>/numpad6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -162,6 +203,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_Move = m_Debug.FindAction("Move", throwIfNotFound: true);
+        m_Debug_Newaction = m_Debug.FindAction("New action", throwIfNotFound: true);
         // Controler
         m_Controler = asset.FindActionMap("Controler", throwIfNotFound: true);
         m_Controler_Move = m_Controler.FindAction("Move", throwIfNotFound: true);
@@ -215,11 +257,13 @@ public class @ControlsLux : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Debug;
     private IDebugActions m_DebugActionsCallbackInterface;
     private readonly InputAction m_Debug_Move;
+    private readonly InputAction m_Debug_Newaction;
     public struct DebugActions
     {
         private @ControlsLux m_Wrapper;
         public DebugActions(@ControlsLux wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Debug_Move;
+        public InputAction @Newaction => m_Wrapper.m_Debug_Newaction;
         public InputActionMap Get() { return m_Wrapper.m_Debug; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -232,6 +276,9 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 @Move.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnMove;
+                @Newaction.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnNewaction;
+                @Newaction.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnNewaction;
+                @Newaction.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnNewaction;
             }
             m_Wrapper.m_DebugActionsCallbackInterface = instance;
             if (instance != null)
@@ -239,6 +286,9 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Newaction.started += instance.OnNewaction;
+                @Newaction.performed += instance.OnNewaction;
+                @Newaction.canceled += instance.OnNewaction;
             }
         }
     }
@@ -279,6 +329,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
     public interface IDebugActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnNewaction(InputAction.CallbackContext context);
     }
     public interface IControlerActions
     {
