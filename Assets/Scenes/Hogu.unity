@@ -1083,7 +1083,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d4a2f6a08bc5b943bb33ea7526d24d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLux: 1
 --- !u!70 &1412396412
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1627,7 +1626,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d4a2f6a08bc5b943bb33ea7526d24d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLux: 0
 --- !u!70 &1953816738
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1709,6 +1707,8 @@ MonoBehaviour:
   render: {fileID: 1403006870}
   split: {fileID: 1403006869}
   bigSplit: {fileID: 1403006871}
+  targetPositionCamBan: {x: 0, y: 0, z: 0}
+  targetPositionCamLux: {x: 0, y: 0, z: 0}
 --- !u!4 &1969174476
 Transform:
   m_ObjectHideFlags: 0

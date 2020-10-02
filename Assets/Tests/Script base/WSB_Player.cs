@@ -6,8 +6,6 @@ using UnityEngine.InputSystem;
 
 public class WSB_Player : MonoBehaviour
 {
-    [SerializeField] bool isLux = true;
-
     float horizontalMovement = 0;
     float verticalMovement = 0;
 

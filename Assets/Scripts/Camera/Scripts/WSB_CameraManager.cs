@@ -42,8 +42,8 @@ public class WSB_CameraManager : MonoBehaviour
     #endregion
 
     WSB_TriggerCam lastTriggered = null;
-    Vector3 targetPositionCamBan = Vector3.zero;
-    Vector3 targetPositionCamLux = Vector3.zero;
+    [SerializeField] Vector3 targetPositionCamBan = Vector3.zero;
+    [SerializeField] Vector3 targetPositionCamLux = Vector3.zero;
 
     public bool IsReady => ban && lux && camBan && camLux && cam2RenderTexture && readMaterial && render && split && bigSplit;
 
@@ -66,6 +66,8 @@ public class WSB_CameraManager : MonoBehaviour
             Debug.LogError("Erreur, paramètres manquant sur WSB_CameraManager");
             Destroy(this);
         }
+        targetPositionCamBan = new Vector3(camBan.transform.position.x, camBan.transform.position.y, (isOrtho ? camBan.Cam.orthographicSize : camBan.transform.position.z));
+        targetPositionCamLux = new Vector3(camLux.transform.position.x, camLux.transform.position.y, (isOrtho ? camLux.Cam.orthographicSize : camLux.transform.position.z));
         SetResolution();
     }
 
@@ -177,7 +179,7 @@ public class WSB_CameraManager : MonoBehaviour
         if(IsOrtho)
         {
             if (_dist < MinCamZoom) _zoom = MinCamZoom;
-            else if (_dist > MaxCamZoom) SwitchCamType(CamType.SplitDynamic, camLux.transform.position);
+            else if (_dist > MaxCamZoom) SwitchCamType(CamType.SplitDynamic, new Vector3(camLux.transform.position.x, camLux.transform.position.y, camLux.Cam.orthographicSize));
             else _zoom = _dist;
             camLux.SetCam(new Vector2(lux.position.x, lux.position.y) + (Vector2)_dir / 2, _zoom);
             camBan.SetCam(camLux.transform.position, _zoom);
@@ -223,21 +225,15 @@ public class WSB_CameraManager : MonoBehaviour
                 return;
             }
 
-                Vector3 _dirOffset = _luxOffset - _banOffset;
+            Vector3 _dirOffset = _luxOffset - _banOffset;
+            targetPositionCamBan = new Vector3(_luxOffset.x - (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))), _luxOffset.y - (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))), targetPositionCamBan.z);
+            if(IsOrtho) camBan.SetCam(targetPositionCamBan, targetPositionCamBan.z);
+            else camBan.SetCam(targetPositionCamBan);
 
-            //if(isOrtho)
-            //{
-            //    camBan.SetCam(new Vector2(_luxOffset.x - (_dirOffset.x * (_dist / (MaxCamZoom * 1.5f))), _luxOffset.y - (_dirOffset.y * (_dist / (MaxCamZoom * 1.5f)))), camBan.Cam.orthographicSize);
-            //    camLux.SetCam(new Vector2(_banOffset.x + (_dirOffset.x * (_dist / (MaxCamZoom * 1.5f))), _banOffset.y + (_dirOffset.y * (_dist / (MaxCamZoom * 1.5f)))), camLux.Cam.orthographicSize);
-            //}
-            //else
-            //{
-                targetPositionCamBan = new Vector3(_luxOffset.x - (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))), _luxOffset.y - (_dirOffset.y * (_dist / (maxCamZoom * 1.5f))), targetPositionCamBan.z);
-                camBan.SetCam(targetPositionCamBan);
-                targetPositionCamLux = new Vector3(_banOffset.x + (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))), _banOffset.y + (_dirOffset.y * (_dist / (maxCamZoom * 1.5f))), targetPositionCamLux.z);
-                camLux.SetCam(targetPositionCamLux);
+            targetPositionCamLux = new Vector3(_banOffset.x + (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))), _banOffset.y + (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))), targetPositionCamLux.z);
+            if(IsOrtho) camLux.SetCam(targetPositionCamLux, targetPositionCamLux.z);
+            else camLux.SetCam(targetPositionCamLux);
 
-            //}
         }
         else
         {

@@ -66,6 +66,7 @@ public class WSB_TriggerCam : MonoBehaviour
     {
         trigger.isTrigger = true;
         trigger.size = triggerSize;
+        if (WSB_CameraManager.I.IsOrtho) changePositionTo = new Vector3(changePositionTo.x, changePositionTo.y, changeZoomTo);
     }
 
     private void OnTriggerEnter2D(Collider2D col)
