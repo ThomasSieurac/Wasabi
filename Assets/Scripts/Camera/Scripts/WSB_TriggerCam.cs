@@ -73,19 +73,4 @@ public class WSB_TriggerCam : MonoBehaviour
         if (col.GetComponent<PlayerInput>()) WSB_CameraManager.I.TriggerEntered(this);
     }
 
-
-
-    /*
-     * 
-     * désactiver le trigger une fois activé
-     * réactiver le trigger off sur le camManager
-     * set le trigger sur le trigger off sur le camManager
-     * 
-     * 
-     * changer le camtype (en debug faire la zone trigger d'une couleur en fonction de la camtype)
-     * changer différents paramètres (fov, zoom, position, etc...)
-     * 
-     */
-
-
 }

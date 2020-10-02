@@ -14,10 +14,18 @@
                     "interactions": ""
                 },
                 {
-                    "name": "New action",
+                    "name": "Rotate Spells",
                     "type": "Value",
                     "id": "ccbf410b-2e49-42bb-9d66-b57488bbfa79",
                     "expectedControlType": "Analog",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Show Spells",
+                    "type": "Button",
+                    "id": "4a360f5e-3587-4dfb-a27c-f1e9a5d22d9e",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -85,7 +93,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Rotate Spells",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -96,7 +104,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Rotate Spells",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -107,9 +115,20 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Rotate Spells",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "6334c354-9501-4113-97ae-210c018d876a",
+                    "path": "<Keyboard>/numpad8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Spells",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

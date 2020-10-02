@@ -27,10 +27,18 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""Rotate Spells"",
                     ""type"": ""Value"",
                     ""id"": ""ccbf410b-2e49-42bb-9d66-b57488bbfa79"",
                     ""expectedControlType"": ""Analog"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Show Spells"",
+                    ""type"": ""Button"",
+                    ""id"": ""4a360f5e-3587-4dfb-a27c-f1e9a5d22d9e"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -98,7 +106,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""Rotate Spells"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -109,7 +117,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""Rotate Spells"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -120,9 +128,20 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""Rotate Spells"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6334c354-9501-4113-97ae-210c018d876a"",
+                    ""path"": ""<Keyboard>/numpad8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Show Spells"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -203,7 +222,8 @@ public class @ControlsLux : IInputActionCollection, IDisposable
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_Move = m_Debug.FindAction("Move", throwIfNotFound: true);
-        m_Debug_Newaction = m_Debug.FindAction("New action", throwIfNotFound: true);
+        m_Debug_RotateSpells = m_Debug.FindAction("Rotate Spells", throwIfNotFound: true);
+        m_Debug_ShowSpells = m_Debug.FindAction("Show Spells", throwIfNotFound: true);
         // Controler
         m_Controler = asset.FindActionMap("Controler", throwIfNotFound: true);
         m_Controler_Move = m_Controler.FindAction("Move", throwIfNotFound: true);
@@ -257,13 +277,15 @@ public class @ControlsLux : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Debug;
     private IDebugActions m_DebugActionsCallbackInterface;
     private readonly InputAction m_Debug_Move;
-    private readonly InputAction m_Debug_Newaction;
+    private readonly InputAction m_Debug_RotateSpells;
+    private readonly InputAction m_Debug_ShowSpells;
     public struct DebugActions
     {
         private @ControlsLux m_Wrapper;
         public DebugActions(@ControlsLux wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Debug_Move;
-        public InputAction @Newaction => m_Wrapper.m_Debug_Newaction;
+        public InputAction @RotateSpells => m_Wrapper.m_Debug_RotateSpells;
+        public InputAction @ShowSpells => m_Wrapper.m_Debug_ShowSpells;
         public InputActionMap Get() { return m_Wrapper.m_Debug; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -276,9 +298,12 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 @Move.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnMove;
-                @Newaction.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnNewaction;
-                @Newaction.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnNewaction;
-                @Newaction.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnNewaction;
+                @RotateSpells.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnRotateSpells;
+                @RotateSpells.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnRotateSpells;
+                @RotateSpells.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnRotateSpells;
+                @ShowSpells.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnShowSpells;
+                @ShowSpells.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnShowSpells;
+                @ShowSpells.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnShowSpells;
             }
             m_Wrapper.m_DebugActionsCallbackInterface = instance;
             if (instance != null)
@@ -286,9 +311,12 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @Newaction.started += instance.OnNewaction;
-                @Newaction.performed += instance.OnNewaction;
-                @Newaction.canceled += instance.OnNewaction;
+                @RotateSpells.started += instance.OnRotateSpells;
+                @RotateSpells.performed += instance.OnRotateSpells;
+                @RotateSpells.canceled += instance.OnRotateSpells;
+                @ShowSpells.started += instance.OnShowSpells;
+                @ShowSpells.performed += instance.OnShowSpells;
+                @ShowSpells.canceled += instance.OnShowSpells;
             }
         }
     }
@@ -329,7 +357,8 @@ public class @ControlsLux : IInputActionCollection, IDisposable
     public interface IDebugActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnRotateSpells(InputAction.CallbackContext context);
+        void OnShowSpells(InputAction.CallbackContext context);
     }
     public interface IControlerActions
     {
