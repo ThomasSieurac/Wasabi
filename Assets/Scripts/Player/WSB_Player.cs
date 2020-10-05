@@ -21,7 +21,7 @@ public class WSB_Player : MonoBehaviour
 
     protected virtual void Update()
     {
-        transform.position += new Vector3(_x, 0, 0) * .25f;
+        transform.position += new Vector3(_x, 0, 0) * .05f;
     }
 
 

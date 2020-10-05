@@ -68,14 +68,17 @@ public class WSB_Spells : MonoBehaviour
     {
         if (_context.canceled) owner.StopSpell();
         if (!_context.started || !active) return;
-        for (int i = 0; i < allSpells.Length; i++)
+        int _i = 0;
+        float _y = allSpells[0].transform.position.y;
+        for (int i = 1; i < allSpells.Length; i++)
         {
-            if(allSpells[i].transform.localEulerAngles.z == 0)
+            if(allSpells[i].transform.position.y > _y)
             {
-                owner.UseSpell(allSpells[i].tag);
-                break;
+                _i = i;
+                _y = allSpells[i].transform.position.y;
             }
         }
+        owner.UseSpell(allSpells[_i].tag);
     }
 
     public void RotateSpells(InputAction.CallbackContext _context)
