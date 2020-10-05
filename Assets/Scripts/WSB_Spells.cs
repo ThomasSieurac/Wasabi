@@ -9,9 +9,16 @@ public class WSB_Spells : MonoBehaviour
 
     [SerializeField] GameObject[] allSpells = new GameObject[12];
     [SerializeField] bool active = false;
+    [SerializeField] WSB_Player owner = null;
 
     private void Awake()
     {
+        if (!owner) owner = GetComponentInParent<WSB_Player>();
+        if(!owner)
+        {
+            Debug.LogError($"Erreur, component Wsb_Player manquant sur {transform.name} parent");
+            Destroy(this);
+        }
         for (int i = 0; i < 12; i++)
         {
             if (!allSpells[i]) allSpells[i] = transform.GetChild(i).GetChild(0).gameObject;
@@ -57,19 +64,18 @@ public class WSB_Spells : MonoBehaviour
         active = false;
     }
 
-    public void UseSpell()
+    public void UseSpell(InputAction.CallbackContext _context)
     {
-        int _i = 0;
-        float _h = 0;
-        for (int i = 1; i < allSpells.Length; i++)
+        if (_context.canceled) owner.StopSpell();
+        if (!_context.started || !active) return;
+        for (int i = 0; i < allSpells.Length; i++)
         {
-            if(allSpells[i].transform.position.y > _h)
+            if(allSpells[i].transform.localEulerAngles.z == 0)
             {
-                _h = allSpells[i].transform.position.y;
-                _i = i;
+                owner.UseSpell(allSpells[i].tag);
+                break;
             }
         }
-        // call la méthode sur le player qui prendrais en args le tag de allSpells[_i] (probablement "Pont" ou "Vent") et traîter là bas avec un retour bool pour décompter une charge ou non
     }
 
     public void RotateSpells(InputAction.CallbackContext _context)

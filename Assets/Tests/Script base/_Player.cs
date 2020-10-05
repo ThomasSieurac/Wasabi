@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class WSB_Player : MonoBehaviour
+public class Player : MonoBehaviour
 {
     float horizontalMovement = 0;
     float verticalMovement = 0;
