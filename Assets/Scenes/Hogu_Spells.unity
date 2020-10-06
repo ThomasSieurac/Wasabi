@@ -837,12 +837,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 504302791}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de39e7e32e4718549ad29ddbda32605f, type: 3}
+  m_Script: {fileID: 11500000, guid: f02d504db0c2b0049bb519e06af2a59d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
-  duration: 1
+  massNeeded: 10
   onActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeactivate:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &504302793
