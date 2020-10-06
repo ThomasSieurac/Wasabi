@@ -31,7 +31,12 @@ public class WSB_Ban : WSB_Player
     [SerializeField] LayerMask groundLayer = 0;
     #endregion
     #region Light Spell
+    [Header("Earth Spell"), Space, Space, SerializeField] GameObject lightObject = null;
 
+    [SerializeField] float lightDuration = 10;
+    [SerializeField] float lightChargeDelay = 10;
+
+    Coroutine rechargeLight = null;
     #endregion
     #region Shrink Spell
 
@@ -69,16 +74,6 @@ public class WSB_Ban : WSB_Player
         base.Update();
     }
 
-    private void OnDrawGizmos()
-    {
-        if (deb)
-        {
-            Gizmos.color = new Color(1, 1, 0, .25f);
-            Gizmos.DrawSphere(transform.position, windRange);
-        }
-        Gizmos.color = new Color(1, 0, 0, .5f);
-        Gizmos.DrawRay(new Vector2(transform.position.x, transform.position.y), Vector2.down * (transform.localScale.y + .5f));
-    }
 
     public override void UseSpell(string _s)
     {
@@ -90,13 +85,24 @@ public class WSB_Ban : WSB_Player
 
     public override void StopSpell()
     {
-        //deb = false;
-        if (blowCoroutine != null) StopCoroutine(blowCoroutine);
+        if (blowCoroutine != null)
+        {
+            StopCoroutine(blowCoroutine);
+            if (rechargeWind == null) rechargeWind = StartCoroutine(RechargeWind());
+        }
     }
 
     void Shrink()
     {
-        Debug.Log("Piti !");
+        /*
+         * 
+         * Rapeticir Lux
+         * Coroutine Recharge
+         * Coroutine Delay
+         *  -> fin regrandir Lux si possible
+         *      -> si pas possible répéter toutes les x secondes
+         *  
+         */
     }
 
     #region Earth
@@ -120,24 +126,22 @@ public class WSB_Ban : WSB_Player
         {
             // play good FX
             earthCharges--;
-            foreach (TMP_Text _txt in earthTextCharges)
-            {
-                _txt.text = earthCharges.ToString();
-            }
-            if(rechargeEarth == null) rechargeEarth = StartCoroutine(RechargeEarth());
+            UpdateChargesUI(earthTextCharges, earthCharges.ToString());
             RaycastHit2D _hit = Physics2D.Raycast(transform.position, Vector2.down, transform.localScale.y + .5f, groundLayer);
-            StartCoroutine(DelayEarth(Instantiate(earthZone, _hit.point, Quaternion.identity)));
+            GameObject _zdt = Instantiate(earthZone, _hit.point, Quaternion.identity);
+            _zdt.transform.SetParent(_hit.transform);
+            StartCoroutine(DelayEarth(_zdt));
         }
         else
         {
             // play bad FX
         }
-        Debug.Log(_status);
     }
 
     IEnumerator DelayEarth(GameObject _ref)
     {
         yield return new WaitForSeconds(earthDuration);
+        if (rechargeEarth == null) rechargeEarth = StartCoroutine(RechargeEarth());
         Destroy(_ref);
     }
 
@@ -145,41 +149,61 @@ public class WSB_Ban : WSB_Player
     {
         yield return new WaitForSeconds(earthChargeDelay);
         earthCharges++;
-        foreach (TMP_Text _txt in earthTextCharges)
-        {
-            _txt.text = earthCharges.ToString();
-        }
+        UpdateChargesUI(earthTextCharges, earthCharges.ToString());
         if (earthCharges < maxEarthCharges) rechargeEarth = StartCoroutine(RechargeEarth());
         else rechargeEarth = null;
     }
     #endregion
 
+    #region Light
     void Light()
     {
-        Debug.Log("Lumos !");
+        lightCharges--;
+        UpdateChargesUI(lightTextCharges, lightCharges.ToString());
+        GameObject _light = Instantiate(lightObject, transform.position, Quaternion.identity);
+        StartCoroutine(MoveLight(_light, (Vector2)_light.transform.position + Vector2.up * 2));
+        StartCoroutine(DelayLight(_light));
     }
+    IEnumerator MoveLight(GameObject _light, Vector2 _target)
+    {
+        while(Vector2.Distance(_light.transform.position, _target) != 0)
+        {
+            _light.transform.position = Vector2.MoveTowards(_light.transform.position, _target, Time.deltaTime * 2);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    IEnumerator DelayLight(GameObject _ref)
+    {
+        yield return new WaitForSeconds(lightDuration);
+        if (rechargeLight == null) rechargeLight = StartCoroutine(RechargeLight());
+        Destroy(_ref);
+    }
+
+    IEnumerator RechargeLight()
+    {
+        yield return new WaitForSeconds(lightChargeDelay);
+        lightCharges++;
+        UpdateChargesUI(lightTextCharges, lightCharges.ToString()); 
+        if (lightCharges < maxLightCharges) rechargeLight = StartCoroutine(RechargeLight());
+        else rechargeLight = null;
+    }
+    #endregion
 
     #region Wind
     void Wind()
     {
         //deb = true;
         windCharges--;
-        foreach (TMP_Text _txt in windTextCharges)
-        {
-            _txt.text = windCharges.ToString();
-        }
+        UpdateChargesUI(windTextCharges, windCharges.ToString());
         blowCoroutine = StartCoroutine(Blow());
-        if(rechargeWind == null) rechargeWind = StartCoroutine(RechargeWind());
     }
 
     IEnumerator RechargeWind()
     {
         yield return new WaitForSeconds(windChargeDelay);
         windCharges++;
-        foreach (TMP_Text _txt in windTextCharges)
-        {
-            _txt.text = windCharges.ToString();
-        }
+        UpdateChargesUI(windTextCharges, windCharges.ToString());
         if (windCharges < maxWindCharges) rechargeWind = StartCoroutine(RechargeWind());
         else rechargeWind = null;
     }
@@ -191,10 +215,21 @@ public class WSB_Ban : WSB_Player
             Collider2D[] _hits = Physics2D.OverlapCircleAll(transform.position, windRange, moveLayer);
             for (int i = 0; i < _hits.Length; i++)
             {
+                // if(raycast(pos, dir(pos, _hits.pos)) pas gêné, blow
                 if (_hits[i].gameObject.GetComponent<Rigidbody2D>() && _hits[i].gameObject.GetComponent<Rigidbody2D>().mass < windMaxMass) _hits[i].gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * windPower);
             }
             yield return new WaitForEndOfFrame();
         }
     }
     #endregion
+
+    void UpdateChargesUI(List<TMP_Text> _list, string _value)
+    {
+        foreach (TMP_Text _txt in _list)
+        {
+            _txt.text = _value;
+        }
+    }
 }
+
+// 所有 <-- kanji "propriété"

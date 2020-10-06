@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+
 public class WSB_Button : MonoBehaviour
 {
     [SerializeField] bool active = false;
-    [SerializeField, Min(.01f)] float delay = 1;
+    [SerializeField, Min(.01f)] float duration = 1;
     [SerializeField] UnityEvent onActivate = null;
 
     private void OnDrawGizmos()
@@ -27,7 +28,7 @@ public class WSB_Button : MonoBehaviour
 
     IEnumerator Delay()
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(duration);
         active = false;
     }
 }

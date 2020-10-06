@@ -811,6 +811,54 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
+--- !u!1 &504302791
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 504302793}
+  - component: {fileID: 504302792}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &504302792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504302791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de39e7e32e4718549ad29ddbda32605f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active: 0
+  duration: 1
+  onActivate:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!4 &504302793
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504302791}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.0709717, y: -0.79563606, z: -1.6834189}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &589838643
 GameObject:
   m_ObjectHideFlags: 0
@@ -1747,12 +1795,12 @@ PrefabInstance:
     - target: {fileID: 7109682045921185287, guid: 2aa4839afeeaf524491f4427f024ea6c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1.43
       objectReference: {fileID: 0}
     - target: {fileID: 7109682045921185287, guid: 2aa4839afeeaf524491f4427f024ea6c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.23
       objectReference: {fileID: 0}
     - target: {fileID: 7109682045921185287, guid: 2aa4839afeeaf524491f4427f024ea6c,
         type: 3}
@@ -1897,6 +1945,10 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
+  lightObject: {fileID: 511663880393141844, guid: bec7ead25329d9f4b9fdfcb76b9eaa60,
+    type: 3}
+  lightDuration: 10
+  lightChargeDelay: 2
   windRange: 5
   windPower: 5
   windMaxMass: 20
@@ -1945,12 +1997,12 @@ PrefabInstance:
     - target: {fileID: 3075282508786744326, guid: 4f63d398157508647ad35719b0360b11,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -5.09
       objectReference: {fileID: 0}
     - target: {fileID: 3075282508786744326, guid: 4f63d398157508647ad35719b0360b11,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.42
       objectReference: {fileID: 0}
     - target: {fileID: 3075282508786744326, guid: 4f63d398157508647ad35719b0360b11,
         type: 3}
