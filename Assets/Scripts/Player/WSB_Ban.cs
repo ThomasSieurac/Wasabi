@@ -52,7 +52,6 @@ public class WSB_Ban : WSB_Player
 
     [SerializeField] LayerMask moveLayer = 0;
 
-    bool deb = false;
     #endregion
 
     [SerializeField] List<TMP_Text> windTextCharges = new List<TMP_Text>();

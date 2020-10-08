@@ -40,6 +40,8 @@ public class CE_CameraManager : Editor
             return;
         }
 
+
+
         ceActive = EditorGUILayout.ToggleLeft("Toggle custom editor", ceActive);
 
         if (!ceActive) base.OnInspectorGUI();
@@ -47,31 +49,37 @@ public class CE_CameraManager : Editor
         {
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(isOrtho);
+            GUIStyle _style = new GUIStyle();
+            _style.fontStyle = FontStyle.Bold;
+            _style.fontSize = _style.fontSize + 15;
+            _style.normal.textColor = Color.white;
+
+            EditorGUILayout.LabelField("Parameters :", _style);
             EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField("Camera speeds :");
+            _style.fontSize = _style.fontSize - 15;
+
+            EditorGUILayout.PropertyField(isOrtho);
+            EditorGUILayout.Space();
+                        
+            EditorGUILayout.LabelField("Camera speeds :", _style);
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(camMoveSpeed);
+            EditorGUILayout.Space();
             EditorGUILayout.PropertyField(camZoomSpeed);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField("Camera zoom properties :");
+            EditorGUILayout.LabelField("Camera zoom properties :", _style);
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(minCamZoom);
+            EditorGUILayout.Space();
             EditorGUILayout.PropertyField(maxCamZoom);
             EditorGUILayout.EndHorizontal();
-
-
 
             serializedObject.ApplyModifiedProperties();
         }
     }
-
-
-
-
 
 }
