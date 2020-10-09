@@ -118,16 +118,106 @@
                     "name": "Move",
                     "type": "Value",
                     "id": "4ef44be5-84e2-4270-a730-17964cb44cb7",
-                    "expectedControlType": "Stick",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Show Spells",
+                    "type": "Button",
+                    "id": "d763e7bb-17a8-4f5c-b42f-1be3498c8c93",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Use Spells",
+                    "type": "Button",
+                    "id": "60b9c4e7-1138-4026-94ba-f8aebf4b5762",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Rotate Spells",
+                    "type": "Value",
+                    "id": "b7fcb421-ede0-42d4-ae91-190e0ea25beb",
+                    "expectedControlType": "Analog",
                     "processors": "",
                     "interactions": ""
                 }
             ],
             "bindings": [
                 {
-                    "name": "2D Vector",
-                    "id": "9cee702b-5edc-472c-9008-d70d4584ef05",
-                    "path": "2DVector",
+                    "name": "Shoulder",
+                    "id": "3073d1e0-3368-4eaf-bd4b-b477b548e52b",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate Spells",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "eb405f61-9890-49d1-8e23-35f1e384d5a1",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate Spells",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "e8d591fc-f926-42a1-a0b0-89e7cdf7cb5b",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate Spells",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "3fae8d50-74d6-4e6c-930a-0b7a2d94d4cd",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use Spells",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d091285-44c2-474a-9828-31cbf98d2f5c",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use Spells",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9a860a4c-c2e1-4ff4-9c9b-e6846abe8ad6",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Spells",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "e2a737ba-c65c-43a3-8f8d-2827830a8ea5",
+                    "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -136,9 +226,9 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
-                    "id": "21a1332f-d21f-446f-a759-d8778cf27d91",
-                    "path": "<Gamepad>/dpad/up",
+                    "name": "negative",
+                    "id": "5010432a-c8a7-4348-b1d2-2380fc3640b2",
+                    "path": "<Gamepad>/leftStick/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -147,31 +237,9 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "down",
-                    "id": "3743554a-9084-4100-ab9c-d970c67c01cc",
-                    "path": "<Gamepad>/dpad/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "9aaffe9b-02ed-48fd-bbac-b3eaab9c5720",
-                    "path": "<Gamepad>/dpad/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "b2e0b282-89de-4308-81c4-e0729c83a430",
-                    "path": "<Gamepad>/dpad/right",
+                    "name": "positive",
+                    "id": "a51936cc-8907-4441-afc7-4483f3b42757",
+                    "path": "<Gamepad>/leftStick/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

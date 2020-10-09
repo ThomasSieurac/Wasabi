@@ -9,6 +9,10 @@ TagManager:
   - Shrink
   - Wind
   - Movable
+  - Bridge
+  - Ladder
+  - Carnivore
+  - Trampoline
   layers:
   - Default
   - TransparentFX
@@ -23,7 +27,7 @@ TagManager:
   - Ground
   - Destroyable
   - Wall
-  - 
+  - Pot
   - 
   - 
   - 
