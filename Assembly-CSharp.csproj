@@ -68,7 +68,8 @@
     <Compile Include="Assets\Scripts\Camera\Scripts\WSB_TriggerCam.cs" />
     <Compile Include="Assets\Scripts\Controls\Controls Ban.cs" />
     <Compile Include="Assets\Scripts\Controls\Controls Lux.cs" />
-    <Compile Include="Assets\Scripts\Dialogues\CE_Dialogue.cs" />
+    <Compile Include="Assets\Scripts\Dialogues\CE_SO_Dialogue.cs" />
+    <Compile Include="Assets\Scripts\Dialogues\CE_WSB_Dialogue.cs" />
     <Compile Include="Assets\Scripts\Dialogues\Dialogue Debug.cs" />
     <Compile Include="Assets\Scripts\Dialogues\SO_Dialogue.cs" />
     <Compile Include="Assets\Scripts\Dialogues\WSB_Dialogue.cs" />

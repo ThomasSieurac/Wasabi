@@ -9,6 +9,7 @@ public class SO_Dialogue : ScriptableObject
     public bool IsImageRight = true;
     public Character Character = Character.Lux;
     public List<string> Texts;
+    public bool ShowInCustomEditor = false;
 
     public Sprite GetSprite() => Image;
     public string GetCharacter() => Character.ToString();

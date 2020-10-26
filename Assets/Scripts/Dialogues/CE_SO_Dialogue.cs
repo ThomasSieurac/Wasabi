@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(SO_Dialogue))]
-public class CE_Dialogue : Editor
+public class CE_SO_Dialogue : Editor
 {
     SO_Dialogue dialogue;
 
@@ -36,7 +36,7 @@ public class CE_Dialogue : Editor
         }
         dialogue.Image = (Sprite)EditorGUILayout.ObjectField($"Image : {(dialogue.Image ? dialogue.Image.name : string.Empty)}", dialogue.Image, typeof(Sprite), false);
         EditorGUILayout.Space();
-        dialogue.IsImageRight = EditorGUILayout.Toggle("Is the image on the right side ?", dialogue.IsImageRight);
+        dialogue.IsImageRight = EditorGUILayout.ToggleLeft("Is the image on the right side ?", dialogue.IsImageRight);
         EditorGUILayout.Space();
         dialogue.Character = (Character)EditorGUILayout.EnumPopup("Character :", dialogue.Character);
         EditorGUILayout.Space();

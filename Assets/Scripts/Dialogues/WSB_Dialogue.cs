@@ -5,7 +5,7 @@ using TMPro;
 
 public class WSB_Dialogue : MonoBehaviour
 {
-    [SerializeField] List<SO_Dialogue> dialogues;
+    public List<SO_Dialogue> Dialogues;
     SO_Dialogue dialogue = null;
 
     int currentDialogue = 0;
@@ -24,8 +24,8 @@ public class WSB_Dialogue : MonoBehaviour
 
     private void Start()
     {
-        if (dialogues.Count < 0) return;
-        dialogue = dialogues[0];
+        if (Dialogues.Count < 0) return;
+        dialogue = Dialogues[0];
         charImage.sprite = dialogue.GetSprite();
         // switch de côter en fonction de dialogue.IsImageRight
         shownName.text = dialogue.GetCharacter();
@@ -95,12 +95,12 @@ public class WSB_Dialogue : MonoBehaviour
         currentDialogue++;
         currentLine = 0;
         currentChar = 0;
-        if(currentDialogue >= dialogues.Count)
+        if(currentDialogue >= Dialogues.Count)
         {
             gameObject.SetActive(false);
             return;
         }
-        dialogue = dialogues[currentDialogue];
+        dialogue = Dialogues[currentDialogue];
         charImage.sprite = dialogue.GetSprite();
         // switch l'image en fonction de dialogue.isimageright
         shownLine.text = string.Empty;

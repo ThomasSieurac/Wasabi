@@ -437,8 +437,8 @@ GameObject:
   - component: {fileID: 1275244102}
   - component: {fileID: 1275244101}
   - component: {fileID: 1275244100}
-  - component: {fileID: 1275244099}
   - component: {fileID: 1275244104}
+  - component: {fileID: 1275244099}
   m_Layer: 5
   m_Name: Dialogue
   m_TagString: Untagged
@@ -458,7 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78eb63d8a3d98374c86c2fe35be28c86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogues:
+  Dialogues:
   - {fileID: 11400000, guid: 84fa95c510d80c0428a0a2fee7153451, type: 2}
   - {fileID: 11400000, guid: 65c9ce744f8eb674db9a33e4f146b56d, type: 2}
   - {fileID: 11400000, guid: eca7a54240ae9f847be76dec86640599, type: 2}
