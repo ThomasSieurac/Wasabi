@@ -209,13 +209,20 @@ public class WSB_Ban : WSB_Player
 
     IEnumerator Blow()
     {
+        Rigidbody2D _physics;
         while(true)
         {
             Collider2D[] _hits = Physics2D.OverlapCircleAll(transform.position, windRange, moveLayer);
+            Collider2D _hit;
             for (int i = 0; i < _hits.Length; i++)
             {
+                _hit = _hits[i];
+                _physics = _hit.gameObject.GetComponent<Rigidbody2D>();
                 // if(raycast(pos, dir(pos, _hits.pos)) pas gêné, blow
-                if (_hits[i].gameObject.GetComponent<Rigidbody2D>() && _hits[i].gameObject.GetComponent<Rigidbody2D>().mass < windMaxMass) _hits[i].gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * windPower);
+                if (_physics && _physics.mass < windMaxMass)
+                {
+                    _physics.AddForce(Vector2.up * (windPower - (Vector2.Distance(transform.position, _hit.transform.position) / 2))); // jsp
+                }
             }
             yield return new WaitForEndOfFrame();
         }

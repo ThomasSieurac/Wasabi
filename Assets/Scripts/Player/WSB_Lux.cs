@@ -75,11 +75,9 @@ public class WSB_Lux : WSB_Player
     {
         RaycastHit2D _hit = Physics2D.Raycast(transform.position, -Vector2.right, range, potLayer);
 
-        WSB_Pot _pot = null;
-
         if(_hit)
         {
-            _pot = _hit.transform.GetComponent<WSB_Pot>();
+            WSB_Pot _pot = _hit.transform.GetComponent<WSB_Pot>();
             if (!_pot) return;
             _pot.GrowSeed(_s);
             if (_s == "Trampoline" && trampolineCharges > 0) Trampoline();
