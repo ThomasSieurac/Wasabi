@@ -19,9 +19,6 @@ public class WSB_Dialogue : MonoBehaviour
 
     Coroutine playLine = null;
 
-    string lineToShow = "";
-
-
     private void Start()
     {
         if (Dialogues.Count < 0) return;
@@ -29,7 +26,7 @@ public class WSB_Dialogue : MonoBehaviour
         charImage.sprite = dialogue.GetSprite();
         // switch de côter en fonction de dialogue.IsImageRight
         shownName.text = dialogue.GetCharacter();
-        lineToShow = dialogue.GetText(0);
+        shownLine.text = dialogue.GetText(0);
         playLine = StartCoroutine(PlayLine());
         // OnStartDialogue?.Invoke();
     }
@@ -39,7 +36,7 @@ public class WSB_Dialogue : MonoBehaviour
     {
         if (!_ctx.performed) return;
         NullPlay();
-        if(shownLine.text.Length == lineToShow.Length)
+        if(shownLine.maxVisibleCharacters == shownLine.text.Length)
         {
             if(dialogue.Texts.Count-1 > currentLine)
             {
@@ -66,10 +63,10 @@ public class WSB_Dialogue : MonoBehaviour
 
     IEnumerator PlayLine()
     {
-        while(lineToShow.Length > currentChar)
+        while(shownLine.text.Length > currentChar)
         {
-            shownLine.text += lineToShow[currentChar];
             currentChar++;
+            shownLine.maxVisibleCharacters = currentChar;
             yield return new WaitForFixedUpdate();
         }
         NullPlay();
@@ -78,15 +75,14 @@ public class WSB_Dialogue : MonoBehaviour
     void EndLine()
     {
         currentChar = 0;
-        shownLine.text = lineToShow;
+        shownLine.maxVisibleCharacters = shownLine.text.Length;
     }
 
     void NextLine()
     {
         currentChar = 0;
         currentLine++;
-        shownLine.text = string.Empty;
-        lineToShow = dialogue.GetText(currentLine);
+        shownLine.text = dialogue.GetText(currentLine);
         playLine = StartCoroutine(PlayLine());
     }
 
@@ -103,8 +99,7 @@ public class WSB_Dialogue : MonoBehaviour
         dialogue = Dialogues[currentDialogue];
         charImage.sprite = dialogue.GetSprite();
         // switch l'image en fonction de dialogue.isimageright
-        shownLine.text = string.Empty;
-        lineToShow = dialogue.GetText(0);
+        shownLine.text = dialogue.GetText(0);
         shownName.text = dialogue.GetCharacter();
         playLine = StartCoroutine(PlayLine());
     }

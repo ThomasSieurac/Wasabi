@@ -445,7 +445,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1275244099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,7 +461,6 @@ MonoBehaviour:
   Dialogues:
   - {fileID: 11400000, guid: 84fa95c510d80c0428a0a2fee7153451, type: 2}
   - {fileID: 11400000, guid: 65c9ce744f8eb674db9a33e4f146b56d, type: 2}
-  - {fileID: 11400000, guid: eca7a54240ae9f847be76dec86640599, type: 2}
   shownLine: {fileID: 1883713681}
   shownName: {fileID: 554055340}
   charImage: {fileID: 302591088}

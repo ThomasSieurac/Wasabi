@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class WSB_CameraManager : MonoBehaviour
@@ -66,8 +64,10 @@ public class WSB_CameraManager : MonoBehaviour
             Debug.LogError("Erreur, paramètres manquant sur WSB_CameraManager");
             Destroy(this);
         }
-        targetPositionCamBan = new Vector3(camBan.transform.position.x, camBan.transform.position.y, (isOrtho ? camBan.Cam.orthographicSize : camBan.transform.position.z));
-        targetPositionCamLux = new Vector3(camLux.transform.position.x, camLux.transform.position.y, (isOrtho ? camLux.Cam.orthographicSize : camLux.transform.position.z));
+        Vector3 _camPos = camBan.transform.position;
+        targetPositionCamBan = new Vector3(_camPos.x, _camPos.y, (isOrtho ? camBan.Cam.orthographicSize : _camPos.z));
+        _camPos = camLux.transform.position;
+        targetPositionCamLux = new Vector3(_camPos.x, _camPos.y, (isOrtho ? camLux.Cam.orthographicSize : _camPos.z));
         SetResolution();
     }
 
@@ -173,13 +173,14 @@ public class WSB_CameraManager : MonoBehaviour
 
     void Dynamic()
     {
+        Vector3 _camPos = camLux.transform.position;
         Vector3 _dir = ban.position - lux.position;
         float _dist = Vector2.Distance(ban.position, lux.position);
         float _zoom = 0;
         if(IsOrtho)
         {
             if (_dist < MinCamZoom) _zoom = MinCamZoom;
-            else if (_dist > MaxCamZoom) SwitchCamType(CamType.SplitDynamic, new Vector3(camLux.transform.position.x, camLux.transform.position.y, camLux.Cam.orthographicSize));
+            else if (_dist > MaxCamZoom) SwitchCamType(CamType.SplitDynamic, new Vector3(_camPos.x, _camPos.y, camLux.Cam.orthographicSize));
             else _zoom = _dist;
             camLux.SetCam(new Vector2(lux.position.x, lux.position.y) + (Vector2)_dir / 2, _zoom);
             camBan.SetCam(camLux.transform.position, _zoom);

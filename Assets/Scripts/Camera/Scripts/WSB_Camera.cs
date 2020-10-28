@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WSB_Camera : MonoBehaviour
@@ -39,18 +38,25 @@ public class WSB_Camera : MonoBehaviour
 
     public void SetCam(Vector2 _pos, float _zoom) // ortho
     {
+        if ((Vector2)transform.position == _pos && Cam.orthographicSize == _zoom) return;
         if (moveCam != null) StopCoroutine(moveCam);
         moveCam = StartCoroutine(MoveCam(_pos, _zoom));
     }
 
     public void SetCam(Vector3 _pos) // persp
     {
+        if (transform.position == _pos) return;
         if (moveCam != null) StopCoroutine(moveCam);
         moveCam = StartCoroutine(MoveCam(_pos));
     }
 
     public void SetCam(Vector3 _pos, bool _needCallBack)
     {
+        if (transform.position == _pos)
+        {
+            if (_needCallBack) WSB_CameraManager.I.SwitchCamType(CamType.Dynamic, transform.position);
+            return;
+        }
         if (moveCam != null) StopCoroutine(moveCam);
         moveCam = StartCoroutine(MoveCam(_pos, _needCallBack));
     }
@@ -61,7 +67,7 @@ public class WSB_Camera : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(_pos.x, _pos.y, transform.position.z), Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed);
             Cam.orthographicSize = Mathf.MoveTowards(Cam.orthographicSize, _zoom, Time.deltaTime * WSB_CameraManager.I.CamZoomSpeed);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
 
@@ -70,7 +76,7 @@ public class WSB_Camera : MonoBehaviour
         while (Vector3.Distance(transform.position, _pos) != 0)
         {
             transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * (WSB_CameraManager.I.CamMoveSpeed));
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
 
@@ -79,7 +85,7 @@ public class WSB_Camera : MonoBehaviour
         while (Vector2.Distance(transform.position, _pos) != 0)
         {
             transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * (WSB_CameraManager.I.CamMoveSpeed));
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         if (_needCallBack) WSB_CameraManager.I.SwitchCamType(CamType.Dynamic, transform.position);
     }
