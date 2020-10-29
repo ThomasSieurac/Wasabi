@@ -4,7 +4,7 @@ using UnityEngine;
 public class WSB_Camera : MonoBehaviour
 {
     [SerializeField] Camera cam = null;
-        public Camera Cam { get { return cam; } }
+    public Camera Cam { get { return cam; } }
 
     Coroutine moveCam = null;
     Coroutine moveFOV = null;
@@ -63,7 +63,7 @@ public class WSB_Camera : MonoBehaviour
 
     IEnumerator MoveCam(Vector2 _pos, float _zoom)
     {
-        while(Vector2.Distance(transform.position, _pos) != 0 || Cam.orthographicSize != _zoom)
+        while (Vector2.Distance(transform.position, _pos) != 0 || Cam.orthographicSize != _zoom)
         {
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(_pos.x, _pos.y, transform.position.z), Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed);
             Cam.orthographicSize = Mathf.MoveTowards(Cam.orthographicSize, _zoom, Time.deltaTime * WSB_CameraManager.I.CamZoomSpeed);

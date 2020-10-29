@@ -6,10 +6,10 @@ using UnityEditor;
 [CustomEditor(typeof(SO_Dialogue))]
 public class CE_SO_Dialogue : Editor
 {
-    SO_Dialogue dialogue;
+    //SO_Dialogue dialogue;
 
-    bool isCustom = true;
-    bool showTexts = true;
+    //bool isCustom = true;
+    //bool showTexts = true;
 
     private void OnEnable()
     {

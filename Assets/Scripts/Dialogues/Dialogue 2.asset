@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181ae94814c27a14397084fc8a2b2165, type: 3}
   m_Name: Dialogue 2
   m_EditorClassIdentifier: 
-  Image: {fileID: 21300000, guid: 8e362f23990b3af428ac2ec9c9b10707, type: 3}
-  IsImageRight: 1
-  Character: 1
+  Image: {fileID: -5391307981071726051, guid: 50eb9018675373049831fb804d218141, type: 3}
+  IsImageRight: 0
+  Character: 2
   Texts:
-  - un
-  - dos
-  - "tr\xE8s"
+  - Bah cheh
+  - Boloss va
   ShowTexts: 0

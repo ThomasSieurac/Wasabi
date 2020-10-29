@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181ae94814c27a14397084fc8a2b2165, type: 3}
   m_Name: Dialogue 3
   m_EditorClassIdentifier: 
-  Image: {fileID: 0}
+  Image: {fileID: 21300000, guid: 85c47f60153f9bc459fbdc7464bd697e, type: 3}
   IsImageRight: 1
   Character: 0
-  Texts: []
+  Texts:
+  - g p t
+  ShowTexts: 1

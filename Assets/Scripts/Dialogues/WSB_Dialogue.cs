@@ -13,9 +13,11 @@ public class WSB_Dialogue : MonoBehaviour
     int currentChar = 0;
 
     [SerializeField] TMP_Text shownLine = null;
-    [SerializeField] TMP_Text shownName = null;
+    [SerializeField] TMP_Text shownNameRight = null;
+    [SerializeField] TMP_Text shownNameLeft = null;
 
-    [SerializeField] UnityEngine.UI.Image charImage = null;
+    [SerializeField] UnityEngine.UI.Image charImageLeft = null;
+    [SerializeField] UnityEngine.UI.Image charImageRight = null;
 
     Coroutine playLine = null;
 
@@ -23,9 +25,9 @@ public class WSB_Dialogue : MonoBehaviour
     {
         if (Dialogues.Count < 0) return;
         dialogue = Dialogues[0];
-        charImage.sprite = dialogue.GetSprite();
-        // switch de côter en fonction de dialogue.IsImageRight
-        shownName.text = dialogue.GetCharacter();
+
+        CheckSide();
+
         shownLine.text = dialogue.GetText(0);
         playLine = StartCoroutine(PlayLine());
         // OnStartDialogue?.Invoke();
@@ -85,6 +87,26 @@ public class WSB_Dialogue : MonoBehaviour
         shownLine.text = dialogue.GetText(currentLine);
         playLine = StartCoroutine(PlayLine());
     }
+    void CheckSide()
+    {
+        if (dialogue.IsImageRight)
+        {
+            charImageRight.sprite = dialogue.GetSprite();
+            shownNameRight.text = dialogue.GetCharacter();
+            shownNameLeft.text = string.Empty;
+            charImageRight.enabled = shownNameRight.enabled = true;
+            charImageLeft.enabled = shownNameLeft.enabled = false;
+        }
+        else
+        {
+            charImageLeft.sprite = dialogue.GetSprite();
+            shownNameLeft.text = dialogue.GetCharacter();
+            shownNameRight.text = string.Empty;
+            charImageLeft.enabled = shownNameLeft.enabled = true;
+            charImageRight.enabled = shownNameRight.enabled = false;
+        }
+    }
+
 
     void NextDialoge()
     {
@@ -97,10 +119,8 @@ public class WSB_Dialogue : MonoBehaviour
             return;
         }
         dialogue = Dialogues[currentDialogue];
-        charImage.sprite = dialogue.GetSprite();
-        // switch l'image en fonction de dialogue.isimageright
+        CheckSide();
         shownLine.text = dialogue.GetText(0);
-        shownName.text = dialogue.GetCharacter();
         playLine = StartCoroutine(PlayLine());
     }
 

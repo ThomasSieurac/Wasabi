@@ -6,10 +6,8 @@ using UnityEditor;
 [CustomEditor(typeof(WSB_Dialogue))]
 public class CE_WSB_Dialogue : Editor
 {
-    WSB_Dialogue dialogue;
 
     bool ceActive = true;
-    //bool showDialogues = true;
 
     SerializedProperty dialogues;
 
@@ -26,42 +24,51 @@ public class CE_WSB_Dialogue : Editor
     {
         ceActive = EditorGUILayout.ToggleLeft("Toggle custom editor ", ceActive);
 
-        if(!ceActive)
+        if (!ceActive)
         {
             base.OnInspectorGUI();
             return;
         }
         serializedObject.Update();
 
+        GUIStyle _deleteStyle = new GUIStyle(EditorStyles.miniButton);
+        _deleteStyle.fontStyle = FontStyle.Bold;
+        _deleteStyle.normal.textColor = Color.white;
+
+        Color _defaultColor = GUI.backgroundColor;
+
         EditorGUILayout.Space();
 
-        if (GUILayout.Button("Add new dialogue", EditorStyles.miniButtonMid))
+        if (GUILayout.Button("Add new dialogue", GUILayout.MaxWidth(200)))
         {
             dialogues.InsertArrayElementAtIndex(dialogues.arraySize);
             if (dialogues.GetArrayElementAtIndex(dialogues.arraySize - 1).objectReferenceValue != null)
                 dialogues.DeleteArrayElementAtIndex(dialogues.arraySize - 1);
-
         }
 
         EditorGUILayout.Space();
 
         for (int i = 0; i < dialogues.arraySize; i++)
         {
-            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-            
+            DrawLine(new Color(.7f, .7f, .7f, 1));
+
             EditorGUILayout.Space();
 
             SerializedProperty _dialogue = dialogues.GetArrayElementAtIndex(i);
 
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("Delete this dialogue", GUILayout.Width(150)))
+            GUI.backgroundColor = new Color(2, 0, 0, 1);
+
+            if (GUILayout.Button("Delete this dialogue", _deleteStyle, GUILayout.Width(150)))
             {
-                if(_dialogue.objectReferenceValue != null)
+                if (_dialogue.objectReferenceValue != null)
                     dialogues.DeleteArrayElementAtIndex(i);
                 dialogues.DeleteArrayElementAtIndex(i);
                 break;
             }
+
+            GUI.backgroundColor = _defaultColor;
 
             EditorGUILayout.Space();
 
@@ -92,83 +99,62 @@ public class CE_WSB_Dialogue : Editor
 
             SerializedProperty _showText = _dialogueObject.FindProperty("ShowTexts");
 
-            EditorGUILayout.PropertyField(_showText);
+            _showText.boolValue = EditorGUILayout.Foldout(_showText.boolValue, "Show texts", true);
 
-            if(_showText.boolValue)
+            if (_showText.boolValue)
             {
                 EditorGUILayout.Space();
-                EditorGUILayout.PropertyField(_dialogueObject.FindProperty("Texts"), true);
-                EditorGUILayout.Space();
-            }
 
+                SerializedProperty _text = _dialogueObject.FindProperty("Texts");
+
+                if (GUILayout.Button("Add new text"))
+                {
+                    _text.InsertArrayElementAtIndex(_text.arraySize);
+                    _text.GetArrayElementAtIndex(_text.arraySize - 1).stringValue = "";
+                }
+
+                EditorGUILayout.Space();
+
+                for (int j = 0; j < _text.arraySize; j++)
+                {
+                    Rect _rect = EditorGUILayout.GetControlRect();
+
+                    EditorGUI.DrawRect(new Rect(_rect.x + _rect.width/4, _rect.y, _rect.width / 2, 2), Color.gray);
+
+                    EditorGUILayout.Space();
+
+                    _text.GetArrayElementAtIndex(j).stringValue = GUILayout.TextArea(_text.GetArrayElementAtIndex(j).stringValue);
+
+                    EditorGUILayout.Space();
+
+                    GUI.backgroundColor = new Color(2,0,0,1);
+
+                    if (GUILayout.Button("Delete this text", _deleteStyle, GUILayout.Width(150)))
+                    {
+                        _text.DeleteArrayElementAtIndex(j);
+                        break;
+                    }
+
+                    GUI.backgroundColor = _defaultColor;
+
+                    EditorGUILayout.Space();
+                }
+
+            }
+            
+            EditorGUILayout.Space();
 
             _dialogueObject.ApplyModifiedProperties();
+
         }
 
-        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+        EditorGUILayout.Space();
 
-
+        DrawLine(new Color(.7f, .7f, .7f, 1));
 
         serializedObject.ApplyModifiedProperties();
 
-        //showDialogues = EditorGUILayout.Toggle("Toggle dialogues ", showDialogues);
-        //if (!showDialogues) return;
-
-        //SO_Dialogue _dialogue = null;
-
-        //if (GUILayout.Button("Add new dialogue")) dialogue.Dialogues.Add(null);
-
-        //EditorGUILayout.Space();
-
-        //for (int i = 0; i < dialogue.Dialogues.Count; i++)
-        //{
-        //    EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-        //    //EditorGUI.DrawRect(EditorGUILayout.GetControlRect(false, 2), new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f), 1));
-
-        //    EditorGUILayout.Space();
-        //    EditorGUILayout.BeginHorizontal();
-        //    dialogue.Dialogues[i] = (SO_Dialogue)EditorGUILayout.ObjectField("", dialogue.Dialogues[i], typeof(SO_Dialogue), true);
-
-        //    if(GUILayout.Button("Remove this Dialoge"))
-        //    {
-        //        dialogue.Dialogues.RemoveAt(i);
-        //        break;
-        //    }
-        //    EditorGUILayout.EndHorizontal();
-        //    if (!dialogue.Dialogues[i]) continue;
-
-        //    EditorGUILayout.Space();
-        //    dialogue.Dialogues[i].Character = (Character)EditorGUILayout.EnumPopup("Character :", dialogue.Dialogues[i].Character);
-
-        //    EditorGUILayout.BeginHorizontal();
-        //    EditorGUILayout.Space();
-        //    dialogue.Dialogues[i].Image = (Sprite)EditorGUILayout.ObjectField($"Image : {(dialogue.Dialogues[i].Image ? dialogue.Dialogues[i].Image.name : string.Empty)}", dialogue.Dialogues[i].Image, typeof(Sprite), false);
-
-        //    dialogue.Dialogues[i].IsImageRight = EditorGUILayout.ToggleLeft("Is the image on the right side ? ", dialogue.Dialogues[i].IsImageRight);
-        //    EditorGUILayout.EndHorizontal();
-
-        //    EditorGUILayout.Space();
-        //    dialogue.Dialogues[i].ShowInCustomEditor = EditorGUILayout.Foldout(dialogue.Dialogues[i].ShowInCustomEditor, "Show texts", true);
-        //    if (!dialogue.Dialogues[i].ShowInCustomEditor) continue;
-
-        //    if (GUILayout.Button("Create new text")) dialogue.Dialogues[i].Texts.Add("");
-        //    EditorGUILayout.Space();
-
-        //    _dialogue = dialogue.Dialogues[i];
-
-
-        //    for (int j = 0; j < _dialogue.Texts.Count; j++)
-        //    {
-        //        EditorGUILayout.BeginHorizontal();
-        //        if (GUILayout.Button("Delete this text", GUILayout.Width(100)))
-        //        {
-        //            dialogue.Dialogues[i].Texts.RemoveAt(j);
-        //            break;
-        //        }
-        //        dialogue.Dialogues[i].Texts[j] = GUILayout.TextArea(_dialogue.GetText(j));
-        //        EditorGUILayout.EndHorizontal();
-        //    }
-        //    EditorGUILayout.Space();
-        //}
     }
+
+    void DrawLine(Color _c) => EditorGUI.DrawRect(EditorGUILayout.GetControlRect(false, 2), _c);
 }
