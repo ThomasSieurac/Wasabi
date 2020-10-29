@@ -3,7 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Earth
+  - Light
+  - Shrink
+  - Wind
+  - Movable
+  - Bridge
+  - Ladder
+  - Carnivore
+  - Trampoline
   layers:
   - Default
   - TransparentFX
@@ -14,11 +23,11 @@ TagManager:
   - 
   - 
   - Split
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Movable
+  - Ground
+  - Destroyable
+  - Wall
+  - Pot
   - 
   - 
   - 

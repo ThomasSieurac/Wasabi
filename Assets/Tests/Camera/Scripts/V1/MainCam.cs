@@ -29,14 +29,13 @@ public class MainCam : MonoBehaviour
 
     [SerializeField] float splitAngle = 0;
 
-    bool isOrtho = true;
+    public bool IsOrtho { get { return cam.orthographic; } }
 
 
 
     private void Start()
     {
         if (!cam) cam = Camera.main;
-        isOrtho = cam.orthographic;
         SetResolution();
     }
 
@@ -44,7 +43,8 @@ public class MainCam : MonoBehaviour
     {
         switch (currentCamType)
         {
-            case CamType.Dynamic: Dynamic();
+            case CamType.Dynamic:
+                Dynamic();
                 break;
             case CamType.SplitFixe:
                 split.transform.eulerAngles = new Vector3(0, 0, splitAngle - 90);
@@ -58,14 +58,14 @@ public class MainCam : MonoBehaviour
     }
 
 
-    
+
     void SetResolution()
     {
         int _width = Screen.width;
         int _height = Screen.height;
 
 
-        if(cam2RenderTexture.width != _width || cam2RenderTexture.height != _height)
+        if (cam2RenderTexture.width != _width || cam2RenderTexture.height != _height)
         {
             cam2RenderTexture.Release();
             cam2RenderTexture.Create();
@@ -83,28 +83,23 @@ public class MainCam : MonoBehaviour
         currentCamType = _t;
         if (_t == CamType.SplitDynamic)
         {
-            // culling mask --> -ban
-
-            // persp
-            cam.orthographicSize = maxCamZoom;
+            if (IsOrtho) cam.orthographicSize = maxCamZoom;
+            else cam.transform.position = new Vector3(cam.transform.position.x, cam.transform.position.y, -maxCamZoom * 2);
             bigSplit.SetActive(true);
         }
         else if (_t == CamType.Dynamic)
         {
-            // culling mask --> +ban
             bigSplit.SetActive(false);
         }
     }
     public void SwitchCamType(CamType _t, float _angle) // SplitFixe
     {
-        // culling mask --> -ban
         bigSplit.SetActive(true);
         StopAllCoroutines();
         currentCamType = _t;
     }
     public void SwitchCamType(CamType _t, Vector2 _position, float _size)
     {
-        // culling mask --> +ban
         bigSplit.SetActive(false);
         StopAllCoroutines();
         currentCamType = _t;
@@ -113,11 +108,11 @@ public class MainCam : MonoBehaviour
 
     IEnumerator MoveFixeCam(Vector2 _position, float _size)
     {
-        while(Vector3.Distance(transform.position, _position) != 0 || /* persp */ cam.orthographicSize != _size)
+        while (Vector3.Distance(transform.position, _position) != 0 || IsOrtho && cam.orthographicSize != _size || !IsOrtho && Vector3.Distance(transform.position, new Vector3(_position.x, _position.y, _size)) != 0)
         {
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(_position.x, _position.y, transform.position.z), Time.deltaTime * camMoveSpeed);
-            // persp
-            cam.orthographicSize = Mathf.MoveTowards(cam.orthographicSize, _size, Time.deltaTime * camZoomSpeed);
+            if (IsOrtho) cam.orthographicSize = Mathf.MoveTowards(cam.orthographicSize, _size, Time.deltaTime * camZoomSpeed);
+            else cam.transform.position = Vector3.MoveTowards(cam.transform.position, new Vector3(_position.x, _position.y, _size), Time.deltaTime * camZoomSpeed);
             yield return new WaitForSeconds(.01f);
         }
     }
@@ -130,11 +125,18 @@ public class MainCam : MonoBehaviour
         Vector3 _dir = ban.position - lux.position;
         float _dist = Vector2.Distance(ban.position, lux.position);
         transform.position = new Vector3(ban.position.x, ban.position.y, transform.position.z) - _dir / 2;
-        // persp
-        if (_dist < minCamZoom) cam.orthographicSize = minCamZoom;
-        else if (_dist > maxCamZoom) SwitchCamType(CamType.SplitDynamic);
-        else cam.orthographicSize = _dist;
-        //
+        if (IsOrtho)
+        {
+            if (_dist < minCamZoom) cam.orthographicSize = minCamZoom;
+            else if (_dist > maxCamZoom) SwitchCamType(CamType.SplitDynamic);
+            else cam.orthographicSize = _dist;
+        }
+        else
+        {
+            if (_dist < minCamZoom) cam.transform.position = new Vector3(cam.transform.position.x, cam.transform.position.y, -minCamZoom);
+            else if (_dist > maxCamZoom) SwitchCamType(CamType.SplitDynamic);
+            else cam.transform.position = new Vector3(cam.transform.position.x, cam.transform.position.y, -maxCamZoom * 2);
+        }
     }
 
     void Split()
@@ -144,16 +146,17 @@ public class MainCam : MonoBehaviour
         Vector3 _dir = lux.position - ban.position;
         Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * 10), lux.position.y - (_dir.normalized.y * 5), transform.position.z);
         Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * 10), ban.position.y + (_dir.normalized.y * 5), camBan.transform.position.z);
-        // merge à faire
         if (_dist <= maxCamZoom * 1.5f)
         {
             if (_dist < maxCamZoom) SwitchCamType(CamType.Dynamic);
-            //float _normalizedDist = _dist / (maxCamZoom * 1.5f);
-            //Vector3 a = _luxOffset - transform.position;
-            //float magnitude = a.magnitude;
-            //transform.position = transform.position + a / magnitude * _normalizedDist;
+
+            Vector3 _dirOffset = _luxOffset - _banOffset;
+
+            camBan.transform.position = new Vector3(_luxOffset.x - (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))), _luxOffset.y - (_dirOffset.y * (_dist / (maxCamZoom * 1.5f))), camBan.transform.position.z);
+
+            transform.position = new Vector3(_banOffset.x + (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))), _banOffset.y + (_dirOffset.y * (_dist / (maxCamZoom * 1.5f))), transform.position.z);
+
         }
-        //
         else
         {
             camBan.transform.position = _banOffset;
@@ -169,21 +172,11 @@ public class MainCam : MonoBehaviour
      * 
      * offset des deux joueurs      DONE
      * 
-     * smooth split avec movetowards    
+     * smooth split     DONE
      * 
      * résolutions      DONE
      * 
-     * gérer les culling mask pour cacher ban quand il y a le split     PTET PLUS BESOIN A VOIR
-     * 
-     * Gérer la cam en fonction d'ortho ou persp  --> à voir avec la team quand il y aura un début d'assets 3D
+     * Gérer la cam en fonction d'ortho ou persp
      * 
      */
-}
-
-public enum CamType
-{
-    Fixe,
-    Dynamic,
-    SplitFixe,
-    SplitDynamic
 }
