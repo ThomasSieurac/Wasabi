@@ -12,6 +12,12 @@ public class WSB_Dialogue : MonoBehaviour
     int currentLine = 0;
     int currentChar = 0;
 
+    //int wobbleMin = 50;
+    //int wobbleMax = 150;
+
+    //List<int> wobbleCharIndexStart = new List<int>();
+    //List<int> wobbleCharIndexEnd = new List<int>();
+
     [SerializeField] TMP_Text shownLine = null;
     [SerializeField] TMP_Text shownNameRight = null;
     [SerializeField] TMP_Text shownNameLeft = null;
@@ -38,9 +44,9 @@ public class WSB_Dialogue : MonoBehaviour
     {
         if (!_ctx.performed) return;
         NullPlay();
-        if(shownLine.maxVisibleCharacters == shownLine.text.Length)
+        if (shownLine.maxVisibleCharacters == shownLine.text.Length)
         {
-            if(dialogue.Texts.Count-1 > currentLine)
+            if (dialogue.Texts.Count - 1 > currentLine)
             {
                 NextLine();
             }
@@ -70,7 +76,7 @@ public class WSB_Dialogue : MonoBehaviour
             if (shownLine.text[currentChar] == '<')
             {
                 int _i = currentChar;
-                while(true)
+                while (true)
                 {
                     if (shownLine.text[_i] == '>')
                         break;
@@ -80,12 +86,28 @@ public class WSB_Dialogue : MonoBehaviour
             }
             else
                 currentChar++;
-            
+
             shownLine.maxVisibleCharacters = currentChar;
             yield return new WaitForFixedUpdate();
         }
         NullPlay();
     }
+
+
+    //IEnumerator Wobble()
+    //{
+    //    while (true)
+    //    {
+    //        for (int i = 0; i < wobbleCharIndexStart.Count; i++)
+    //        {
+    //            for (int j = wobbleCharIndexStart[i]; j < wobbleCharIndexEnd[i]; j++)
+    //            {
+
+    //            }
+    //        }
+    //        yield return new WaitForFixedUpdate();
+    //    }
+    //}
 
     /*
      * List<int> charWobbleIndex
@@ -109,6 +131,8 @@ public class WSB_Dialogue : MonoBehaviour
     void NextLine()
     {
         currentChar = 0;
+        //wobbleCharIndexEnd.Clear();
+        //wobbleCharIndexStart.Clear();
         currentLine++;
         shownLine.text = dialogue.GetText(currentLine);
         playLine = StartCoroutine(PlayLine());
@@ -137,9 +161,11 @@ public class WSB_Dialogue : MonoBehaviour
     void NextDialoge()
     {
         currentDialogue++;
+        //wobbleCharIndexEnd.Clear();
+        //wobbleCharIndexStart.Clear();
         currentLine = 0;
         currentChar = 0;
-        if(currentDialogue >= Dialogues.Count)
+        if (currentDialogue >= Dialogues.Count)
         {
             gameObject.SetActive(false);
             return;
