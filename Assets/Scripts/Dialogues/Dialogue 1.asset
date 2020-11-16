@@ -19,3 +19,4 @@ MonoBehaviour:
   - "Bonjour \xE0 tous"
   - "Je m'appelle Lux et voici mon fr\xE8re Ban."
   ShowTexts: 1
+  DefaultSize: 36

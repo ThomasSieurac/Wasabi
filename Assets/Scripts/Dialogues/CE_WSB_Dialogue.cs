@@ -152,21 +152,29 @@ public class CE_WSB_Dialogue : Editor
 
             EditorGUILayout.Space();
 
-            MarkdownText(_text, j);
+            EditorGUILayout.BeginHorizontal();
 
-            string _s = _text.GetArrayElementAtIndex(j).stringValue;
+            EditorGUILayout.LabelField("Default font size : ");
 
-            /*
-             * 
-             * choper le string
-             * 
-             * afficher le string sans les markdown
-             * 
-             * enregistrer le string avec les markdown
-             * 
-             */
+            EditorGUILayout.PropertyField(dialogueObject.FindProperty("DefaultSize"), GUIContent.none, GUILayout.Width(100));
+            EditorGUILayout.Space();
 
-            _text.GetArrayElementAtIndex(j).stringValue = GUILayout.TextArea(_s);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+
+            _text.GetArrayElementAtIndex(j).stringValue = GUILayout.TextArea(_text.GetArrayElementAtIndex(j).stringValue);
+
+            RichTextButtons(_text, j);
+
+            EditorGUILayout.LabelField("Preview : ");
+
+            GUIStyle _richTextStyle = new GUIStyle(GUI.skin.label);
+            _richTextStyle.richText = true;
+
+            EditorGUILayout.TextArea(_text.GetArrayElementAtIndex(j).stringValue, _richTextStyle);
+
 
             EditorGUILayout.Space();
 
@@ -184,7 +192,7 @@ public class CE_WSB_Dialogue : Editor
         }
     }
 
-    void MarkdownText(SerializedProperty _text, int _index)
+    void RichTextButtons(SerializedProperty _text, int _index)
     {
         EditorGUILayout.BeginHorizontal();
 
@@ -219,14 +227,36 @@ public class CE_WSB_Dialogue : Editor
 
         if (GUILayout.Button("Color"))
         {
-            ColorPopup.Init(this, ref _text, _index);
+            ColorPopup.Init(this, _text, _index);
         }
 
+        if(GUILayout.Button("Size"))
+        {
+            SizePopup.Init(this, _text, _index);
+        }
 
         EditorGUILayout.EndHorizontal();
     }
+    public void ApplyFontSizeRichText(int _s, SerializedProperty _text, int _index)
+    {
+        if (!string.IsNullOrEmpty(lastTextSelected.text) && lastTextSelected.hasSelection)
+        {
+            serializedObject.Update();
+            dialogueObject.Update();
 
-    public void ApplyColorMarkDown(Color _c, ref SerializedProperty _text, int _index)
+            lastTextSelected.ReplaceSelection($"<size={_s}>{lastTextSelected.SelectedText}</size>");
+
+            _text.GetArrayElementAtIndex(_index).stringValue = lastTextSelected.text;
+
+            Debug.Log(_text.GetArrayElementAtIndex(_index).stringValue);
+
+            _text.serializedObject.ApplyModifiedProperties();
+            dialogueObject.ApplyModifiedProperties();
+            serializedObject.ApplyModifiedProperties();
+        }
+    }
+
+    public void ApplyColorRichText(Color _c, SerializedProperty _text, int _index)
     {
         if (!string.IsNullOrEmpty(lastTextSelected.text) && lastTextSelected.hasSelection)
         {
@@ -239,12 +269,47 @@ public class CE_WSB_Dialogue : Editor
 
             Debug.Log(_text.GetArrayElementAtIndex(_index).stringValue);
 
+            _text.serializedObject.ApplyModifiedProperties();
             dialogueObject.ApplyModifiedProperties();
             serializedObject.ApplyModifiedProperties();
         }
     }
 
     void DrawLine(Color _c) => EditorGUI.DrawRect(EditorGUILayout.GetControlRect(false, 2), _c);
+}
+public class SizePopup : EditorWindow
+{
+    int textSize = 36;
+    static SerializedProperty property = null;
+    static int index = 0;
+    static CE_WSB_Dialogue ce = null;
+
+    static SizePopup popup = null;
+
+    public static void Init(CE_WSB_Dialogue _ce, SerializedProperty _text, int _index)
+    {
+        if (popup) popup.Close();
+        property = _text;
+        index = _index;
+        ce = _ce;
+        popup = ScriptableObject.CreateInstance<SizePopup>();
+        Vector2 _pos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);
+        popup.position = new Rect(_pos.x, _pos.y, 100, 75);
+        popup.ShowPopup();
+    }
+
+    private void OnGUI()
+    {
+        textSize = EditorGUILayout.IntField(textSize);
+        GUILayout.Space(5);
+        if (GUILayout.Button("Apply"))
+        {
+            ce.ApplyFontSizeRichText(textSize, property, index);
+            popup.Close();
+        }
+        if (GUILayout.Button("Close"))
+            popup.Close();
+    }
 }
 
 public class ColorPopup : EditorWindow
@@ -256,7 +321,7 @@ public class ColorPopup : EditorWindow
 
     static ColorPopup popup = null;
 
-    public static void Init(CE_WSB_Dialogue _ce, ref SerializedProperty _text, int _index)
+    public static void Init(CE_WSB_Dialogue _ce, SerializedProperty _text, int _index)
     {
         if (popup) popup.Close();
         property = _text;
@@ -272,9 +337,9 @@ public class ColorPopup : EditorWindow
     {
         textColor = EditorGUILayout.ColorField(textColor);
         GUILayout.Space(5);
-        if(GUILayout.Button("Apply"))
+        if (GUILayout.Button("Apply"))
         {
-            ce.ApplyColorMarkDown(textColor,ref property, index);
+            ce.ApplyColorRichText(textColor, property, index);
             popup.Close();
         }
         if (GUILayout.Button("Close"))

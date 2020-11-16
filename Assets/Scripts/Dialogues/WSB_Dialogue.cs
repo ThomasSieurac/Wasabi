@@ -80,12 +80,25 @@ public class WSB_Dialogue : MonoBehaviour
             }
             else
                 currentChar++;
-
+            
             shownLine.maxVisibleCharacters = currentChar;
             yield return new WaitForFixedUpdate();
         }
         NullPlay();
     }
+
+    /*
+     * List<int> charWobbleIndex
+     *      --> PlayLine if (shownLine.text[currentChar] == '<' && shownLine.Contains("wobble>", currentChar)
+     *                      add shownLine.text[currentChar] while(shownLine.text[currentChar] != '<') currentChar++
+     * 
+     * IEnumerator Wobble()
+     * {
+     *      pour chaque char dans le <line-height=value>
+     *          pingpong value entre min & max avec décalage du précédent
+     * }
+     * 
+     */
 
     void EndLine()
     {

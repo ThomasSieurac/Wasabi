@@ -304,7 +304,7 @@ PrefabInstance:
     - target: {fileID: 3686811727547381192, guid: cd9547c339d96f345aa93e43f41f6df2,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 17
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3686811727547381192, guid: cd9547c339d96f345aa93e43f41f6df2,
         type: 3}
