@@ -65,9 +65,22 @@ public class WSB_Dialogue : MonoBehaviour
 
     IEnumerator PlayLine()
     {
-        while(shownLine.text.Length > currentChar)
+        while (shownLine.text.Length > currentChar)
         {
-            currentChar++;
+            if (shownLine.text[currentChar] == '<')
+            {
+                int _i = currentChar;
+                while(true)
+                {
+                    if (shownLine.text[_i] == '>')
+                        break;
+                    _i++;
+                }
+                currentChar += _i - currentChar;
+            }
+            else
+                currentChar++;
+
             shownLine.maxVisibleCharacters = currentChar;
             yield return new WaitForFixedUpdate();
         }

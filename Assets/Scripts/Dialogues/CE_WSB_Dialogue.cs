@@ -10,14 +10,16 @@ public class CE_WSB_Dialogue : Editor
     bool ceActive = true;
 
     SerializedProperty dialogues;
+    SerializedObject dialogueObject;
+    GUIStyle deleteStyle;
 
-
+    Color defaultColor;
+    TextEditor lastTextSelected = null;
 
 
     private void OnEnable()
     {
         dialogues = serializedObject.FindProperty("Dialogues");
-        //dialogue = (WSB_Dialogue)target;
     }
 
     public override void OnInspectorGUI()
@@ -29,13 +31,14 @@ public class CE_WSB_Dialogue : Editor
             base.OnInspectorGUI();
             return;
         }
+
         serializedObject.Update();
 
-        GUIStyle _deleteStyle = new GUIStyle(EditorStyles.miniButton);
-        _deleteStyle.fontStyle = FontStyle.Bold;
-        _deleteStyle.normal.textColor = Color.white;
+        deleteStyle = new GUIStyle(EditorStyles.miniButton);
+        deleteStyle.fontStyle = FontStyle.Bold;
+        deleteStyle.normal.textColor = Color.white;
 
-        Color _defaultColor = GUI.backgroundColor;
+        defaultColor = GUI.backgroundColor;
 
         EditorGUILayout.Space();
 
@@ -48,6 +51,18 @@ public class CE_WSB_Dialogue : Editor
 
         EditorGUILayout.Space();
 
+        ShowDialogues();
+
+        EditorGUILayout.Space();
+
+        DrawLine(new Color(.7f, .7f, .7f, 1));
+
+        serializedObject.ApplyModifiedProperties();
+
+    }
+
+    void ShowDialogues()
+    {
         for (int i = 0; i < dialogues.arraySize; i++)
         {
             DrawLine(new Color(.7f, .7f, .7f, 1));
@@ -60,7 +75,7 @@ public class CE_WSB_Dialogue : Editor
 
             GUI.backgroundColor = new Color(2, 0, 0, 1);
 
-            if (GUILayout.Button("Delete this dialogue", _deleteStyle, GUILayout.Width(150)))
+            if (GUILayout.Button("Delete this dialogue", deleteStyle, GUILayout.Width(150)))
             {
                 if (_dialogue.objectReferenceValue != null)
                     dialogues.DeleteArrayElementAtIndex(i);
@@ -68,7 +83,7 @@ public class CE_WSB_Dialogue : Editor
                 break;
             }
 
-            GUI.backgroundColor = _defaultColor;
+            GUI.backgroundColor = defaultColor;
 
             EditorGUILayout.Space();
 
@@ -82,22 +97,22 @@ public class CE_WSB_Dialogue : Editor
             if (_dialogue.objectReferenceValue == null)
                 continue;
 
-            SerializedObject _dialogueObject = new SerializedObject(_dialogue.objectReferenceValue);
+            dialogueObject = new SerializedObject(_dialogue.objectReferenceValue);
 
-            _dialogueObject.Update();
+            dialogueObject.Update();
 
             EditorGUILayout.BeginHorizontal();
 
-            EditorGUILayout.PropertyField(_dialogueObject.FindProperty("IsImageRight"));
-            EditorGUILayout.PropertyField(_dialogueObject.FindProperty("Image"), GUIContent.none, GUILayout.MaxWidth(200));
+            EditorGUILayout.PropertyField(dialogueObject.FindProperty("IsImageRight"));
+            EditorGUILayout.PropertyField(dialogueObject.FindProperty("Image"), GUIContent.none, GUILayout.MaxWidth(200));
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space();
 
-            EditorGUILayout.PropertyField(_dialogueObject.FindProperty("Character"), GUIContent.none, GUILayout.Width(100));
+            EditorGUILayout.PropertyField(dialogueObject.FindProperty("Character"), GUIContent.none, GUILayout.Width(100));
             EditorGUILayout.Space();
 
-            SerializedProperty _showText = _dialogueObject.FindProperty("ShowTexts");
+            SerializedProperty _showText = dialogueObject.FindProperty("ShowTexts");
 
             _showText.boolValue = EditorGUILayout.Foldout(_showText.boolValue, "Show texts", true);
 
@@ -105,7 +120,7 @@ public class CE_WSB_Dialogue : Editor
             {
                 EditorGUILayout.Space();
 
-                SerializedProperty _text = _dialogueObject.FindProperty("Texts");
+                SerializedProperty _text = dialogueObject.FindProperty("Texts");
 
                 if (GUILayout.Button("Add new text"))
                 {
@@ -115,46 +130,154 @@ public class CE_WSB_Dialogue : Editor
 
                 EditorGUILayout.Space();
 
-                for (int j = 0; j < _text.arraySize; j++)
-                {
-                    Rect _rect = EditorGUILayout.GetControlRect();
-
-                    EditorGUI.DrawRect(new Rect(_rect.x + _rect.width/4, _rect.y, _rect.width / 2, 2), Color.gray);
-
-                    EditorGUILayout.Space();
-
-                    _text.GetArrayElementAtIndex(j).stringValue = GUILayout.TextArea(_text.GetArrayElementAtIndex(j).stringValue);
-
-                    EditorGUILayout.Space();
-
-                    GUI.backgroundColor = new Color(2,0,0,1);
-
-                    if (GUILayout.Button("Delete this text", _deleteStyle, GUILayout.Width(150)))
-                    {
-                        _text.DeleteArrayElementAtIndex(j);
-                        break;
-                    }
-
-                    GUI.backgroundColor = _defaultColor;
-
-                    EditorGUILayout.Space();
-                }
+                ShowText(_text);
 
             }
-            
+
             EditorGUILayout.Space();
 
-            _dialogueObject.ApplyModifiedProperties();
+            dialogueObject.ApplyModifiedProperties();
 
         }
 
-        EditorGUILayout.Space();
+    }
 
-        DrawLine(new Color(.7f, .7f, .7f, 1));
+    void ShowText(SerializedProperty _text)
+    {
+        for (int j = 0; j < _text.arraySize; j++)
+        {
+            Rect _rect = EditorGUILayout.GetControlRect();
 
-        serializedObject.ApplyModifiedProperties();
+            EditorGUI.DrawRect(new Rect(_rect.x + _rect.width / 4, _rect.y, _rect.width / 2, 2), Color.gray);
 
+            EditorGUILayout.Space();
+
+            MarkdownText(_text, j);
+
+            string _s = _text.GetArrayElementAtIndex(j).stringValue;
+
+            /*
+             * 
+             * choper le string
+             * 
+             * afficher le string sans les markdown
+             * 
+             * enregistrer le string avec les markdown
+             * 
+             */
+
+            _text.GetArrayElementAtIndex(j).stringValue = GUILayout.TextArea(_s);
+
+            EditorGUILayout.Space();
+
+            GUI.backgroundColor = new Color(2, 0, 0, 1);
+
+            if (GUILayout.Button("Delete this text", deleteStyle, GUILayout.Width(150)))
+            {
+                _text.DeleteArrayElementAtIndex(j);
+                break;
+            }
+
+            GUI.backgroundColor = defaultColor;
+
+            EditorGUILayout.Space();
+        }
+    }
+
+    void MarkdownText(SerializedProperty _text, int _index)
+    {
+        EditorGUILayout.BeginHorizontal();
+
+        lastTextSelected = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
+
+        if (GUILayout.Button("Bold"))
+        {
+            if (!string.IsNullOrEmpty(lastTextSelected.text) && lastTextSelected.hasSelection)
+            {
+                lastTextSelected.ReplaceSelection($"<b>{lastTextSelected.SelectedText}</b>");
+                _text.GetArrayElementAtIndex(_index).stringValue = lastTextSelected.text;
+            }
+        }
+
+        if (GUILayout.Button("Underline"))
+        {
+            if (!string.IsNullOrEmpty(lastTextSelected.text) && lastTextSelected.hasSelection)
+            {
+                lastTextSelected.ReplaceSelection($"<u>{lastTextSelected.SelectedText}</u>");
+                _text.GetArrayElementAtIndex(_index).stringValue = lastTextSelected.text;
+            }
+        }
+
+        if (GUILayout.Button("Italic"))
+        {
+            if (!string.IsNullOrEmpty(lastTextSelected.text) && lastTextSelected.hasSelection)
+            {
+                lastTextSelected.ReplaceSelection($"<i>{lastTextSelected.SelectedText}</i>");
+                _text.GetArrayElementAtIndex(_index).stringValue = lastTextSelected.text;
+            }
+        }
+
+        if (GUILayout.Button("Color"))
+        {
+            ColorPopup.Init(this, ref _text, _index);
+        }
+
+
+        EditorGUILayout.EndHorizontal();
+    }
+
+    public void ApplyColorMarkDown(Color _c, ref SerializedProperty _text, int _index)
+    {
+        if (!string.IsNullOrEmpty(lastTextSelected.text) && lastTextSelected.hasSelection)
+        {
+            serializedObject.Update();
+            dialogueObject.Update();
+
+            lastTextSelected.ReplaceSelection($"<color=#{ColorUtility.ToHtmlStringRGBA(_c)}>{lastTextSelected.SelectedText}</color>");
+
+            _text.GetArrayElementAtIndex(_index).stringValue = lastTextSelected.text;
+
+            Debug.Log(_text.GetArrayElementAtIndex(_index).stringValue);
+
+            dialogueObject.ApplyModifiedProperties();
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 
     void DrawLine(Color _c) => EditorGUI.DrawRect(EditorGUILayout.GetControlRect(false, 2), _c);
+}
+
+public class ColorPopup : EditorWindow
+{
+    Color textColor = Color.white;
+    static SerializedProperty property = null;
+    static int index = 0;
+    static CE_WSB_Dialogue ce = null;
+
+    static ColorPopup popup = null;
+
+    public static void Init(CE_WSB_Dialogue _ce, ref SerializedProperty _text, int _index)
+    {
+        if (popup) popup.Close();
+        property = _text;
+        index = _index;
+        ce = _ce;
+        popup = ScriptableObject.CreateInstance<ColorPopup>();
+        Vector2 _pos = GUIUtility.GUIToScreenPoint(Event.current.mousePosition);
+        popup.position = new Rect(_pos.x, _pos.y, 100, 75);
+        popup.ShowPopup();
+    }
+
+    private void OnGUI()
+    {
+        textColor = EditorGUILayout.ColorField(textColor);
+        GUILayout.Space(5);
+        if(GUILayout.Button("Apply"))
+        {
+            ce.ApplyColorMarkDown(textColor,ref property, index);
+            popup.Close();
+        }
+        if (GUILayout.Button("Close"))
+            popup.Close();
+    }
 }
