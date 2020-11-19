@@ -140,7 +140,7 @@ public class WSB_Player : MonoBehaviour
         for (int i = 0; i < _amount; i++)
         {
             ColliderDistance2D _distance = Collider.Distance(overlapBuffer[i]);
-            if (_distance.isOverlapped)
+            if (_distance.isOverlapped && (overlapBuffer[i].transform.tag != "OneWay" || _distance.normal.y == -1))
                 Physic.position += _distance.normal * _distance.distance;
         }
     }
@@ -303,9 +303,8 @@ public class WSB_Player : MonoBehaviour
         {
             if (castBuffer[i].transform.tag == "OneWay" && castBuffer[i].normal.y == -1)
             {
-                if (i > 0)
-                    _distance = castBuffer[0].distance;
-                return i;
+                _amount = i;
+                break;
             }
         }
 
