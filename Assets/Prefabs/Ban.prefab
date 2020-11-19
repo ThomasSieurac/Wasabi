@@ -1838,8 +1838,8 @@ GameObject:
   - component: {fileID: 8159676682396607039}
   - component: {fileID: 2507554120477095248}
   - component: {fileID: 5243651700348693005}
+  - component: {fileID: 1589317888}
   - component: {fileID: 4313313062785410430}
-  - component: {fileID: 5895085139516177605}
   - component: {fileID: 4212908729726223967}
   m_Layer: 0
   m_Name: Ban
@@ -1938,8 +1938,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7109682045921185286, guid: 2aa4839afeeaf524491f4427f024ea6c,
-          type: 3}
+      - m_Target: {fileID: 0}
         m_MethodName: Move
         m_Mode: 0
         m_Arguments:
@@ -2069,29 +2068,8 @@ MonoBehaviour:
   m_DefaultActionMap: Controler
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!50 &4313313062785410430
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4212908729726223966}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 5
---- !u!70 &5895085139516177605
-CapsuleCollider2D:
+--- !u!61 &1589317888
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2104,8 +2082,39 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
   m_Size: {x: 1, y: 2}
-  m_Direction: 0
+  m_EdgeRadius: 0
+--- !u!50 &4313313062785410430
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4212908729726223966}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!114 &4212908729726223967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2118,6 +2127,81 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aa93e43e4e1e094b8d95631fcff2656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  contact:
+    useTriggers: 0
+    useLayerMask: 0
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  force: {x: 0, y: 0}
+  instantForce: {x: 0, y: 0}
+  movement: {x: 0, y: 0}
+  jumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 11.037736
+      outSlope: 11.037736
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.042735044
+    - serializedVersion: 3
+      time: 0.75
+      value: 3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 12.088945
+      outSlope: 12.088945
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.029914536
+    - serializedVersion: 3
+      time: 0.3
+      value: 5
+      inSlope: 0.27767986
+      outSlope: 0.27767986
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11324773
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speed: 5
+  speedCoef: 1
+  deceleration: 10
+  jumpDelay: 0.2
+  jumpBufferDelay: 0.2
+  groundNormal: {x: 0, y: 0}
+  groundMin: 0.5
+  maxHeightClimb: 0.5
+  isGrounded: 0
+  isJumping: 0
   maxEarthCharges: 10
   maxShrinkCharges: 10
   maxWindCharges: 10

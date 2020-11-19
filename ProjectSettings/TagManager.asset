@@ -13,6 +13,7 @@ TagManager:
   - Ladder
   - Carnivore
   - Trampoline
+  - OneWay
   layers:
   - Default
   - TransparentFX

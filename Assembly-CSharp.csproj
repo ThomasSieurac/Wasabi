@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\Plants\WSB_Ladder.cs" />
     <Compile Include="Assets\Scripts\Plants\WSB_Pot.cs" />
     <Compile Include="Assets\Scripts\Plants\WSB_Trampoline.cs" />
+    <Compile Include="Assets\Scripts\Player\SO_ControllerValues.cs" />
     <Compile Include="Assets\Scripts\Player\WSB_Ban.cs" />
     <Compile Include="Assets\Scripts\Player\WSB_Lux.cs" />
     <Compile Include="Assets\Scripts\Player\WSB_Player.cs" />

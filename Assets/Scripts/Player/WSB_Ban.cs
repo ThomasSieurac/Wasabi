@@ -7,7 +7,7 @@ using TMPro;
 
 public class WSB_Ban : WSB_Player
 {
-
+    [Header("Ban")]
     #region Spell Charges
     [SerializeField] int maxEarthCharges = 10;
     [SerializeField] int maxShrinkCharges = 10;
@@ -60,7 +60,7 @@ public class WSB_Ban : WSB_Player
     [SerializeField] List<TMP_Text> lightTextCharges = new List<TMP_Text>();
 
 
-    void Start()
+    private void Start()
     {
         windCharges = maxWindCharges;
         earthCharges = maxEarthCharges;

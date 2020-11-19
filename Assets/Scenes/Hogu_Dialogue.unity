@@ -354,7 +354,7 @@ PrefabInstance:
     - target: {fileID: 3686811728155323162, guid: cd9547c339d96f345aa93e43f41f6df2,
         type: 3}
       propertyPath: Dialogues.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3686811728155323162, guid: cd9547c339d96f345aa93e43f41f6df2,
         type: 3}
@@ -362,11 +362,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 84fa95c510d80c0428a0a2fee7153451,
         type: 2}
-    - target: {fileID: 3686811728155323162, guid: cd9547c339d96f345aa93e43f41f6df2,
-        type: 3}
-      propertyPath: Dialogues.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 3686811728155323163, guid: cd9547c339d96f345aa93e43f41f6df2,
         type: 3}
       propertyPath: m_Name

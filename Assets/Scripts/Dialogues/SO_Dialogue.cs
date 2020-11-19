@@ -10,6 +10,7 @@ public class SO_Dialogue : ScriptableObject
     public Character Character = Character.Lux;
     public List<string> Texts;
     public bool ShowTexts = false;
+    public List<bool> ShowPreview;
     public int DefaultSize = 36;
 
     public Sprite GetSprite() => Image;

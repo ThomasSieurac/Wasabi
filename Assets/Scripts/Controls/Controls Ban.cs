@@ -158,6 +158,14 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""20153402-df35-4ba1-aea8-ccb957748821"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -259,6 +267,17 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""action"": ""Use Spells"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""41a8fc66-3f6a-4b80-b2be-5bcbbcdbf6eb"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -276,6 +295,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         m_Controler_RotateSpells = m_Controler.FindAction("Rotate Spells", throwIfNotFound: true);
         m_Controler_UseSpells = m_Controler.FindAction("Use Spells", throwIfNotFound: true);
         m_Controler_ShowSpells = m_Controler.FindAction("Show Spells", throwIfNotFound: true);
+        m_Controler_Jump = m_Controler.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -378,6 +398,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
     private readonly InputAction m_Controler_RotateSpells;
     private readonly InputAction m_Controler_UseSpells;
     private readonly InputAction m_Controler_ShowSpells;
+    private readonly InputAction m_Controler_Jump;
     public struct ControlerActions
     {
         private @ControlsBan m_Wrapper;
@@ -386,6 +407,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         public InputAction @RotateSpells => m_Wrapper.m_Controler_RotateSpells;
         public InputAction @UseSpells => m_Wrapper.m_Controler_UseSpells;
         public InputAction @ShowSpells => m_Wrapper.m_Controler_ShowSpells;
+        public InputAction @Jump => m_Wrapper.m_Controler_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Controler; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -407,6 +429,9 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                 @ShowSpells.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnShowSpells;
                 @ShowSpells.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnShowSpells;
                 @ShowSpells.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnShowSpells;
+                @Jump.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnJump;
             }
             m_Wrapper.m_ControlerActionsCallbackInterface = instance;
             if (instance != null)
@@ -423,6 +448,9 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                 @ShowSpells.started += instance.OnShowSpells;
                 @ShowSpells.performed += instance.OnShowSpells;
                 @ShowSpells.canceled += instance.OnShowSpells;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
         }
     }
@@ -439,5 +467,6 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         void OnRotateSpells(InputAction.CallbackContext context);
         void OnUseSpells(InputAction.CallbackContext context);
         void OnShowSpells(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }

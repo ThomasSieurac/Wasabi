@@ -33,6 +33,7 @@ public class CE_WSB_Dialogue : Editor
         }
 
         serializedObject.Update();
+        Undo.RecordObjects(serializedObject.targetObjects, "Dialog Change");
 
         deleteStyle = new GUIStyle(EditorStyles.miniButton);
         deleteStyle.fontStyle = FontStyle.Bold;
@@ -121,10 +122,27 @@ public class CE_WSB_Dialogue : Editor
                 EditorGUILayout.Space();
 
                 SerializedProperty _text = dialogueObject.FindProperty("Texts");
+                SerializedProperty _showTextPreview = dialogueObject.FindProperty("ShowPreview");
+
+                if(_showTextPreview.arraySize != _text.arraySize)
+                {
+                    for (int j = 0; j < _text.arraySize; j++)
+                    {
+                        if (_showTextPreview.arraySize > j) 
+                            continue;
+                        else
+                        {
+                            _showTextPreview.InsertArrayElementAtIndex(j);
+                            _showTextPreview.GetArrayElementAtIndex(j).boolValue = false;
+                        }
+                    }
+                }
 
                 if (GUILayout.Button("Add new text"))
                 {
                     _text.InsertArrayElementAtIndex(_text.arraySize);
+                    _showTextPreview.InsertArrayElementAtIndex(_text.arraySize);
+                    _showTextPreview.GetArrayElementAtIndex(_text.arraySize - 1).boolValue = false;
                     _text.GetArrayElementAtIndex(_text.arraySize - 1).stringValue = "";
                 }
 
@@ -166,14 +184,23 @@ public class CE_WSB_Dialogue : Editor
 
             _text.GetArrayElementAtIndex(j).stringValue = GUILayout.TextArea(_text.GetArrayElementAtIndex(j).stringValue);
 
+            EditorGUILayout.Space();
+
             RichTextButtons(_text, j);
 
-            EditorGUILayout.LabelField("Preview : ");
+            dialogueObject.FindProperty("ShowPreview").GetArrayElementAtIndex(j).boolValue = EditorGUILayout.Foldout(dialogueObject.FindProperty("ShowPreview").GetArrayElementAtIndex(j).boolValue, "Toggle preview", true);
 
-            GUIStyle _richTextStyle = new GUIStyle(GUI.skin.label);
-            _richTextStyle.richText = true;
+            EditorGUILayout.Space();
 
-            EditorGUILayout.TextArea(_text.GetArrayElementAtIndex(j).stringValue, _richTextStyle);
+            if (dialogueObject.FindProperty("ShowPreview").GetArrayElementAtIndex(j).boolValue)
+            {
+
+                GUIStyle _richTextStyle = new GUIStyle(GUI.skin.label);
+                _richTextStyle.richText = true;
+
+                EditorGUILayout.TextArea(_text.GetArrayElementAtIndex(j).stringValue, _richTextStyle);
+
+            }
 
 
             EditorGUILayout.Space();
@@ -248,8 +275,6 @@ public class CE_WSB_Dialogue : Editor
 
             _text.GetArrayElementAtIndex(_index).stringValue = lastTextSelected.text;
 
-            Debug.Log(_text.GetArrayElementAtIndex(_index).stringValue);
-
             _text.serializedObject.ApplyModifiedProperties();
             dialogueObject.ApplyModifiedProperties();
             serializedObject.ApplyModifiedProperties();
@@ -262,6 +287,9 @@ public class CE_WSB_Dialogue : Editor
         {
             serializedObject.Update();
             dialogueObject.Update();
+            Undo.RecordObjects(serializedObject.targetObjects, "Main object");
+            Undo.RecordObjects(dialogueObject.targetObjects, "Dialog object");
+            Undo.RecordObjects(_text.serializedObject.targetObjects, "Text object");
 
             lastTextSelected.ReplaceSelection($"<color=#{ColorUtility.ToHtmlStringRGBA(_c)}>{lastTextSelected.SelectedText}</color>");
 
@@ -340,9 +368,9 @@ public class ColorPopup : EditorWindow
         if (GUILayout.Button("Apply"))
         {
             ce.ApplyColorRichText(textColor, property, index);
-            popup.Close();
+            Close();
         }
         if (GUILayout.Button("Close"))
-            popup.Close();
+            Close();
     }
 }

@@ -16,7 +16,8 @@ MonoBehaviour:
   IsImageRight: 1
   Character: 0
   Texts:
-  - "Bonjour \xE0 tous"
+  - "Bonjour \xE0 <i><b><color=#FF0000FF><u>tous</u></color></b></i>"
   - "Je m'appelle Lux et voici mon fr\xE8re Ban."
   ShowTexts: 1
+  ShowPreview: 0100
   DefaultSize: 36
