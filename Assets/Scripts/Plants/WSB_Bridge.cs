@@ -9,7 +9,7 @@ public class WSB_Bridge : MonoBehaviour
     [SerializeField] LayerMask stopLayer = 0;
     [SerializeField] BoxCollider2D bridgeCollider = null;
 
-    //bool _debugright = true;
+    [SerializeField] bool _debugright = true;
 
     private void Start()
     {
@@ -19,7 +19,7 @@ public class WSB_Bridge : MonoBehaviour
             Debug.LogError($"Erreur, component BoxCollider2D manquant sur {this.name}");
             Destroy(this);
         }
-        //StartCoroutine(DeployBridge(_debugright));
+        StartCoroutine(DeployBridge(_debugright));
     }
 
     public IEnumerator DeployBridge(bool _right)

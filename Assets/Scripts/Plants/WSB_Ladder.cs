@@ -20,9 +20,21 @@ public class WSB_Ladder : MonoBehaviour
         StartCoroutine(DeployLadder());
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<WSB_Player>())
+            collision.GetComponent<WSB_Player>().CanClimb(true);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.GetComponent<WSB_Player>())
+            collision.GetComponent<WSB_Player>().CanClimb(false);
+    }
+
     IEnumerator DeployLadder()
     {
-        while(true)
+        while (true)
         {
             yield return new WaitForEndOfFrame();
 

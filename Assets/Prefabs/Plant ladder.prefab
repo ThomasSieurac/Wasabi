@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxLength: 10
-  growSpeed: 5
+  growSpeed: 12
   stopLayer:
     serializedVersion: 2
     m_Bits: 4096

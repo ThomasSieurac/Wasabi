@@ -131,7 +131,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""4aa7c317-4985-4cb2-b76e-49531872e96e"",
-                    ""expectedControlType"": ""Axis"",
+                    ""expectedControlType"": ""Stick"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
@@ -214,9 +214,9 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""1D Axis"",
+                    ""name"": ""2D Vector"",
                     ""id"": ""ed58794d-91ac-42a6-91e1-ed94d9b108ea"",
-                    ""path"": ""1DAxis"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -225,8 +225,30 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
+                    ""name"": ""Up"",
                     ""id"": ""ed174b74-d4d7-43b8-83cf-9aadb6db1003"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Down"",
+                    ""id"": ""14619996-cb61-4125-844d-8947a0534f1e"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Left"",
+                    ""id"": ""377359f0-f4bf-473a-a4c6-aaaff17ae4d8"",
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -236,8 +258,8 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""positive"",
-                    ""id"": ""14619996-cb61-4125-844d-8947a0534f1e"",
+                    ""name"": ""Right"",
+                    ""id"": ""e6171cf4-db61-414a-a65d-c430dea7ec72"",
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -282,7 +304,19 @@ public class @ControlsBan : IInputActionCollection, IDisposable
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Controller 1"",
+            ""bindingGroup"": ""Controller 1"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
@@ -455,6 +489,15 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         }
     }
     public ControlerActions @Controler => new ControlerActions(this);
+    private int m_Controller1SchemeIndex = -1;
+    public InputControlScheme Controller1Scheme
+    {
+        get
+        {
+            if (m_Controller1SchemeIndex == -1) m_Controller1SchemeIndex = asset.FindControlSchemeIndex("Controller 1");
+            return asset.controlSchemes[m_Controller1SchemeIndex];
+        }
+    }
     public interface IDebugActions
     {
         void OnMove(InputAction.CallbackContext context);

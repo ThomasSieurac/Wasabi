@@ -112,6 +112,10 @@ public class WSB_CameraManager : MonoBehaviour
         }
         ToggleSplit(!bigSplit.activeSelf);
         ToggleSplit(!bigSplit.activeSelf);
+
+        Vector3 _dir = ban.position - lux.position;
+        camBan.SetInstantCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, -MinCamZoom));
+        camLux.SetInstantCam(camBan.transform.position);
     }
 
     public void TriggerEntered(WSB_TriggerCam _trigger)
@@ -175,7 +179,7 @@ public class WSB_CameraManager : MonoBehaviour
     {
         Vector3 _camPos = camLux.transform.position;
         Vector3 _dir = ban.position - lux.position;
-        float _dist = Vector2.Distance(ban.position, lux.position);
+        float _dist = (Vector2.Distance(ban.position, lux.position)) / (camLux.Cam.fieldOfView / 90);
         float _zoom = 0;
         if(IsOrtho)
         {
@@ -213,10 +217,10 @@ public class WSB_CameraManager : MonoBehaviour
     }
     void SplitDynamic()
     {
-        float _dist = Vector2.Distance(ban.position, lux.position);
+        float _dist = (Vector2.Distance(ban.position, lux.position)) / (camLux.Cam.fieldOfView / 90);
         Vector3 _dir = lux.position - ban.position;
-        Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * MaxCamZoom), lux.position.y - (_dir.normalized.y * MinCamZoom), camLux.transform.position.z);
-        Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * MaxCamZoom), ban.position.y + (_dir.normalized.y * MinCamZoom), camBan.transform.position.z);
+        Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * (MaxCamZoom * (camLux.Cam.fieldOfView / 90))), lux.position.y - (_dir.normalized.y * (MinCamZoom * (camLux.Cam.fieldOfView / 90))), camLux.transform.position.z);
+        Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * (MaxCamZoom * (camLux.Cam.fieldOfView / 90))), ban.position.y + (_dir.normalized.y * (MinCamZoom * (camLux.Cam.fieldOfView / 90))), camBan.transform.position.z);
         if(_dist <= MaxCamZoom * 1.5f)
         {
             if (_dist < MaxCamZoom)

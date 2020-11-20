@@ -5174,6 +5174,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f69a53196015d3647936abf24f267e40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controllerValues: {fileID: 0}
+  force: {x: 0, y: 0}
+  instantForce: {x: 0, y: 0}
+  movement: {x: 0, y: 0}
+  speed: 5
+  groundNormal: {x: 0, y: 0}
+  isGrounded: 0
+  isJumping: 0
+  isClimbing: 0
+  canClimb: 0
+  jumpInput: 0
+  ignoredCollider: {fileID: 0}
   range: 5
   potLayer:
     serializedVersion: 2

@@ -9,6 +9,7 @@ public class SO_ControllerValues : ScriptableObject
     public float GroundMin = .5f;
     public float MaxHeightClimb = .5f;
     public float SpeedCoef = 1;
+    public float ClimbSpeed = 5;
     public float Deceleration = 10;
     public float JumpDelay = .2f;
     public float JumpBufferDelay = .2f;

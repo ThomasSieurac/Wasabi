@@ -30,10 +30,18 @@ public class WSB_Player : MonoBehaviour
     protected virtual void Update()
     {
         AddHorizontalMovement(xMovement);
+        if (Mathf.Abs(yMovement) > 0 && canClimb)
+        {
+            force.y = 0;
+            isClimbing = true;
+            AddVerticalMovement(yMovement * controllerValues.ClimbSpeed);
+        }
+        else if (!canClimb)
+            isClimbing = false;
 
         if (jumpInput)
         {
-            if (isGrounded || (Time.time - coyoteVar < controllerValues.JumpDelay))
+            if (isGrounded || isClimbing || (Time.time - coyoteVar < controllerValues.JumpDelay))
                 Jump();
             else
                 jumpBufferVar = Time.time;
@@ -58,7 +66,7 @@ public class WSB_Player : MonoBehaviour
                 AddVerticalMovement((jumpOriginHeight + controllerValues.JumpCurve.Evaluate(jumpVar) - Physic.position.y) / Time.deltaTime);
             }
         }
-        else
+        else if(!isClimbing)
             ApplyGravity();
 
         if ((force + instantForce + movement) != Vector2.zero)
@@ -82,11 +90,13 @@ public class WSB_Player : MonoBehaviour
     #region Input Reading
 
     float xMovement = 0;
+    float yMovement = 0;
 
     public void Move(InputAction.CallbackContext _context)
     {
-        if (_context.valueType != typeof(float)) return;
-        xMovement = _context.ReadValue<float>();
+        if (_context.valueType != typeof(Vector2)) return;
+        xMovement = _context.ReadValue<Vector2>().x;
+        yMovement = _context.ReadValue<Vector2>().y;
     }
 
     public void Jump(InputAction.CallbackContext _context)
@@ -104,6 +114,8 @@ public class WSB_Player : MonoBehaviour
 
     }
 
+    public void CanClimb(bool _s) => canClimb = _s;
+
     #endregion
 
     #region Controller
@@ -119,6 +131,8 @@ public class WSB_Player : MonoBehaviour
 
     [SerializeField] bool isGrounded = false;
     [SerializeField] bool isJumping = false;
+    [SerializeField] bool isClimbing = false;
+    [SerializeField] bool canClimb = false;
 
 
 
@@ -139,8 +153,10 @@ public class WSB_Player : MonoBehaviour
         int _amount = Collider.OverlapCollider(controllerValues.Contact, overlapBuffer);
         for (int i = 0; i < _amount; i++)
         {
+            if (overlapBuffer[i] == ignoredCollider)
+                continue;
             ColliderDistance2D _distance = Collider.Distance(overlapBuffer[i]);
-            if (_distance.isOverlapped && (overlapBuffer[i].transform.tag != "OneWay" || _distance.normal.y == -1))
+            if (_distance.isOverlapped && (!overlapBuffer[i].transform.GetComponent<PlatformEffector2D>() || _distance.normal.y == -1))
                 Physic.position += _distance.normal * _distance.distance;
         }
     }
@@ -214,7 +230,7 @@ public class WSB_Player : MonoBehaviour
 
         if(!_isGrounded)
         {
-            _isGrounded = CastCollider(Vector2.down * Physics2D.defaultContactOffset * 2, out RaycastHit2D _hit) && (_hit.normal.y > controllerValues.GroundMin);
+            _isGrounded = CastCollider(Vector2.down * Physics2D.defaultContactOffset * 2, out RaycastHit2D _hit) && (_hit.normal.y > controllerValues.GroundMin) && _hit.collider != ignoredCollider;
             groundNormal = _isGrounded ? _hit.normal : Vector2.up;
         }
 
@@ -288,24 +304,31 @@ public class WSB_Player : MonoBehaviour
 
     bool CastCollider(Vector2 _velocity, out RaycastHit2D _hit)
     {
-        bool _return = (Collider.Cast(_velocity, controllerValues.Contact, castBuffer, _velocity.magnitude) > 0) && (castBuffer[0].transform.tag != "OneWay" && castBuffer[0].normal.y != -1);
+        bool _return = (Collider.Cast(_velocity, controllerValues.Contact, castBuffer, _velocity.magnitude) > 0) && (!castBuffer[0].transform.GetComponent<PlatformEffector2D>() && castBuffer[0].normal.y != -1);
         _hit = castBuffer[0];
         return _return;
     }
 
+    [SerializeField] Collider2D ignoredCollider = null;
 
     int CastCollider(Vector2 _velocity, out float _distance)
     {
         _distance = _velocity.magnitude;
         int _amount = Collider.Cast(_velocity, controllerValues.Contact, castBuffer, _distance);
 
+        if (_amount == 0)
+            ignoredCollider = null;
+
         for (int i = 0; i < _amount; i++)
         {
-            if (castBuffer[i].transform.tag == "OneWay" && castBuffer[i].normal.y == -1)
+            if (castBuffer[i].transform.GetComponent<PlatformEffector2D>() && castBuffer[i].normal.y == -1 || castBuffer[i].transform.GetComponent<PlatformEffector2D>() && castBuffer[i] == ignoredCollider)
             {
+                ignoredCollider = castBuffer[i].collider;
                 _amount = i;
                 break;
             }
+            if (!castBuffer[i].transform.GetComponent<PlatformEffector2D>())
+                ignoredCollider = null;
         }
 
         if(_amount > 0)

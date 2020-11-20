@@ -61,6 +61,11 @@ public class WSB_Camera : MonoBehaviour
         moveCam = StartCoroutine(MoveCam(_pos, _needCallBack));
     }
 
+    public void SetInstantCam(Vector3 _pos)
+    {
+        transform.position = _pos;
+    }
+
     IEnumerator MoveCam(Vector2 _pos, float _zoom)
     {
         while (Vector2.Distance(transform.position, _pos) != 0 || Cam.orthographicSize != _zoom)
@@ -75,7 +80,10 @@ public class WSB_Camera : MonoBehaviour
     {
         while (Vector3.Distance(transform.position, _pos) != 0)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * (WSB_CameraManager.I.CamMoveSpeed));
+            transform.position = new Vector3(
+                Mathf.MoveTowards(transform.position.x, _pos.x, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
+                Mathf.MoveTowards(transform.position.y, _pos.y, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
+                Mathf.MoveTowards(transform.position.z, _pos.z, Time.deltaTime * WSB_CameraManager.I.CamZoomSpeed));
             yield return new WaitForFixedUpdate();
         }
     }
@@ -84,7 +92,11 @@ public class WSB_Camera : MonoBehaviour
     {
         while (Vector2.Distance(transform.position, _pos) != 0)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * (WSB_CameraManager.I.CamMoveSpeed));
+            transform.position = new Vector3(
+                Mathf.MoveTowards(transform.position.x, _pos.x, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
+                Mathf.MoveTowards(transform.position.y, _pos.y, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
+                Mathf.MoveTowards(transform.position.z, _pos.z, Time.deltaTime * WSB_CameraManager.I.CamZoomSpeed));
+                //Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * (WSB_CameraManager.I.CamMoveSpeed));
             yield return new WaitForFixedUpdate();
         }
         if (_needCallBack) WSB_CameraManager.I.SwitchCamType(CamType.Dynamic, transform.position);

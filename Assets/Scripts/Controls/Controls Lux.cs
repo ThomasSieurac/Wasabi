@@ -131,7 +131,15 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""4ef44be5-84e2-4270-a730-17964cb44cb7"",
-                    ""expectedControlType"": ""Axis"",
+                    ""expectedControlType"": ""Stick"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""6a06e1b1-3291-4b44-b6ec-cc495e88a976"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
@@ -228,9 +236,9 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""1D Axis"",
+                    ""name"": ""2D Vector"",
                     ""id"": ""e2a737ba-c65c-43a3-8f8d-2827830a8ea5"",
-                    ""path"": ""1DAxis"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -239,8 +247,30 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
+                    ""name"": ""Up"",
                     ""id"": ""5010432a-c8a7-4348-b1d2-2380fc3640b2"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Down"",
+                    ""id"": ""a51936cc-8907-4441-afc7-4483f3b42757"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Left"",
+                    ""id"": ""0289b497-0a0d-4169-aff3-c4b7b24f9426"",
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -250,8 +280,8 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""positive"",
-                    ""id"": ""a51936cc-8907-4441-afc7-4483f3b42757"",
+                    ""name"": ""Right"",
+                    ""id"": ""a4d9e1fc-8b98-4ce2-ba78-11cf6a9b420f"",
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -259,11 +289,34 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b431ffc3-efd0-4726-9769-e74eeb5f5679"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Controller 2"",
+            ""bindingGroup"": ""Controller 2"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
@@ -273,6 +326,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
         // Controler
         m_Controler = asset.FindActionMap("Controler", throwIfNotFound: true);
         m_Controler_Move = m_Controler.FindAction("Move", throwIfNotFound: true);
+        m_Controler_Jump = m_Controler.FindAction("Jump", throwIfNotFound: true);
         m_Controler_ShowSpells = m_Controler.FindAction("Show Spells", throwIfNotFound: true);
         m_Controler_UseSpells = m_Controler.FindAction("Use Spells", throwIfNotFound: true);
         m_Controler_RotateSpells = m_Controler.FindAction("Rotate Spells", throwIfNotFound: true);
@@ -375,6 +429,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Controler;
     private IControlerActions m_ControlerActionsCallbackInterface;
     private readonly InputAction m_Controler_Move;
+    private readonly InputAction m_Controler_Jump;
     private readonly InputAction m_Controler_ShowSpells;
     private readonly InputAction m_Controler_UseSpells;
     private readonly InputAction m_Controler_RotateSpells;
@@ -383,6 +438,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
         private @ControlsLux m_Wrapper;
         public ControlerActions(@ControlsLux wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Controler_Move;
+        public InputAction @Jump => m_Wrapper.m_Controler_Jump;
         public InputAction @ShowSpells => m_Wrapper.m_Controler_ShowSpells;
         public InputAction @UseSpells => m_Wrapper.m_Controler_UseSpells;
         public InputAction @RotateSpells => m_Wrapper.m_Controler_RotateSpells;
@@ -398,6 +454,9 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 @Move.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnMove;
+                @Jump.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnJump;
                 @ShowSpells.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnShowSpells;
                 @ShowSpells.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnShowSpells;
                 @ShowSpells.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnShowSpells;
@@ -414,6 +473,9 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
                 @ShowSpells.started += instance.OnShowSpells;
                 @ShowSpells.performed += instance.OnShowSpells;
                 @ShowSpells.canceled += instance.OnShowSpells;
@@ -427,6 +489,15 @@ public class @ControlsLux : IInputActionCollection, IDisposable
         }
     }
     public ControlerActions @Controler => new ControlerActions(this);
+    private int m_Controller2SchemeIndex = -1;
+    public InputControlScheme Controller2Scheme
+    {
+        get
+        {
+            if (m_Controller2SchemeIndex == -1) m_Controller2SchemeIndex = asset.FindControlSchemeIndex("Controller 2");
+            return asset.controlSchemes[m_Controller2SchemeIndex];
+        }
+    }
     public interface IDebugActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -436,6 +507,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
     public interface IControlerActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
         void OnShowSpells(InputAction.CallbackContext context);
         void OnUseSpells(InputAction.CallbackContext context);
         void OnRotateSpells(InputAction.CallbackContext context);
