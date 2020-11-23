@@ -73,6 +73,10 @@ public class WSB_Dialogue : MonoBehaviour
     {
         while (shownLine.text.Length > currentChar)
         {
+            while(WSB_PlayTestManager.Paused)
+            {
+                yield return new WaitForSeconds(.2f);
+            }
             if (shownLine.text[currentChar] == '<')
             {
                 int _i = currentChar;

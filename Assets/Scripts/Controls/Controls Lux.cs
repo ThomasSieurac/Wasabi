@@ -166,6 +166,22 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Analog"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""ada2943f-cabf-4376-925b-68523e117505"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Change Character"",
+                    ""type"": ""Button"",
+                    ""id"": ""478b4a37-52b5-4244-b57b-6af606e6996e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -300,6 +316,28 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""48e813cb-039a-468d-9f48-1905a8f319c2"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11c65281-043c-4483-b55f-645c91e549ba"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Character"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -330,6 +368,8 @@ public class @ControlsLux : IInputActionCollection, IDisposable
         m_Controler_ShowSpells = m_Controler.FindAction("Show Spells", throwIfNotFound: true);
         m_Controler_UseSpells = m_Controler.FindAction("Use Spells", throwIfNotFound: true);
         m_Controler_RotateSpells = m_Controler.FindAction("Rotate Spells", throwIfNotFound: true);
+        m_Controler_Pause = m_Controler.FindAction("Pause", throwIfNotFound: true);
+        m_Controler_ChangeCharacter = m_Controler.FindAction("Change Character", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -433,6 +473,8 @@ public class @ControlsLux : IInputActionCollection, IDisposable
     private readonly InputAction m_Controler_ShowSpells;
     private readonly InputAction m_Controler_UseSpells;
     private readonly InputAction m_Controler_RotateSpells;
+    private readonly InputAction m_Controler_Pause;
+    private readonly InputAction m_Controler_ChangeCharacter;
     public struct ControlerActions
     {
         private @ControlsLux m_Wrapper;
@@ -442,6 +484,8 @@ public class @ControlsLux : IInputActionCollection, IDisposable
         public InputAction @ShowSpells => m_Wrapper.m_Controler_ShowSpells;
         public InputAction @UseSpells => m_Wrapper.m_Controler_UseSpells;
         public InputAction @RotateSpells => m_Wrapper.m_Controler_RotateSpells;
+        public InputAction @Pause => m_Wrapper.m_Controler_Pause;
+        public InputAction @ChangeCharacter => m_Wrapper.m_Controler_ChangeCharacter;
         public InputActionMap Get() { return m_Wrapper.m_Controler; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -466,6 +510,12 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 @RotateSpells.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnRotateSpells;
                 @RotateSpells.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnRotateSpells;
                 @RotateSpells.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnRotateSpells;
+                @Pause.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnPause;
+                @ChangeCharacter.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnChangeCharacter;
+                @ChangeCharacter.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnChangeCharacter;
+                @ChangeCharacter.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnChangeCharacter;
             }
             m_Wrapper.m_ControlerActionsCallbackInterface = instance;
             if (instance != null)
@@ -485,6 +535,12 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 @RotateSpells.started += instance.OnRotateSpells;
                 @RotateSpells.performed += instance.OnRotateSpells;
                 @RotateSpells.canceled += instance.OnRotateSpells;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+                @ChangeCharacter.started += instance.OnChangeCharacter;
+                @ChangeCharacter.performed += instance.OnChangeCharacter;
+                @ChangeCharacter.canceled += instance.OnChangeCharacter;
             }
         }
     }
@@ -511,5 +567,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
         void OnShowSpells(InputAction.CallbackContext context);
         void OnUseSpells(InputAction.CallbackContext context);
         void OnRotateSpells(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnChangeCharacter(InputAction.CallbackContext context);
     }
 }

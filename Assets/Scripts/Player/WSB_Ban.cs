@@ -62,6 +62,9 @@ public class WSB_Ban : WSB_Player
 
     private void Start()
     {
+        WSB_PlayTestManager.OnUpdate += MyUpdate;
+        WSB_PlayTestManager.OnPause += BlowPause;
+        WSB_PlayTestManager.OnResume += BlowResume;
         windCharges = maxWindCharges;
         earthCharges = maxEarthCharges;
         lightCharges = maxLightCharges;
@@ -70,12 +73,19 @@ public class WSB_Ban : WSB_Player
 
     protected override void Update()
     {
+        //base.Update();
+    }
+    void MyUpdate()
+    {
         base.Update();
     }
 
 
+
     public override void UseSpell(string _s)
     {
+        if (WSB_PlayTestManager.Paused)
+            return;
         if (_s == "Earth" && earthCharges > 0) Earth();
         else if (_s == "Light" && lightCharges > 0) Light();
         else if (_s == "Shrink" && shrinkCharges > 0) Shrink();
@@ -167,6 +177,10 @@ public class WSB_Ban : WSB_Player
     {
         while(Vector2.Distance(_light.transform.position, _target) != 0)
         {
+            while (WSB_PlayTestManager.Paused)
+            {
+                yield return new WaitForSeconds(.2f);
+            }
             _light.transform.position = Vector2.MoveTowards(_light.transform.position, _target, Time.deltaTime * 2);
             yield return new WaitForEndOfFrame();
         }
@@ -207,11 +221,22 @@ public class WSB_Ban : WSB_Player
         else rechargeWind = null;
     }
 
+    List<Rigidbody2D> blownObjects = new List<Rigidbody2D>();
+    List<Vector3> objectsVelocity = new List<Vector3>();
+    List<float> objectsAngularVelocity = new List<float>();
+
+
     IEnumerator Blow()
     {
         Rigidbody2D _physics;
         while(true)
         {
+            while (WSB_PlayTestManager.Paused)
+            {
+                yield return new WaitForSeconds(.2f);
+            }
+
+            blownObjects.Clear();
             Collider2D[] _hits = Physics2D.OverlapCircleAll(transform.position, windRange, moveLayer);
             Collider2D _hit;
             for (int i = 0; i < _hits.Length; i++)
@@ -222,11 +247,36 @@ public class WSB_Ban : WSB_Player
                 if (_physics && _physics.mass < windMaxMass)
                 {
                     _physics.AddForce(Vector2.up * (windPower - (Vector2.Distance(transform.position, _hit.transform.position) / 2))); // jsp
+                    blownObjects.Add(_physics);
+                    objectsVelocity.Add(_physics.velocity);
+                    objectsAngularVelocity.Add(_physics.angularVelocity);
                 }
             }
             yield return new WaitForEndOfFrame();
         }
     }
+
+    void BlowPause()
+    {
+        StopSpell();
+        for (int i = 0; i < blownObjects.Count; i++)
+        {
+            blownObjects[i].velocity = Vector3.zero;
+            blownObjects[i].angularVelocity = 0;
+            blownObjects[i].isKinematic = true;
+        }
+    }
+
+    void BlowResume()
+    {
+        for (int i = 0; i < blownObjects.Count; i++)
+        {
+            blownObjects[i].velocity = objectsVelocity[i];
+            blownObjects[i].angularVelocity = objectsAngularVelocity[i];
+            blownObjects[i].isKinematic = false;
+        }
+    }
+
     #endregion
 
     void UpdateChargesUI(List<TMP_Text> _list, string _value)
@@ -237,5 +287,3 @@ public class WSB_Ban : WSB_Player
         }
     }
 }
-
-// 所有 <-- kanji "propriété"

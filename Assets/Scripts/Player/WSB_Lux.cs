@@ -53,6 +53,8 @@ public class WSB_Lux : WSB_Player
 
     void Start()
     {
+        WSB_PlayTestManager.OnUpdate += MyUpdate;
+        //WSB_PlayTestManager.OnUpdate += base.Update;
         bridgeCharges = maxBridgeCharges;
         trampolineCharges = maxTrampolineCharges;
         ladderCharges = maxLadderCharges;
@@ -62,18 +64,25 @@ public class WSB_Lux : WSB_Player
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, Vector2.right * range);
+        Gizmos.DrawRay(transform.position, (isRight ? Vector2.right : Vector2.left) * range);
     }
 
     protected override void Update()
     {
+        // leave empty
+    }
+
+    void MyUpdate()
+    {
         base.Update();
     }
 
-
     public override void UseSpell(string _s)
     {
-        RaycastHit2D _hit = Physics2D.Raycast(transform.position, -Vector2.right, range, potLayer);
+        if (WSB_PlayTestManager.Paused)
+            return;
+
+        RaycastHit2D _hit = Physics2D.Raycast(transform.position, isRight ? Vector2.right : Vector2.left, range, potLayer);
 
         if(_hit)
         {

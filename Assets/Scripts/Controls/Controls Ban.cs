@@ -166,6 +166,22 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Change Character"",
+                    ""type"": ""Button"",
+                    ""id"": ""28c2e8a8-433e-4f48-8a92-2f50cd17ff00"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e57bc8c-f9cf-4005-acf2-3b8db1a10c58"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -300,6 +316,28 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89defe78-c1f2-47f1-9661-9b473c3c61be"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""167f9dd5-7efc-4607-9372-5d945fa577d7"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Character"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -330,6 +368,8 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         m_Controler_UseSpells = m_Controler.FindAction("Use Spells", throwIfNotFound: true);
         m_Controler_ShowSpells = m_Controler.FindAction("Show Spells", throwIfNotFound: true);
         m_Controler_Jump = m_Controler.FindAction("Jump", throwIfNotFound: true);
+        m_Controler_ChangeCharacter = m_Controler.FindAction("Change Character", throwIfNotFound: true);
+        m_Controler_Pause = m_Controler.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -433,6 +473,8 @@ public class @ControlsBan : IInputActionCollection, IDisposable
     private readonly InputAction m_Controler_UseSpells;
     private readonly InputAction m_Controler_ShowSpells;
     private readonly InputAction m_Controler_Jump;
+    private readonly InputAction m_Controler_ChangeCharacter;
+    private readonly InputAction m_Controler_Pause;
     public struct ControlerActions
     {
         private @ControlsBan m_Wrapper;
@@ -442,6 +484,8 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         public InputAction @UseSpells => m_Wrapper.m_Controler_UseSpells;
         public InputAction @ShowSpells => m_Wrapper.m_Controler_ShowSpells;
         public InputAction @Jump => m_Wrapper.m_Controler_Jump;
+        public InputAction @ChangeCharacter => m_Wrapper.m_Controler_ChangeCharacter;
+        public InputAction @Pause => m_Wrapper.m_Controler_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Controler; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -466,6 +510,12 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnJump;
+                @ChangeCharacter.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnChangeCharacter;
+                @ChangeCharacter.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnChangeCharacter;
+                @ChangeCharacter.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnChangeCharacter;
+                @Pause.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_ControlerActionsCallbackInterface = instance;
             if (instance != null)
@@ -485,6 +535,12 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @ChangeCharacter.started += instance.OnChangeCharacter;
+                @ChangeCharacter.performed += instance.OnChangeCharacter;
+                @ChangeCharacter.canceled += instance.OnChangeCharacter;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -511,5 +567,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         void OnUseSpells(InputAction.CallbackContext context);
         void OnShowSpells(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnChangeCharacter(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

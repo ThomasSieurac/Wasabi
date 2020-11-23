@@ -82,10 +82,11 @@
     <Compile Include="Assets\Scripts\Player\WSB_Ban.cs" />
     <Compile Include="Assets\Scripts\Player\WSB_Lux.cs" />
     <Compile Include="Assets\Scripts\Player\WSB_Player.cs" />
+    <Compile Include="Assets\Scripts\Player\WSB_Spells.cs" />
     <Compile Include="Assets\Scripts\Switches\WSB_Button.cs" />
     <Compile Include="Assets\Scripts\Switches\WSB_Lever.cs" />
     <Compile Include="Assets\Scripts\Switches\WSB_PressurePlate.cs" />
-    <Compile Include="Assets\Scripts\WSB_Spells.cs" />
+    <Compile Include="Assets\Scripts\WSB_PlayTestManager.cs" />
     <Compile Include="Assets\Tests\Camera\Scripts\V1\MainCam.cs" />
     <Compile Include="Assets\Tests\Controls.cs" />
     <Compile Include="Assets\Tests\Script base\_Player.cs" />

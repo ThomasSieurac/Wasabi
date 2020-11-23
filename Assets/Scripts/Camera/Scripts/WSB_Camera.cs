@@ -30,6 +30,10 @@ public class WSB_Camera : MonoBehaviour
     {
         while (Cam.fieldOfView != _fov)
         {
+            while (WSB_PlayTestManager.Paused)
+            {
+                yield return new WaitForSeconds(.2f);
+            }
             Cam.fieldOfView = Mathf.MoveTowards(Cam.fieldOfView, _fov, Time.deltaTime * 2);
             yield return new WaitForEndOfFrame();
         }
@@ -70,8 +74,11 @@ public class WSB_Camera : MonoBehaviour
     {
         while (Vector2.Distance(transform.position, _pos) != 0 || Cam.orthographicSize != _zoom)
         {
+            while (WSB_PlayTestManager.Paused)
+            {
+                yield return new WaitForSeconds(.2f);
+            }
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(_pos.x, _pos.y, transform.position.z), Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed);
-            Cam.orthographicSize = Mathf.MoveTowards(Cam.orthographicSize, _zoom, Time.deltaTime * WSB_CameraManager.I.CamZoomSpeed);
             yield return new WaitForFixedUpdate();
         }
     }
@@ -80,6 +87,10 @@ public class WSB_Camera : MonoBehaviour
     {
         while (Vector3.Distance(transform.position, _pos) != 0)
         {
+            while (WSB_PlayTestManager.Paused)
+            {
+                yield return new WaitForSeconds(.2f);
+            }
             transform.position = new Vector3(
                 Mathf.MoveTowards(transform.position.x, _pos.x, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
                 Mathf.MoveTowards(transform.position.y, _pos.y, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
@@ -92,6 +103,10 @@ public class WSB_Camera : MonoBehaviour
     {
         while (Vector2.Distance(transform.position, _pos) != 0)
         {
+            while (WSB_PlayTestManager.Paused)
+            {
+                yield return new WaitForSeconds(.2f);
+            }
             transform.position = new Vector3(
                 Mathf.MoveTowards(transform.position.x, _pos.x, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
                 Mathf.MoveTowards(transform.position.y, _pos.y, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),

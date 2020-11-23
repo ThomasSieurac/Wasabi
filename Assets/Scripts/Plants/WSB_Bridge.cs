@@ -9,31 +9,33 @@ public class WSB_Bridge : MonoBehaviour
     [SerializeField] LayerMask stopLayer = 0;
     [SerializeField] BoxCollider2D bridgeCollider = null;
 
-    [SerializeField] bool _debugright = true;
 
     private void Start()
     {
-        if (!bridgeCollider) bridgeCollider = GetComponent<BoxCollider2D>();
+        if (!bridgeCollider) bridgeCollider = GetComponentInChildren<BoxCollider2D>();
         if (!bridgeCollider)
         {
-            Debug.LogError($"Erreur, component BoxCollider2D manquant sur {this.name}");
+            Debug.LogError($"Erreur, component BoxCollider2D manquant sur {this.name}'s children");
             Destroy(this);
         }
-        StartCoroutine(DeployBridge(_debugright));
     }
 
     public IEnumerator DeployBridge(bool _right)
     {
-        while (true)
+        Vector2 _pos = transform.position;
+        while ((Vector2)transform.localScale != new Vector2(maxLength, transform.localScale.y) && (Vector2)transform.position != new Vector2(_pos.x + (_right ? maxLength -1 : -maxLength -1) / 2, _pos.y))
         {
+            while (WSB_PlayTestManager.Paused)
+            {
+                yield return new WaitForSeconds(.2f);
+            }
+
             yield return new WaitForEndOfFrame();
 
-            bridgeCollider.size = Vector2.MoveTowards(bridgeCollider.size, new Vector2(maxLength, bridgeCollider.size.y), Time.deltaTime * growSpeed);
-            bridgeCollider.offset = Vector2.MoveTowards(bridgeCollider.offset, new Vector2(_right ? bridgeCollider.size.x / 2 : -bridgeCollider.size.x / 2, bridgeCollider.offset.y), Time.deltaTime * growSpeed);
+            transform.localScale = Vector2.MoveTowards(transform.localScale, new Vector2(maxLength, transform.localScale.y), Time.deltaTime * growSpeed);
+            transform.position = Vector2.MoveTowards(transform.position, new Vector2(_pos.x + (_right ? maxLength - 1 : -maxLength - 1) / 2 , _pos.y), Time.deltaTime * growSpeed);
 
             if (Physics2D.OverlapBox(new Vector2(transform.position.x + (_right ? bridgeCollider.size.x : -bridgeCollider.size.x), transform.position.y), Vector2.one, 0, stopLayer)) StopAllCoroutines();
-
-            if (bridgeCollider.bounds.size.y == 10) StopAllCoroutines();
         }
     }
 }

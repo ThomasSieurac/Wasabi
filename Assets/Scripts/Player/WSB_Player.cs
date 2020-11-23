@@ -6,9 +6,17 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(Collider2D))]
 public class WSB_Player : MonoBehaviour
 {
+    #region debug
+
+    [SerializeField] GameObject nose = null;
+
+    #endregion
+
+
     protected Rigidbody2D Physic = null;
     protected Collider2D Collider = null;
 
+    protected bool isRight = true;
 
     #region Unity
     private void Awake()
@@ -94,13 +102,22 @@ public class WSB_Player : MonoBehaviour
 
     public void Move(InputAction.CallbackContext _context)
     {
+        if (WSB_PlayTestManager.Paused)
+            return;
         if (_context.valueType != typeof(Vector2)) return;
         xMovement = _context.ReadValue<Vector2>().x;
+        if (xMovement < 0)
+            isRight = false;
+        if (xMovement > 0)
+            isRight = true;
+        nose.transform.localPosition = new Vector3((isRight ? .5f : -.5f), .5f);
         yMovement = _context.ReadValue<Vector2>().y;
     }
 
     public void Jump(InputAction.CallbackContext _context)
     {
+        if (WSB_PlayTestManager.Paused)
+            return;
         if (_context.valueType == typeof(float))
             jumpInput = _context.ReadValue<float>() == 1;
     }

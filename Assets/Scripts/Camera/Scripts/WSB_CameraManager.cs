@@ -73,6 +73,8 @@ public class WSB_CameraManager : MonoBehaviour
 
     public void LateUpdate()
     {
+        if (WSB_PlayTestManager.Paused)
+            return;
         if (!IsReady)
         {
             Debug.LogError("Erreur, paramètres manquant sur WSB_CameraManager");
