@@ -182,6 +182,14 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Use"",
+                    ""type"": ""Button"",
+                    ""id"": ""08a4d30e-202c-4ee0-ab60-e4d574772f14"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -338,6 +346,17 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""action"": ""Change Character"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""50feeb9b-0c9b-499f-87d6-56063eab57c8"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -370,6 +389,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         m_Controler_Jump = m_Controler.FindAction("Jump", throwIfNotFound: true);
         m_Controler_ChangeCharacter = m_Controler.FindAction("Change Character", throwIfNotFound: true);
         m_Controler_Pause = m_Controler.FindAction("Pause", throwIfNotFound: true);
+        m_Controler_Use = m_Controler.FindAction("Use", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -475,6 +495,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
     private readonly InputAction m_Controler_Jump;
     private readonly InputAction m_Controler_ChangeCharacter;
     private readonly InputAction m_Controler_Pause;
+    private readonly InputAction m_Controler_Use;
     public struct ControlerActions
     {
         private @ControlsBan m_Wrapper;
@@ -486,6 +507,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_Controler_Jump;
         public InputAction @ChangeCharacter => m_Wrapper.m_Controler_ChangeCharacter;
         public InputAction @Pause => m_Wrapper.m_Controler_Pause;
+        public InputAction @Use => m_Wrapper.m_Controler_Use;
         public InputActionMap Get() { return m_Wrapper.m_Controler; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -516,6 +538,9 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                 @Pause.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnPause;
+                @Use.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnUse;
+                @Use.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnUse;
+                @Use.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnUse;
             }
             m_Wrapper.m_ControlerActionsCallbackInterface = instance;
             if (instance != null)
@@ -541,6 +566,9 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @Use.started += instance.OnUse;
+                @Use.performed += instance.OnUse;
+                @Use.canceled += instance.OnUse;
             }
         }
     }
@@ -569,5 +597,6 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnChangeCharacter(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
     }
 }

@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class WSB_Trampoline : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] float force = 10;
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        
+        if (collider.GetComponent<Rigidbody2D>() && collider.transform.position.y > (transform.position.y / 2))
+        {
+            if (collider.GetComponent<WSB_Player>())
+                collider.GetComponent<WSB_Player>().TrampolineJump(Vector2.up * force);
+            else
+            {
+                collider.GetComponent<Rigidbody2D>().velocity = new Vector2(collider.GetComponent<Rigidbody2D>().velocity.x, 0);
+                collider.GetComponent<Rigidbody2D>().AddForce(Vector2.up * (force * 50));
+            }
+        }
     }
 }

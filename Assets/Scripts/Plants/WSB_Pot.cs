@@ -15,7 +15,8 @@ public class WSB_Pot : MonoBehaviour
 
     private void OnDestroy()
     {
-        //lux.RechargeSeed(grownSeed.tag);
+        if(GrownSeed)
+            WSB_Lux.I.RechargeSeed(GrownSeed.tag);
     }
 
 

@@ -354,13 +354,25 @@ PrefabInstance:
     - target: {fileID: 3686811728155323162, guid: cd9547c339d96f345aa93e43f41f6df2,
         type: 3}
       propertyPath: Dialogues.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3686811728155323162, guid: cd9547c339d96f345aa93e43f41f6df2,
         type: 3}
       propertyPath: Dialogues.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 84fa95c510d80c0428a0a2fee7153451,
+        type: 2}
+    - target: {fileID: 3686811728155323162, guid: cd9547c339d96f345aa93e43f41f6df2,
+        type: 3}
+      propertyPath: Dialogues.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 65c9ce744f8eb674db9a33e4f146b56d,
+        type: 2}
+    - target: {fileID: 3686811728155323162, guid: cd9547c339d96f345aa93e43f41f6df2,
+        type: 3}
+      propertyPath: Dialogues.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: eca7a54240ae9f847be76dec86640599,
         type: 2}
     - target: {fileID: 3686811728155323163, guid: cd9547c339d96f345aa93e43f41f6df2,
         type: 3}

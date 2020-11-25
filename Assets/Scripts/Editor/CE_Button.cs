@@ -10,6 +10,8 @@ public class CE_Button : Editor
 {
     SerializedProperty activateEvent;
     SerializedProperty duration;
+    SerializedProperty inputLux;
+    SerializedProperty inputBan;
     GameObject owner;
 
     bool customEditor = true;
@@ -21,6 +23,8 @@ public class CE_Button : Editor
         owner = _b.gameObject;
         activateEvent = serializedObject.FindProperty("onActivate");
         duration = serializedObject.FindProperty("duration");
+        inputLux = serializedObject.FindProperty("inputLux");
+        inputBan = serializedObject.FindProperty("inputBan");
     }
 
 
@@ -31,6 +35,12 @@ public class CE_Button : Editor
         if (customEditor)
         {
             serializedObject.Update();
+            EditorGUILayout.PropertyField(inputBan);
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(inputLux);
+            EditorGUILayout.Space();
+
             EditorGUILayout.LabelField("The delay the button will take to get back in initial position :");
             EditorGUILayout.Space();
             

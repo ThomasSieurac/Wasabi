@@ -141,7 +141,7 @@ public class CE_WSB_Dialogue : Editor
                 if (GUILayout.Button("Add new text"))
                 {
                     _text.InsertArrayElementAtIndex(_text.arraySize);
-                    _showTextPreview.InsertArrayElementAtIndex(_text.arraySize);
+                    _showTextPreview.InsertArrayElementAtIndex(_text.arraySize-1);
                     _showTextPreview.GetArrayElementAtIndex(_text.arraySize - 1).boolValue = false;
                     _text.GetArrayElementAtIndex(_text.arraySize - 1).stringValue = "";
                 }

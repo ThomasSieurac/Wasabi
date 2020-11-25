@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D))]
 public class WSB_Player : MonoBehaviour
 {
     #region debug
@@ -14,12 +14,12 @@ public class WSB_Player : MonoBehaviour
 
 
     protected Rigidbody2D Physic = null;
-    protected Collider2D Collider = null;
+    protected BoxCollider2D Collider = null;
 
     protected bool isRight = true;
 
     #region Unity
-    private void Awake()
+    protected virtual void Awake()
     {
         if (!Physic) Physic = GetComponent<Rigidbody2D>();
         if (!Physic)
@@ -27,7 +27,7 @@ public class WSB_Player : MonoBehaviour
             Debug.LogError($"Erreur, component Rigidbody2D manquant sur {transform.name}");
             Destroy(this);
         }
-        if (!Collider) Collider = GetComponent<Collider2D>();
+        if (!Collider) Collider = GetComponent<BoxCollider2D>();
         if (!Collider)
         {
             Debug.LogError($"Erreur, component Collider2D manquant sur {transform.name}");
@@ -198,6 +198,11 @@ public class WSB_Player : MonoBehaviour
 
     void StopJump() => isJumping = false;
 
+    public void TrampolineJump(Vector2 _f)
+    {
+        force.y = 0;
+        AddForce(_f);
+    }
     #endregion
 
 

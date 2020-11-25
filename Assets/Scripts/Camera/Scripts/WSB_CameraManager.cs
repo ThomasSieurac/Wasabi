@@ -61,6 +61,7 @@ public class WSB_CameraManager : MonoBehaviour
     {
         if(!IsReady)
         {
+            Debug.LogError($"ban {ban}   lux {lux}   camBan {camBan}   camLux {camLux}   cam2RenderTexture {cam2RenderTexture}   readMaterial {readMaterial}   render {render}   split {split}   bigSplit {bigSplit}   ");
             Debug.LogError("Erreur, paramètres manquant sur WSB_CameraManager");
             Destroy(this);
         }
@@ -77,6 +78,7 @@ public class WSB_CameraManager : MonoBehaviour
             return;
         if (!IsReady)
         {
+            Debug.LogError($"ban {ban}   lux {lux}   camBan {camBan}   camLux {camLux}   cam2RenderTexture {cam2RenderTexture}   readMaterial {readMaterial}   render {render}   split {split}   bigSplit {bigSplit}   ");
             Debug.LogError("Erreur, paramètres manquant sur WSB_CameraManager");
             return;
         }
@@ -195,7 +197,8 @@ public class WSB_CameraManager : MonoBehaviour
         {
             if (_dist < MinCamZoom) _zoom = -MinCamZoom;
             else if (_dist > MaxCamZoom) SwitchCamType(CamType.SplitDynamic, camLux.transform.position);
-            else _zoom = -_dist * 2;
+            else _zoom = -_dist / 2 - MinCamZoom;
+
             camLux.SetCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, _zoom));
             camBan.SetCam(camLux.transform.position);
         }
@@ -221,8 +224,8 @@ public class WSB_CameraManager : MonoBehaviour
     {
         float _dist = (Vector2.Distance(ban.position, lux.position)) / (camLux.Cam.fieldOfView / 90);
         Vector3 _dir = lux.position - ban.position;
-        Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * (MaxCamZoom * (camLux.Cam.fieldOfView / 90))), lux.position.y - (_dir.normalized.y * (MinCamZoom * (camLux.Cam.fieldOfView / 90))), camLux.transform.position.z);
-        Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * (MaxCamZoom * (camLux.Cam.fieldOfView / 90))), ban.position.y + (_dir.normalized.y * (MinCamZoom * (camLux.Cam.fieldOfView / 90))), camBan.transform.position.z);
+        Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * (MaxCamZoom * ((camLux.Cam.fieldOfView / 90) / 1.5f))), lux.position.y - (_dir.normalized.y * (MinCamZoom * (camLux.Cam.fieldOfView / 90))), camLux.transform.position.z);
+        Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * (MaxCamZoom * ((camLux.Cam.fieldOfView / 90) / 1.5f))), ban.position.y + (_dir.normalized.y * (MinCamZoom * (camLux.Cam.fieldOfView / 90))), camBan.transform.position.z);
         if(_dist <= MaxCamZoom * 1.5f)
         {
             if (_dist < MaxCamZoom)
@@ -233,14 +236,13 @@ public class WSB_CameraManager : MonoBehaviour
             }
 
             Vector3 _dirOffset = _luxOffset - _banOffset;
-            targetPositionCamBan = new Vector3(_luxOffset.x - (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))), _luxOffset.y - (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))), targetPositionCamBan.z);
+            targetPositionCamBan = new Vector3(_luxOffset.x - (_dirOffset.x * (_dist / (maxCamZoom * 3))), _luxOffset.y - (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))), targetPositionCamBan.z);
             if(IsOrtho) camBan.SetCam(targetPositionCamBan, targetPositionCamBan.z);
             else camBan.SetCam(targetPositionCamBan);
 
-            targetPositionCamLux = new Vector3(_banOffset.x + (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))), _banOffset.y + (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))), targetPositionCamLux.z);
+            targetPositionCamLux = new Vector3(_banOffset.x + (_dirOffset.x * (_dist / (maxCamZoom * 3))), _banOffset.y + (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))), targetPositionCamLux.z);
             if(IsOrtho) camLux.SetCam(targetPositionCamLux, targetPositionCamLux.z);
             else camLux.SetCam(targetPositionCamLux);
-
         }
         else
         {

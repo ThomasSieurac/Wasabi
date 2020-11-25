@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 181ae94814c27a14397084fc8a2b2165, type: 3}
-  m_Name: Dialogue 3
+  m_Name: Ban Bonjour
   m_EditorClassIdentifier: 
-  Image: {fileID: 21300000, guid: 85c47f60153f9bc459fbdc7464bd697e, type: 3}
+  Image: {fileID: 21300000, guid: 2bbb563df5b21db43a31e970f972729b, type: 3}
   IsImageRight: 1
-  Character: 0
+  Character: 1
   Texts:
-  - g p t
+  - "Bonjour \xE0 tous !"
+  - "Bienvenue dans notre playtest de d\xE9mo de <b>Wasabi</b> !"
   ShowTexts: 1
+  ShowPreview: 00000001
+  DefaultSize: 36

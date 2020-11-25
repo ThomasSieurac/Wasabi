@@ -182,6 +182,14 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Use"",
+                    ""type"": ""Button"",
+                    ""id"": ""586bc439-591d-4e1c-91b2-1e0ead15e4b9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -338,6 +346,17 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""action"": ""Change Character"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c30014a-56fb-4586-8e09-7a50df8ec07f"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -370,6 +389,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
         m_Controler_RotateSpells = m_Controler.FindAction("Rotate Spells", throwIfNotFound: true);
         m_Controler_Pause = m_Controler.FindAction("Pause", throwIfNotFound: true);
         m_Controler_ChangeCharacter = m_Controler.FindAction("Change Character", throwIfNotFound: true);
+        m_Controler_Use = m_Controler.FindAction("Use", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -475,6 +495,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
     private readonly InputAction m_Controler_RotateSpells;
     private readonly InputAction m_Controler_Pause;
     private readonly InputAction m_Controler_ChangeCharacter;
+    private readonly InputAction m_Controler_Use;
     public struct ControlerActions
     {
         private @ControlsLux m_Wrapper;
@@ -486,6 +507,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
         public InputAction @RotateSpells => m_Wrapper.m_Controler_RotateSpells;
         public InputAction @Pause => m_Wrapper.m_Controler_Pause;
         public InputAction @ChangeCharacter => m_Wrapper.m_Controler_ChangeCharacter;
+        public InputAction @Use => m_Wrapper.m_Controler_Use;
         public InputActionMap Get() { return m_Wrapper.m_Controler; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -516,6 +538,9 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 @ChangeCharacter.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnChangeCharacter;
                 @ChangeCharacter.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnChangeCharacter;
                 @ChangeCharacter.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnChangeCharacter;
+                @Use.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnUse;
+                @Use.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnUse;
+                @Use.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnUse;
             }
             m_Wrapper.m_ControlerActionsCallbackInterface = instance;
             if (instance != null)
@@ -541,6 +566,9 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 @ChangeCharacter.started += instance.OnChangeCharacter;
                 @ChangeCharacter.performed += instance.OnChangeCharacter;
                 @ChangeCharacter.canceled += instance.OnChangeCharacter;
+                @Use.started += instance.OnUse;
+                @Use.performed += instance.OnUse;
+                @Use.canceled += instance.OnUse;
             }
         }
     }
@@ -569,5 +597,6 @@ public class @ControlsLux : IInputActionCollection, IDisposable
         void OnRotateSpells(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnChangeCharacter(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
     }
 }

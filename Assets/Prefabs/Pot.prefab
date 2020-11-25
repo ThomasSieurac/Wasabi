@@ -115,5 +115,5 @@ MonoBehaviour:
     type: 3}
   ladderPrefab: {fileID: 8494285679726383974, guid: 8be887955ec41d845894b07f3bc72d26,
     type: 3}
-  trampolinePrefab: {fileID: 0}
-  spawnPos: {x: 3.54, y: -4.01}
+  trampolinePrefab: {fileID: 5511041513360474981, guid: e4a39e551c2c5c64f9758d0df9cfe2e3,
+    type: 3}

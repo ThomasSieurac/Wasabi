@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class WSB_Lux : WSB_Player
 {
+    public static WSB_Lux I { get; private set; }
+
     [SerializeField] float range = 5;
     [SerializeField] LayerMask potLayer = 0;
 
@@ -23,34 +25,43 @@ public class WSB_Lux : WSB_Player
     #region Trampoline Seed
     [Header("Trampoline Seed"), Space, Space, SerializeField] float trampolineChargeDelay = 10;
 
-    Coroutine rechargeTrampoline = null;
+    //Coroutine rechargeTrampoline = null;
     #endregion
 
     #region Carnivore Seed
     [Header("Carnivore Seed"), Space, Space, SerializeField]  float carnivoreChargeDelay = 10;
 
-    Coroutine rechargeCarnivore = null;
+    //Coroutine rechargeCarnivore = null;
     #endregion
 
     #region Ladder Seed
     [Header("Ladder Seed"), Space, Space, SerializeField] float ladderChargeDelay = 10;
 
-    Coroutine rechargeLadder = null;
+    //Coroutine rechargeLadder = null;
     #endregion
 
     #region Bridge Seed
     [Header("Bridge Seed"), Space, Space, SerializeField] float bridgeChargeDelay = 10;
 
-    Coroutine rechargeBridge = null;
+    //Coroutine rechargeBridge = null;
     #endregion
 
+    [SerializeField] float shrinkSpeed = 10;
+    [SerializeField] float shrinkDuration = 20;
+    [SerializeField] GameObject render = null;
+
+    Coroutine shrink = null;
 
     [SerializeField] List<TMP_Text> ladderTextCharges = new List<TMP_Text>();
     [SerializeField] List<TMP_Text> bridgeTextCharges = new List<TMP_Text>();
     [SerializeField] List<TMP_Text> trampolineTextCharges = new List<TMP_Text>();
     [SerializeField] List<TMP_Text> carnivoreTextCharges = new List<TMP_Text>();
 
-
+    protected override void Awake()
+    {
+        base.Awake();
+        I = this;
+    }
     void Start()
     {
         WSB_PlayTestManager.OnUpdate += MyUpdate;
@@ -69,7 +80,7 @@ public class WSB_Lux : WSB_Player
 
     protected override void Update()
     {
-        // leave empty
+        //base.Update();
     }
 
     void MyUpdate()
@@ -97,38 +108,90 @@ public class WSB_Lux : WSB_Player
 
     }
 
+    public void RechargeSeed(string _s)
+    {
+        if (_s == "Trampoline" && trampolineCharges < maxTrampolineCharges)
+        {
+            trampolineCharges++;
+            UpdateChargesUI(trampolineTextCharges, trampolineCharges.ToString());
+        }
+        else if (_s == "Bridge" && bridgeCharges < maxBridgeCharges)
+        {
+            bridgeCharges++;
+            UpdateChargesUI(bridgeTextCharges, bridgeCharges.ToString());
+        }
+        else if (_s == "Ladder" && ladderCharges < maxLadderCharges)
+        {
+            ladderCharges++;
+            UpdateChargesUI(ladderTextCharges, ladderCharges.ToString());
+        }
+        else if (_s == "Carnivore" && carnivoreCharges < maxCarnivoreCharges)
+        {
+            carnivoreCharges++;
+            UpdateChargesUI(carnivoreTextCharges, carnivoreCharges.ToString());
+        }
+    }
+
+    public bool Shrink()
+    {
+        if (shrink != null)
+            return false;
+        shrink = StartCoroutine(DelayShrink());
+        return true;
+    }
+
+    IEnumerator DelayShrink()
+    {
+        Vector2 _startSize = Collider.size;
+        Vector3 _startRenderSize = render.transform.localScale;
+        while(Collider.size != _startSize/2)
+        {
+            Collider.size = Vector2.MoveTowards(Collider.size, _startSize / 2, Time.deltaTime * shrinkSpeed);
+            render.transform.localScale = Vector3.MoveTowards(render.transform.localScale, _startRenderSize / 2, Time.deltaTime * shrinkSpeed);
+            yield return new WaitForEndOfFrame();
+        }
+        yield return new WaitForSeconds(shrinkDuration);
+        while(Collider.size != _startSize)
+        {
+            Collider.size = Vector2.MoveTowards(Collider.size, _startSize, Time.deltaTime * shrinkSpeed);
+            render.transform.localScale = Vector3.MoveTowards(render.transform.localScale, _startRenderSize, Time.deltaTime * shrinkSpeed);
+            yield return new WaitForEndOfFrame();
+        }
+        shrink = null;
+    }
+
     #region Trampoline
     void Trampoline()
     {
         trampolineCharges--;
-        if (rechargeTrampoline == null) StartCoroutine(RechargeTrampoline());
+        //if (rechargeTrampoline == null) StartCoroutine(RechargeTrampoline());
     }
 
-    IEnumerator RechargeTrampoline()
-    {
-        yield return new WaitForSeconds(trampolineChargeDelay);
-        trampolineCharges++;
-        UpdateChargesUI(trampolineTextCharges, trampolineCharges.ToString());
-        if (trampolineCharges < maxTrampolineCharges) rechargeTrampoline = StartCoroutine(RechargeTrampoline());
-        else rechargeTrampoline = null;
-    }
+    //IEnumerator RechargeTrampoline()
+    //{
+    //    yield return new WaitForSeconds(trampolineChargeDelay);
+    //    trampolineCharges++;
+    //    UpdateChargesUI(trampolineTextCharges, trampolineCharges.ToString());
+    //    if (trampolineCharges < maxTrampolineCharges) rechargeTrampoline = StartCoroutine(RechargeTrampoline());
+    //    else rechargeTrampoline = null;
+    //}
     #endregion
 
     #region Carnivore
     void Carnivore()
     {
         carnivoreCharges--;
-        if (rechargeCarnivore == null) StartCoroutine(RechargeCarnivore());
+        //if (rechargeCarnivore == null) StartCoroutine(RechargeCarnivore());
     }
 
-    IEnumerator RechargeCarnivore()
-    {
-        yield return new WaitForSeconds(carnivoreChargeDelay);
-        carnivoreCharges++;
-        UpdateChargesUI(carnivoreTextCharges, carnivoreCharges.ToString());
-        if (carnivoreCharges < maxCarnivoreCharges) rechargeCarnivore = StartCoroutine(RechargeCarnivore());
-        else rechargeCarnivore = null;
-    }
+    //IEnumerator RechargeCarnivore()
+    //{
+    //    yield return new WaitForSeconds(carnivoreChargeDelay);
+    //    carnivoreCharges++;
+    //    UpdateChargesUI(carnivoreTextCharges, carnivoreCharges.ToString());
+    //    if (carnivoreCharges < maxCarnivoreCharges) rechargeCarnivore = StartCoroutine(RechargeCarnivore());
+    //    else rechargeCarnivore = null;
+    //}
     #endregion
 
     #region Bridge
@@ -136,34 +199,34 @@ public class WSB_Lux : WSB_Player
     {
         _pot.GrownSeed.GetComponent<WSB_Bridge>().StartCoroutine(_pot.GrownSeed.GetComponent<WSB_Bridge>().DeployBridge(transform.position.x < _pot.transform.position.x));
         bridgeCharges--;
-        if (rechargeBridge == null) StartCoroutine(RechargeBridge());
+        //if (rechargeBridge == null) StartCoroutine(RechargeBridge());
     }
 
-    IEnumerator RechargeBridge()
-    {
-        yield return new WaitForSeconds(bridgeChargeDelay);
-        bridgeCharges++;
-        UpdateChargesUI(bridgeTextCharges, bridgeCharges.ToString());
-        if (bridgeCharges < maxBridgeCharges) rechargeBridge = StartCoroutine(RechargeBridge());
-        else rechargeBridge = null;
-    }
+    //IEnumerator RechargeBridge()
+    //{
+    //    yield return new WaitForSeconds(bridgeChargeDelay);
+    //    bridgeCharges++;
+    //    UpdateChargesUI(bridgeTextCharges, bridgeCharges.ToString());
+    //    if (bridgeCharges < maxBridgeCharges) rechargeBridge = StartCoroutine(RechargeBridge());
+    //    else rechargeBridge = null;
+    //}
     #endregion
 
     #region Ladder
     void Ladder()
     {
         ladderCharges--;
-        if(rechargeLadder == null) StartCoroutine(RechargeLadder());
+        //if(rechargeLadder == null) StartCoroutine(RechargeLadder());
     }
 
-    IEnumerator RechargeLadder()
-    {
-        yield return new WaitForSeconds(ladderChargeDelay);
-        ladderCharges++;
-        UpdateChargesUI(ladderTextCharges, ladderCharges.ToString());
-        if (ladderCharges < maxLadderCharges) rechargeLadder = StartCoroutine(RechargeLadder());
-        else rechargeLadder = null;
-    }
+    //IEnumerator RechargeLadder()
+    //{
+    //    yield return new WaitForSeconds(ladderChargeDelay);
+    //    ladderCharges++;
+    //    UpdateChargesUI(ladderTextCharges, ladderCharges.ToString());
+    //    if (ladderCharges < maxLadderCharges) rechargeLadder = StartCoroutine(RechargeLadder());
+    //    else rechargeLadder = null;
+    //}
     #endregion
 
     void UpdateChargesUI(List<TMP_Text> _list, string _value)

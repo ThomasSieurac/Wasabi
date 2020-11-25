@@ -27,18 +27,18 @@ public class WSB_Dialogue : MonoBehaviour
 
     Coroutine playLine = null;
 
-    private void Start()
+
+    private void OnEnable()
     {
-        if (Dialogues.Count < 0) return;
+        if (Dialogues.Count < 0)
+            return;
         dialogue = Dialogues[0];
 
         CheckSide();
 
         shownLine.text = dialogue.GetText(0);
         playLine = StartCoroutine(PlayLine());
-        // OnStartDialogue?.Invoke();
     }
-
 
     public void Skip(UnityEngine.InputSystem.InputAction.CallbackContext _ctx)
     {
@@ -171,7 +171,8 @@ public class WSB_Dialogue : MonoBehaviour
         currentChar = 0;
         if (currentDialogue >= Dialogues.Count)
         {
-            gameObject.SetActive(false);
+            StopAllCoroutines();
+            transform.gameObject.SetActive(false);
             return;
         }
         dialogue = Dialogues[currentDialogue];

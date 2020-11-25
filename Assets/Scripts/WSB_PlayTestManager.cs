@@ -3,21 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.EventSystems;
 
 public class WSB_PlayTestManager : MonoBehaviour
 {
-    [SerializeField] bool singlePlayer = true;
+    bool singlePlayer = true;
 
-    //[SerializeField] WSB_Ban ban = null; 
-    //[SerializeField] WSB_Lux lux = null;
     [SerializeField] PlayerInput inputBan = null;
     [SerializeField] PlayerInput inputLux = null;
 
-    Gamepad[] gamepads = new Gamepad[2];
-
-    bool banIs1 = false;
-
-    public static bool Paused { get; private set; } = false;
+    [SerializeField] GameObject menu = null; 
+    [SerializeField] GameObject menuPause = null; 
+    public static bool Paused { get; private set; } = true;
 
 
     public static event Action OnUpdate = null;
@@ -27,15 +24,15 @@ public class WSB_PlayTestManager : MonoBehaviour
 
     private void Start()
     {
-        gamepads = Gamepad.all.ToArray();
-        if(gamepads.Length == 0)
+        Rigidbody2D[] _physics = FindObjectsOfType<Rigidbody2D>();
+        foreach (Rigidbody2D _r in _physics)
         {
-            Debug.LogError("Controller manquant.");
-            Destroy(this);
+            _r.isKinematic = true;
+            _r.velocity = Vector2.zero;
+            _r.angularVelocity = 0;
         }
-        singlePlayer = gamepads.Length == 1;
-        if (singlePlayer)
-            inputBan.enabled = false;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(menu.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
     }
 
     private void Update()
@@ -47,7 +44,7 @@ public class WSB_PlayTestManager : MonoBehaviour
 
     public void ChangeCharacter(InputAction.CallbackContext _ctx)
     {
-        if (!_ctx.started)
+        if (!_ctx.started || Paused)
             return;
 
         if(singlePlayer)
@@ -63,33 +60,73 @@ public class WSB_PlayTestManager : MonoBehaviour
             return;
         Paused = !Paused;
         if (Paused)
+        {
             OnPause?.Invoke();
+            menuPause.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(menuPause.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
+        }
         else
-            OnResume?.Invoke();
+            Resume();
     }
 
+    public void Resume()
+    {
+        Paused = false;
+        OnResume?.Invoke();
+        menuPause.SetActive(false);
+    }
 
+    public void StartGame(bool _singlePlayer)
+    {
+        if (Gamepad.all.Count == 0 || (_singlePlayer && Gamepad.all.Count != 1) || (!_singlePlayer && Gamepad.all.Count != 2))
+            return;
 
+        singlePlayer = _singlePlayer;
+        Rigidbody2D[] _physics = FindObjectsOfType<Rigidbody2D>();
+        foreach (Rigidbody2D _r in _physics)
+        {
+            if (_r.GetComponent<WSB_Player>())
+                continue;
+            _r.isKinematic = false;
+        }
+        Paused = false;
+        if(singlePlayer)
+        {
+            inputBan.enabled = true;
+            inputLux.enabled = false;
+        }
+        OnResume?.Invoke();
+        menu.SetActive(false);
+    }
 
+    public void ReloadScene()
+    {
+        OnUpdate = null;
+        OnPause = null;
+        OnResume = null;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Hogu_PlayTest-1");
+    }
 }
 
 /*
  * 
  * 
- * changer de persos
+ * changer de persos    DONE (singleplayer uniquement, les multi s'échangeront la manette et pis merde)
  *      enable / disable les scripts sur select  (faire en sorte que les deux players se contrôlent avec la même manette)
  * 
  * 
- * tutoriels
+ * tutoriels    DONE
  *      déplacement
  *      pouvoirs
  *      changement de persos
  *      
  * 
- * reset de la salle
+ * reset de la salle    DONE
  * 
- * mode 1 joueur
- * mode 2 joueurs
+ * mode 1 joueur    DONE
+ * 
+ * mode 2 joueurs   DONE
  * 
  * 
  * 

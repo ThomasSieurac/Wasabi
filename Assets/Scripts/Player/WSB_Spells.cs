@@ -47,7 +47,7 @@ public class WSB_Spells : MonoBehaviour
 
     public void ShowWheel(InputAction.CallbackContext _context)
     {
-        if (!_context.started) return;
+        if (!_context.started || WSB_PlayTestManager.Paused) return;
         allSpells.ToList().ForEach(_g => _g.SetActive(true));
         for (int i = 0; i < 12; i++)
         {
@@ -59,7 +59,7 @@ public class WSB_Spells : MonoBehaviour
 
     public void HideWheel(InputAction.CallbackContext _context)
     {
-        if (!_context.canceled) return;
+        if (!_context.canceled || WSB_PlayTestManager.Paused) return;
         allSpells.ToList().ForEach(_g => _g.SetActive(false));
         active = false;
     }
@@ -67,7 +67,7 @@ public class WSB_Spells : MonoBehaviour
     public void UseSpell(InputAction.CallbackContext _context)
     {
         if (_context.canceled) owner.StopSpell();
-        if (!_context.started || !active) return;
+        if (!_context.started || !active || WSB_PlayTestManager.Paused) return;
         int _i = 0;
         float _y = allSpells[0].transform.position.y;
         for (int i = 1; i < allSpells.Length; i++)
@@ -83,7 +83,7 @@ public class WSB_Spells : MonoBehaviour
 
     public void RotateSpells(InputAction.CallbackContext _context)
     {
-        if (!active || !_context.started) return;
+        if (!active || !_context.started || WSB_PlayTestManager.Paused) return;
         bool _right = _context.ReadValue<float>() > 0 ? true : false;
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z - (_right ? 30 : -30));
         for (int i = 0; i < 12; i++)

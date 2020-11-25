@@ -7,6 +7,8 @@ using TMPro;
 
 public class WSB_Ban : WSB_Player
 {
+    public static WSB_Ban I { get; private set; }
+
     [Header("Ban")]
     #region Spell Charges
     [SerializeField] int maxEarthCharges = 10;
@@ -39,7 +41,9 @@ public class WSB_Ban : WSB_Player
     Coroutine rechargeLight = null;
     #endregion
     #region Shrink Spell
+    [Header("Shrink Spell"), SerializeField] float shrinkChargeDelay = 10;
 
+    Coroutine rechargeShrink = null;
     #endregion
     #region Wind Spell
     [Header("Wind Spell"), Space, Space, SerializeField] float windRange = 5;
@@ -59,7 +63,11 @@ public class WSB_Ban : WSB_Player
     [SerializeField] List<TMP_Text> shrinkTextCharges = new List<TMP_Text>();
     [SerializeField] List<TMP_Text> lightTextCharges = new List<TMP_Text>();
 
-
+    protected override void Awake()
+    {
+        base.Awake();
+        I = this;
+    }
     private void Start()
     {
         WSB_PlayTestManager.OnUpdate += MyUpdate;
@@ -103,15 +111,24 @@ public class WSB_Ban : WSB_Player
 
     void Shrink()
     {
-        /*
-         * 
-         * Rapeticir Lux
-         * Coroutine Recharge
-         * Coroutine Delay
-         *  -> fin regrandir Lux si possible
-         *      -> si pas possible répéter toutes les x secondes
-         *  
-         */
+        if (shrinkCharges == 0)
+            return;
+        if (!WSB_Lux.I.Shrink())
+            return;
+        shrinkCharges--;
+        UpdateChargesUI(shrinkTextCharges, shrinkCharges.ToString());
+        if (rechargeShrink != null)
+            StopCoroutine(rechargeShrink);
+        rechargeShrink = StartCoroutine(RechargeShrink());
+    }
+
+    IEnumerator RechargeShrink()
+    {
+        yield return new WaitForSeconds(shrinkChargeDelay);
+        shrinkCharges++;
+        UpdateChargesUI(shrinkTextCharges, shrinkCharges.ToString());
+        if (shrinkCharges < maxShrinkCharges) rechargeShrink = StartCoroutine(RechargeShrink());
+        else rechargeShrink = null;
     }
 
     #region Earth

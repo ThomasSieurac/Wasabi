@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3075282508786744330
+--- !u!1 &396852942842233779
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,51 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3075282508786744326}
-  - component: {fileID: 3075282508786744325}
-  - component: {fileID: 3075282508786744324}
-  - component: {fileID: 3075282508786744331}
-  - component: {fileID: 3075282508786744321}
-  - component: {fileID: 5326823623290859094}
-  - component: {fileID: 2140465771}
+  - component: {fileID: 7376867329941025084}
+  - component: {fileID: 2190940502645957411}
+  - component: {fileID: 7589402106651704646}
   m_Layer: 0
-  m_Name: Lux
+  m_Name: Render
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3075282508786744326
+--- !u!4 &7376867329941025084
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3075282508786744330}
+  m_GameObject: {fileID: 396852942842233779}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.01, y: 3.966136, z: -1.3754487}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6949687280397817631}
   - {fileID: 6453673074424271843}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_Father: {fileID: 3075282508786744326}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3075282508786744325
+--- !u!33 &2190940502645957411
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3075282508786744330}
+  m_GameObject: {fileID: 396852942842233779}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &3075282508786744324
+--- !u!23 &7589402106651704646
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3075282508786744330}
+  m_GameObject: {fileID: 396852942842233779}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -85,6 +80,42 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &3075282508786744330
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3075282508786744326}
+  - component: {fileID: 3075282508786744331}
+  - component: {fileID: 3075282508786744321}
+  - component: {fileID: 5326823623290859094}
+  - component: {fileID: 2140465771}
+  m_Layer: 0
+  m_Name: Lux
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3075282508786744326
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3075282508786744330}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.01, y: 3.966136, z: -1.3754487}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6949687280397817631}
+  - {fileID: 7376867329941025084}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3075282508786744331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,6 +284,18 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6a06e1b1-3291-4b44-b6ec-cc495e88a976
     m_ActionName: Controler/Jump[/XInputControllerWindows/buttonSouth,/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ada2943f-cabf-4376-925b-68523e117505
+    m_ActionName: Controler/Pause[/XInputControllerWindows/start,/XInputControllerWindows/start]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 478b4a37-52b5-4244-b57b-6af606e6996e
+    m_ActionName: Controler/Change Character[/XInputControllerWindows/select,/XInputControllerWindows/select]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 586bc439-591d-4e1c-91b2-1e0ead15e4b9
+    m_ActionName: Controler/Use[/XInputControllerWindows/buttonWest,/XInputControllerWindows/buttonWest]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Controller 2
   m_DefaultActionMap: Controler
@@ -358,7 +401,7 @@ GameObject:
   - component: {fileID: 3064524390220767357}
   - component: {fileID: 2126655784895164083}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Nose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -371,12 +414,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7323639365213920658}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.25, y: 0.48, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.25, y: 0.48000002, z: 0}
   m_LocalScale: {x: 0.91093755, y: 0.1375, z: 0.25142}
   m_Children: []
-  m_Father: {fileID: 3075282508786744326}
-  m_RootOrder: 1
+  m_Father: {fileID: 7376867329941025084}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3064524390220767357
 MeshFilter:

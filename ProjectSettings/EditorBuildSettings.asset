@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Tests/Camera/Scene/Camera.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/Hogu_PlayTest-1.unity
+    guid: 567c63f366a9fc94393642879070ca2e
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: bf90bcda811c3ee4d98a24abd03f51ca,
       type: 2}
