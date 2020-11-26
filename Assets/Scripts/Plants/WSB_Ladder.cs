@@ -38,10 +38,12 @@ public class WSB_Ladder : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
 
-            ladderCollider.size = Vector2.MoveTowards(ladderCollider.size, new Vector2(ladderCollider.size.x, maxLength), Time.deltaTime * growSpeed);
-            ladderCollider.offset = Vector2.MoveTowards(ladderCollider.offset, new Vector2(ladderCollider.offset.x, ladderCollider.size.y / 2), Time.deltaTime * growSpeed);
+            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(transform.localScale.x, maxLength, 1), Time.deltaTime * growSpeed);
 
-            if (Physics2D.OverlapBox(new Vector2(transform.position.x, transform.position.y + ladderCollider.size.y), Vector2.one, 0, stopLayer)) StopAllCoroutines();
+            //ladderCollider.size = Vector2.MoveTowards(ladderCollider.size, new Vector2(ladderCollider.size.x, maxLength), Time.deltaTime * growSpeed);
+            //ladderCollider.offset = Vector2.MoveTowards(ladderCollider.offset, new Vector2(ladderCollider.offset.x, ladderCollider.size.y / 2), Time.deltaTime * growSpeed);
+            Collider2D _hit;
+            if ((_hit = Physics2D.OverlapBox(new Vector2(transform.position.x, transform.position.y + ladderCollider.size.y), Vector2.one, 0, stopLayer)) && _hit.gameObject != transform.parent.gameObject) StopAllCoroutines();
 
             if (ladderCollider.bounds.size.y == 10) StopAllCoroutines();
         }

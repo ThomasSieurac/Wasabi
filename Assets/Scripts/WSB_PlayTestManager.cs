@@ -15,6 +15,7 @@ public class WSB_PlayTestManager : MonoBehaviour
     [SerializeField] GameObject menu = null; 
     [SerializeField] GameObject menuPause = null; 
     public static bool Paused { get; private set; } = true;
+    public static bool IsDialogue { get; private set; } = false;
 
 
     public static event Action OnUpdate = null;
@@ -41,6 +42,7 @@ public class WSB_PlayTestManager : MonoBehaviour
             OnUpdate?.Invoke();
     }
 
+    public static void SetDialogue(bool _state) => IsDialogue = _state;
 
     public void ChangeCharacter(InputAction.CallbackContext _ctx)
     {
@@ -107,6 +109,9 @@ public class WSB_PlayTestManager : MonoBehaviour
         OnResume = null;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Hogu_PlayTest-1");
     }
+
+    public void QuitGame() => Application.Quit();
+
 }
 
 /*

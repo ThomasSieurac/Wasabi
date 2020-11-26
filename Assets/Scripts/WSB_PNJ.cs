@@ -27,17 +27,23 @@ public class WSB_PNJ : MonoBehaviour
     {
         if (collision.GetComponent<WSB_Player>()) playersIn--;
         if(playersIn == 0)
+        {
             dialogue.gameObject.SetActive(false);
+            WSB_PlayTestManager.SetDialogue(false);
+        }
     }
 
     void StartDialogue(InputAction.CallbackContext obj)
     {
-        if (!dialogue || playersIn == 0)
+        if (!dialogue || playersIn == 0 || WSB_PlayTestManager.Paused)
             return;
         if (dialogue.gameObject.activeSelf)
             dialogue.Skip(obj);
-        else
+        else if(!WSB_PlayTestManager.IsDialogue)
+        {
+            WSB_PlayTestManager.SetDialogue(true);
             dialogue.gameObject.SetActive(true);
+        }
     }
 
     private void OnDisable()

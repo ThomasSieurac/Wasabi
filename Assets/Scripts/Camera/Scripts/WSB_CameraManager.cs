@@ -197,7 +197,7 @@ public class WSB_CameraManager : MonoBehaviour
         {
             if (_dist < MinCamZoom) _zoom = -MinCamZoom;
             else if (_dist > MaxCamZoom) SwitchCamType(CamType.SplitDynamic, camLux.transform.position);
-            else _zoom = -_dist / 2 - MinCamZoom;
+            else _zoom = (-_dist -MinCamZoom) / 2;
 
             camLux.SetCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, _zoom));
             camBan.SetCam(camLux.transform.position);

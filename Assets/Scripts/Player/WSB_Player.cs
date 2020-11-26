@@ -33,6 +33,7 @@ public class WSB_Player : MonoBehaviour
             Debug.LogError($"Erreur, component Collider2D manquant sur {transform.name}");
             Destroy(this);
         }
+        nose.transform.localPosition = new Vector3((isRight ? .5f : -.5f), .5f);
     }
 
     protected virtual void Update()
@@ -74,7 +75,7 @@ public class WSB_Player : MonoBehaviour
                 AddVerticalMovement((jumpOriginHeight + controllerValues.JumpCurve.Evaluate(jumpVar) - Physic.position.y) / Time.deltaTime);
             }
         }
-        else if(!isClimbing)
+        else if (!isClimbing)
             ApplyGravity();
 
         if ((force + instantForce + movement) != Vector2.zero)
@@ -91,6 +92,12 @@ public class WSB_Player : MonoBehaviour
         }
         else
             OnAppliedVelocity(Vector2.zero);
+
+        if (grabbedObject)
+        {
+            if (!isGrounded)
+                DropGrabbedObject();
+        }
     }
 
     #endregion
@@ -99,6 +106,8 @@ public class WSB_Player : MonoBehaviour
 
     float xMovement = 0;
     float yMovement = 0;
+    GameObject grabbedObject = null;
+    [SerializeField] ContactFilter2D grabContactFilter = new ContactFilter2D();
 
     public void Move(InputAction.CallbackContext _context)
     {
@@ -122,13 +131,49 @@ public class WSB_Player : MonoBehaviour
             jumpInput = _context.ReadValue<float>() == 1;
     }
 
+    public void GrabObject(InputAction.CallbackContext _context)
+    {
+        if (_context.canceled && grabbedObject)
+            DropGrabbedObject();
+        else if (_context.started && !grabbedObject)
+        {
+            RaycastHit2D[] _hit = new RaycastHit2D[1];
+            if (Collider.Cast(isRight ? Vector2.right : Vector2.left, grabContactFilter, _hit, .8f) > 0)
+            {
+                if (_hit[0].transform.GetComponent<WSB_Pot>())
+                {
+                    if(_hit[0].transform.childCount > 0 && _hit[0].transform.GetChild(0).tag != "Carnivore" && _hit[0].transform.GetChild(0).tag != "Trampoline")
+                        _hit[0].transform.GetComponent<WSB_Pot>().BreakSeed();
+                }
+                if (_hit[0].transform.GetComponent<Rigidbody2D>().velocity.y != 0)
+                    return;
+                grabbedObject = _hit[0].transform.gameObject;
+                _hit[0].transform.SetParent(this.transform);
+                if (_hit[0].transform.GetComponent<Rigidbody2D>())
+                    _hit[0].transform.GetComponent<Rigidbody2D>().isKinematic = true;
+                _hit[0].collider.enabled = false;
+            }
+        }
+    }
+
+    void DropGrabbedObject()
+    {
+        grabbedObject.transform.SetParent(null);
+        if (grabbedObject.transform.GetComponent<Rigidbody2D>())
+            grabbedObject.transform.GetComponent<Rigidbody2D>().isKinematic = false;
+        grabbedObject.GetComponent<Collider2D>().enabled = true;
+        grabbedObject = null;
+    }
+
     public virtual void UseSpell(string _s)
     {
-
+        if (grabbedObject)
+            return;
     }
     public virtual void StopSpell()
     {
-
+        if (grabbedObject)
+            return;
     }
 
     public void CanClimb(bool _s) => canClimb = _s;
@@ -216,7 +261,7 @@ public class WSB_Player : MonoBehaviour
     void CalculCollision()
     {
         Vector2 _velocity = GetVeloctity();
-        if(isGrounded)
+        if (isGrounded)
         {
             Vector2 _x = Vector2.Perpendicular(groundNormal);
             if (_x.x < 0)
@@ -250,7 +295,7 @@ public class WSB_Player : MonoBehaviour
             }
         }
 
-        if(!_isGrounded)
+        if (!_isGrounded)
         {
             _isGrounded = CastCollider(Vector2.down * Physics2D.defaultContactOffset * 2, out RaycastHit2D _hit) && (_hit.normal.y > controllerValues.GroundMin) && _hit.collider != ignoredCollider;
             groundNormal = _isGrounded ? _hit.normal : Vector2.up;
@@ -270,7 +315,7 @@ public class WSB_Player : MonoBehaviour
         if (_distance == 0)
             return;
 
-        if(_amount == 0)
+        if (_amount == 0)
         {
             Physic.position += _velocity;
             GroundSnap(_velocity, _normal);
@@ -287,7 +332,7 @@ public class WSB_Player : MonoBehaviour
 
         InsertCastBuffer(_amount);
 
-        if(_iteration > 3)
+        if (_iteration > 3)
         {
             GroundSnap(_velocity, _normal);
             return;
@@ -353,7 +398,7 @@ public class WSB_Player : MonoBehaviour
                 ignoredCollider = null;
         }
 
-        if(_amount > 0)
+        if (_amount > 0)
         {
             _distance = Mathf.Max(0, castBuffer[0].distance - Physics2D.defaultContactOffset);
             for (int i = 1; i < _amount; i++)
@@ -420,7 +465,7 @@ public class WSB_Player : MonoBehaviour
         if (_normal.y != 1)
             _velocity = Quaternion.FromToRotation(_normal, Vector3.up) * _velocity;
 
-        if(isGrounded && (_velocity.y < 0) && CastCollider(_normal * -1, out RaycastHit2D _snapHit))
+        if (isGrounded && (_velocity.y < 0) && CastCollider(_normal * -1, out RaycastHit2D _snapHit))
         {
             Physic.position += _normal * -_snapHit.distance;
             InsertCastBuffer(1);
@@ -441,7 +486,7 @@ public class WSB_Player : MonoBehaviour
 
     void AddHorizontalMovement(float _velocity)
     {
-        if(_velocity == 0)
+        if (_velocity == 0)
         {
             所有 = speed = 0;
             return;

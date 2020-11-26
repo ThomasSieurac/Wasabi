@@ -172,6 +172,7 @@ public class WSB_Dialogue : MonoBehaviour
         if (currentDialogue >= Dialogues.Count)
         {
             StopAllCoroutines();
+            WSB_PlayTestManager.SetDialogue(false);
             transform.gameObject.SetActive(false);
             return;
         }

@@ -72,11 +72,11 @@ public class WSB_Lux : WSB_Player
         carnivoreCharges = maxCarnivoreCharges;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, (isRight ? Vector2.right : Vector2.left) * range);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawRay(new Vector2(transform.position.x, transform.position.y - .8f), (isRight ? Vector2.right : Vector2.left) * range);
+    //}
 
     protected override void Update()
     {
@@ -90,16 +90,18 @@ public class WSB_Lux : WSB_Player
 
     public override void UseSpell(string _s)
     {
+        base.UseSpell(_s);
         if (WSB_PlayTestManager.Paused)
             return;
 
-        RaycastHit2D _hit = Physics2D.Raycast(transform.position, isRight ? Vector2.right : Vector2.left, range, potLayer);
+        RaycastHit2D _hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - .8f), isRight ? Vector2.right : Vector2.left, range, potLayer);
 
         if(_hit)
         {
             WSB_Pot _pot = _hit.transform.GetComponent<WSB_Pot>();
             if (!_pot) return;
-            _pot.GrowSeed(_s);
+            if (!_pot.GrowSeed(_s))
+                return;
             if (_s == "Trampoline" && trampolineCharges > 0) Trampoline();
             else if (_s == "Bridge" && bridgeCharges > 0) Bridge(_pot);
             else if (_s == "Ladder" && ladderCharges > 0) Ladder();
@@ -140,6 +142,8 @@ public class WSB_Lux : WSB_Player
         return true;
     }
 
+    [SerializeField] ContactFilter2D contactFilter2D = new ContactFilter2D();
+
     IEnumerator DelayShrink()
     {
         Vector2 _startSize = Collider.size;
@@ -151,6 +155,11 @@ public class WSB_Lux : WSB_Player
             yield return new WaitForEndOfFrame();
         }
         yield return new WaitForSeconds(shrinkDuration);
+
+        RaycastHit2D[] _hits = new RaycastHit2D[1];
+        while (Collider.Cast(Vector2.up * .1f, contactFilter2D, _hits) > 0) 
+            yield return new WaitForSeconds(.1f);
+
         while(Collider.size != _startSize)
         {
             Collider.size = Vector2.MoveTowards(Collider.size, _startSize, Time.deltaTime * shrinkSpeed);
@@ -164,6 +173,7 @@ public class WSB_Lux : WSB_Player
     void Trampoline()
     {
         trampolineCharges--;
+        UpdateChargesUI(trampolineTextCharges, trampolineCharges.ToString());
         //if (rechargeTrampoline == null) StartCoroutine(RechargeTrampoline());
     }
 
@@ -181,6 +191,7 @@ public class WSB_Lux : WSB_Player
     void Carnivore()
     {
         carnivoreCharges--;
+        UpdateChargesUI(carnivoreTextCharges, carnivoreCharges.ToString());
         //if (rechargeCarnivore == null) StartCoroutine(RechargeCarnivore());
     }
 
@@ -199,6 +210,7 @@ public class WSB_Lux : WSB_Player
     {
         _pot.GrownSeed.GetComponent<WSB_Bridge>().StartCoroutine(_pot.GrownSeed.GetComponent<WSB_Bridge>().DeployBridge(transform.position.x < _pot.transform.position.x));
         bridgeCharges--;
+        UpdateChargesUI(bridgeTextCharges, bridgeCharges.ToString());
         //if (rechargeBridge == null) StartCoroutine(RechargeBridge());
     }
 
@@ -216,6 +228,7 @@ public class WSB_Lux : WSB_Player
     void Ladder()
     {
         ladderCharges--;
+        UpdateChargesUI(ladderTextCharges, ladderCharges.ToString());
         //if(rechargeLadder == null) StartCoroutine(RechargeLadder());
     }
 

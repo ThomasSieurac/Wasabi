@@ -33,7 +33,7 @@ public class WSB_Ban : WSB_Player
     [SerializeField] LayerMask groundLayer = 0;
     #endregion
     #region Light Spell
-    [Header("Earth Spell"), Space, Space, SerializeField] GameObject lightObject = null;
+    [Header("Light Spell"), Space, Space, SerializeField] GameObject lightObject = null;
 
     [SerializeField] float lightDuration = 10;
     [SerializeField] float lightChargeDelay = 10;
@@ -92,6 +92,7 @@ public class WSB_Ban : WSB_Player
 
     public override void UseSpell(string _s)
     {
+        base.UseSpell(_s);
         if (WSB_PlayTestManager.Paused)
             return;
         if (_s == "Earth" && earthCharges > 0) Earth();
@@ -102,6 +103,7 @@ public class WSB_Ban : WSB_Player
 
     public override void StopSpell()
     {
+        base.StopSpell();
         if (blowCoroutine != null)
         {
             StopCoroutine(blowCoroutine);
@@ -109,6 +111,7 @@ public class WSB_Ban : WSB_Player
         }
     }
 
+    #region Shrink
     void Shrink()
     {
         if (shrinkCharges == 0)
@@ -130,20 +133,22 @@ public class WSB_Ban : WSB_Player
         if (shrinkCharges < maxShrinkCharges) rechargeShrink = StartCoroutine(RechargeShrink());
         else rechargeShrink = null;
     }
+    #endregion
+
 
     #region Earth
     void Earth()
     {
         for (int i = -earthSize; i < earthSize; i++)
         {
-            RaycastHit2D[] _hits = Physics2D.RaycastAll(new Vector2(transform.position.x + i, transform.position.y), Vector2.down, transform.localScale.y + .5f, groundLayer);
-            if(_hits.Length == 0)
+            RaycastHit2D[] _hits = Physics2D.RaycastAll(new Vector2(transform.position.x + (i / 10f), transform.position.y), Vector2.down, 1.5f, groundLayer);
+            if(_hits.Length != 0)
             {
-                SpawnEarth(false);
+                SpawnEarth(true);
                 return;
             }
         }
-        SpawnEarth(true);
+        SpawnEarth(false);
     }
 
     void SpawnEarth(bool _status)

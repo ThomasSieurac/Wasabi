@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 2057359375205086435}
   - component: {fileID: 7950054048609460214}
   - component: {fileID: 5608761888516979277}
-  - component: {fileID: 6266144330731871830}
-  m_Layer: 0
-  m_Name: Sphere
+  - component: {fileID: 7329149412139849505}
+  - component: {fileID: 506667446225373870}
+  m_Layer: 13
+  m_Name: EarthZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2301328524109816244}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.42050844, y: -2.9302652, z: -0.075355306}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -59,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c9739cac96c45a449a66b9b382040f2d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -80,16 +81,40 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &6266144330731871830
-SphereCollider:
+--- !u!58 &7329149412139849505
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2301328524109816244}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &506667446225373870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2301328524109816244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c2a23c0a15dc645a67baa2946af306, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carnivorePrefab: {fileID: 5371515694473007877, guid: c3baeabd49ccfd24ab8d49f9706cc558,
+    type: 3}
+  bridgePrefab: {fileID: 1637633512842974089, guid: e5c8e5f27aea0864d9dc8d6f97686a6d,
+    type: 3}
+  ladderPrefab: {fileID: 8494285679726383974, guid: 8be887955ec41d845894b07f3bc72d26,
+    type: 3}
+  trampolinePrefab: {fileID: 5511041513360474981, guid: e4a39e551c2c5c64f9758d0df9cfe2e3,
+    type: 3}
+  spawnPos: {x: 0, y: 0.5}

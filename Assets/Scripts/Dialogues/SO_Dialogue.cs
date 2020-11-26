@@ -29,5 +29,7 @@ public enum Character
     Yonix,
     Katrine,
     Lhudo,
-    Kristof
+    Kristof,
+    Wasabi,
+    Korok
 }

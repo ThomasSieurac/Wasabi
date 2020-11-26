@@ -48,8 +48,19 @@ MonoBehaviour:
   maxLength: 10
   growSpeed: 5
   stopLayer:
-    serializedVersion: 2
-    m_Bits: 4096
+    useTriggers: 0
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 15360
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
   bridgeCollider: {fileID: 160073650907699609}
 --- !u!61 &4461900903011719036
 BoxCollider2D:
@@ -90,7 +101,7 @@ GameObject:
   - component: {fileID: 3903242471747512758}
   - component: {fileID: 160073650907699609}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Render
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +147,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a1717d6aff4020b4b8e5ad9794407b7a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
