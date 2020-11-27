@@ -23,25 +23,25 @@ public class WSB_Lux : WSB_Player
     #endregion
 
     #region Trampoline Seed
-    [Header("Trampoline Seed"), Space, Space, SerializeField] float trampolineChargeDelay = 10;
+    //[Header("Trampoline Seed"), Space, Space, SerializeField] float trampolineChargeDelay = 10;
 
     //Coroutine rechargeTrampoline = null;
     #endregion
 
     #region Carnivore Seed
-    [Header("Carnivore Seed"), Space, Space, SerializeField]  float carnivoreChargeDelay = 10;
+    //[Header("Carnivore Seed"), Space, Space, SerializeField]  float carnivoreChargeDelay = 10;
 
     //Coroutine rechargeCarnivore = null;
     #endregion
 
     #region Ladder Seed
-    [Header("Ladder Seed"), Space, Space, SerializeField] float ladderChargeDelay = 10;
+    //[Header("Ladder Seed"), Space, Space, SerializeField] float ladderChargeDelay = 10;
 
     //Coroutine rechargeLadder = null;
     #endregion
 
     #region Bridge Seed
-    [Header("Bridge Seed"), Space, Space, SerializeField] float bridgeChargeDelay = 10;
+    //[Header("Bridge Seed"), Space, Space, SerializeField] float bridgeChargeDelay = 10;
 
     //Coroutine rechargeBridge = null;
     #endregion
@@ -72,11 +72,6 @@ public class WSB_Lux : WSB_Player
         carnivoreCharges = maxCarnivoreCharges;
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawRay(new Vector2(transform.position.x, transform.position.y - .8f), (isRight ? Vector2.right : Vector2.left) * range);
-    //}
 
     protected override void Update()
     {
@@ -142,7 +137,14 @@ public class WSB_Lux : WSB_Player
         return true;
     }
 
-    [SerializeField] ContactFilter2D contactFilter2D = new ContactFilter2D();
+    [SerializeField] LayerMask shrinkLayer = 0;
+
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawRay(transform.position + Vector3.right, Vector3.up * 2);
+    //    Gizmos.DrawRay(transform.position + Vector3.left, Vector3.up * 2);
+    //}
 
     IEnumerator DelayShrink()
     {
@@ -156,8 +158,8 @@ public class WSB_Lux : WSB_Player
         }
         yield return new WaitForSeconds(shrinkDuration);
 
-        RaycastHit2D[] _hits = new RaycastHit2D[1];
-        while (Collider.Cast(Vector2.up * .1f, contactFilter2D, _hits) > 0) 
+        //RaycastHit2D[] _hits = new RaycastHit2D[1];
+        while (Physics2D.Raycast(transform.position + Vector3.right, Vector2.up, 2, shrinkLayer) || Physics2D.Raycast(transform.position + Vector3.left, Vector2.up, 2, shrinkLayer)) 
             yield return new WaitForSeconds(.1f);
 
         while(Collider.size != _startSize)

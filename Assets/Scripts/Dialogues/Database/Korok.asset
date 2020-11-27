@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Image: {fileID: 21300000, guid: 2f6538f5954fa8a4e8243613beeab91c, type: 3}
   IsImageRight: 1
-  Character: 0
+  Character: 7
   Texts:
   - <i>Yahaha! You found me!</i>
   ShowTexts: 1
-  ShowPreview: 00
+  ShowPreview: 0100
   DefaultSize: 36

@@ -8,7 +8,7 @@ public class WSB_Trampoline : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.GetComponent<Rigidbody2D>() && collider.transform.position.y > (transform.position.y / 2))
+        if (collider.GetComponent<Rigidbody2D>() && collider.transform.position.y > transform.position.y)
         {
             if (collider.GetComponent<WSB_Player>())
                 collider.GetComponent<WSB_Player>().TrampolineJump(Vector2.up * force);

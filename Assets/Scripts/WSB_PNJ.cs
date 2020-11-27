@@ -10,23 +10,45 @@ public class WSB_PNJ : MonoBehaviour
 
     [SerializeField] WSB_Dialogue dialogue = null;
 
-    int playersIn = 0;
+    bool banIn = false;
+    bool luxIn = false;
 
-    private void OnEnable()
-    {
-        actionBan.FindAction("Use").performed += StartDialogue;
-        actionLux.FindAction("Use").performed += StartDialogue;
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<WSB_Player>()) playersIn++;
+        if (collision.GetComponent<WSB_Ban>())
+        {
+            collision.GetComponent<WSB_Player>().IsDialogue = true;
+            banIn = true;
+            actionBan.FindAction("Use").performed += StartDialogue;
+            actionBan.FindAction("Jump").performed += StartDialogue;
+        }
+        if (collision.GetComponent<WSB_Lux>())
+        {
+            collision.GetComponent<WSB_Player>().IsDialogue = true;
+            luxIn = true;
+            actionLux.FindAction("Use").performed += StartDialogue;
+            actionLux.FindAction("Jump").performed += StartDialogue;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.GetComponent<WSB_Player>()) playersIn--;
-        if(playersIn == 0)
+        if (collision.GetComponent<WSB_Ban>())
+        {
+            collision.GetComponent<WSB_Player>().IsDialogue = false;
+            banIn = false;
+            actionBan.FindAction("Use").performed -= StartDialogue;
+            actionBan.FindAction("Jump").performed -= StartDialogue;
+        }
+        if (collision.GetComponent<WSB_Lux>())
+        {
+            collision.GetComponent<WSB_Player>().IsDialogue = false;
+            luxIn = false;
+            actionLux.FindAction("Use").performed -= StartDialogue;
+            actionLux.FindAction("Jump").performed -= StartDialogue;
+        }
+        if (!banIn && !luxIn)
         {
             dialogue.gameObject.SetActive(false);
             WSB_PlayTestManager.SetDialogue(false);
@@ -35,7 +57,7 @@ public class WSB_PNJ : MonoBehaviour
 
     void StartDialogue(InputAction.CallbackContext obj)
     {
-        if (!dialogue || playersIn == 0 || WSB_PlayTestManager.Paused)
+        if (!dialogue || WSB_PlayTestManager.Paused)
             return;
         if (dialogue.gameObject.activeSelf)
             dialogue.Skip(obj);
@@ -46,9 +68,4 @@ public class WSB_PNJ : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {
-        actionBan.FindAction("Use").performed -= StartDialogue;
-        actionLux.FindAction("Use").performed -= StartDialogue;
-    }
 }

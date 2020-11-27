@@ -12,10 +12,10 @@ public class WSB_Bridge : MonoBehaviour
 
     private void Start()
     {
-        if (!bridgeCollider) bridgeCollider = GetComponentInChildren<BoxCollider2D>();
+        if (!bridgeCollider) bridgeCollider = GetComponent<BoxCollider2D>();
         if (!bridgeCollider)
         {
-            Debug.LogError($"Erreur, component BoxCollider2D manquant sur {this.name}'s children");
+            Debug.LogError($"Erreur, component BoxCollider2D manquant sur {this.name}");
             Destroy(this);
         }
     }

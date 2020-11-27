@@ -8,6 +8,12 @@ public class WSB_Light : MonoBehaviour
     RaycastHit2D[] hits;
     List<WSB_Pot> curedPots = new List<WSB_Pot>();
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(.7f, .2f, .2f, .4f);
+        Gizmos.DrawSphere(transform.position, range);
+    }
+
     void Update()
     {
         hits = Physics2D.CircleCastAll(transform.position, range, Vector2.right);

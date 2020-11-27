@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Image: {fileID: 21300000, guid: dc35734711226214194bd9fb277c3f6e, type: 3}
   IsImageRight: 1
-  Character: 6
+  Character: 2
   Texts:
   - Hi !
   - Welcome in our Playtest of our game <color=#19DEFFFF>Wasabi</color> !

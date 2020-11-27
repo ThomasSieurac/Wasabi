@@ -38,7 +38,7 @@ public class WSB_Ladder : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
 
-            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(transform.localScale.x, maxLength, 1), Time.deltaTime * growSpeed);
+            transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(transform.localScale.x, maxLength, .1f), Time.deltaTime * growSpeed);
 
             //ladderCollider.size = Vector2.MoveTowards(ladderCollider.size, new Vector2(ladderCollider.size.x, maxLength), Time.deltaTime * growSpeed);
             //ladderCollider.offset = Vector2.MoveTowards(ladderCollider.offset, new Vector2(ladderCollider.offset.x, ladderCollider.size.y / 2), Time.deltaTime * growSpeed);

@@ -36,8 +36,49 @@ public class WSB_PlayTestManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(menu.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
     }
 
+    Color baseColor = Color.red;
+    [SerializeField] float discoDelay = 2;
+    [SerializeField] TMPro.TMP_Text warning = null;
+    [SerializeField] GameObject warningObj = null; 
+
     private void Update()
     {
+        if(menu.activeSelf)
+        {
+            Color _c = warning.color;
+            if (baseColor == Color.red)
+            {
+                _c.b = Mathf.MoveTowards(_c.b, 1, Time.deltaTime * discoDelay);
+                if (_c.b == 1) baseColor = Color.magenta;
+            }
+            else if (baseColor == Color.magenta)
+            {
+                _c.r = Mathf.MoveTowards(_c.r, 0, Time.deltaTime * discoDelay);
+                if (_c.r == 0) baseColor = Color.blue;
+            }
+            else if (baseColor == Color.blue)
+            {
+                _c.g = Mathf.MoveTowards(_c.g, 1, Time.deltaTime * discoDelay);
+                if (_c.g == 1) baseColor = Color.cyan;
+            }
+            else if (baseColor == Color.cyan)
+            {
+                _c.b = Mathf.MoveTowards(_c.b, 0, Time.deltaTime * discoDelay);
+                if (_c.b == 0) baseColor = Color.green;
+            }
+            else if (baseColor == Color.green)
+            {
+                _c.r = Mathf.MoveTowards(_c.r, 1, Time.deltaTime * discoDelay);
+                if (_c.r == 1) baseColor = Color.yellow;
+            }
+            else if (baseColor == Color.yellow)
+            {
+                _c.g = Mathf.MoveTowards(_c.g, 0, Time.deltaTime * discoDelay);
+                if (_c.g == 0) baseColor = Color.red;
+            }
+            warning.color = _c;
+        }
+        warningObj.SetActive(Gamepad.all.Count == 0);
         if (!Paused)
             OnUpdate?.Invoke();
     }

@@ -117,4 +117,8 @@ MonoBehaviour:
     type: 3}
   trampolinePrefab: {fileID: 5511041513360474981, guid: e4a39e551c2c5c64f9758d0df9cfe2e3,
     type: 3}
+  isCursed: 0
+  cursedMat: {fileID: 0}
+  uncursedMat: {fileID: 2100000, guid: c9739cac96c45a449a66b9b382040f2d, type: 2}
+  rend: {fileID: 0}
   spawnPos: {x: 0, y: 0.5}

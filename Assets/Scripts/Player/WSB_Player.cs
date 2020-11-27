@@ -12,6 +12,7 @@ public class WSB_Player : MonoBehaviour
 
     #endregion
 
+    public bool IsDialogue = false;
 
     protected Rigidbody2D Physic = null;
     protected BoxCollider2D Collider = null;
@@ -125,7 +126,7 @@ public class WSB_Player : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext _context)
     {
-        if (WSB_PlayTestManager.Paused)
+        if (WSB_PlayTestManager.Paused || IsDialogue)
             return;
         if (_context.valueType == typeof(float))
             jumpInput = _context.ReadValue<float>() == 1;
@@ -388,7 +389,7 @@ public class WSB_Player : MonoBehaviour
 
         for (int i = 0; i < _amount; i++)
         {
-            if (castBuffer[i].transform.GetComponent<PlatformEffector2D>() && castBuffer[i].normal.y == -1 || castBuffer[i].transform.GetComponent<PlatformEffector2D>() && castBuffer[i] == ignoredCollider)
+            if ((castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i].normal.y == -1 || (castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i] == ignoredCollider)
             {
                 ignoredCollider = castBuffer[i].collider;
                 _amount = i;
@@ -415,7 +416,7 @@ public class WSB_Player : MonoBehaviour
 
     #region Physic
 
-    void ApplyGravity() => AddForce(Physics2D.gravity * Time.deltaTime);
+    void ApplyGravity() => AddForce((Physics2D.gravity * 2) * Time.deltaTime);
 
     void OnSetGrounded(bool _isGrounded)
     {

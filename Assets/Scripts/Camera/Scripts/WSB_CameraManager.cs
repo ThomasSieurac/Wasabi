@@ -66,9 +66,9 @@ public class WSB_CameraManager : MonoBehaviour
             Destroy(this);
         }
         Vector3 _camPos = camBan.transform.position;
-        targetPositionCamBan = new Vector3(_camPos.x, _camPos.y, (isOrtho ? camBan.Cam.orthographicSize : _camPos.z));
+        targetPositionCamBan = new Vector3(_camPos.x, _camPos.y + 6, (isOrtho ? camBan.Cam.orthographicSize : _camPos.z));
         _camPos = camLux.transform.position;
-        targetPositionCamLux = new Vector3(_camPos.x, _camPos.y, (isOrtho ? camLux.Cam.orthographicSize : _camPos.z));
+        targetPositionCamLux = new Vector3(_camPos.x, _camPos.y + 6, (isOrtho ? camLux.Cam.orthographicSize : _camPos.z));
         SetResolution();
     }
 
@@ -118,7 +118,7 @@ public class WSB_CameraManager : MonoBehaviour
         ToggleSplit(!bigSplit.activeSelf);
 
         Vector3 _dir = ban.position - lux.position;
-        camBan.SetInstantCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, -MinCamZoom));
+        camBan.SetInstantCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + 6 + _dir.y / 2, -MinCamZoom));
         camLux.SetInstantCam(camBan.transform.position);
     }
 
@@ -190,7 +190,7 @@ public class WSB_CameraManager : MonoBehaviour
             if (_dist < MinCamZoom) _zoom = MinCamZoom;
             else if (_dist > MaxCamZoom) SwitchCamType(CamType.SplitDynamic, new Vector3(_camPos.x, _camPos.y, camLux.Cam.orthographicSize));
             else _zoom = _dist;
-            camLux.SetCam(new Vector2(lux.position.x, lux.position.y) + (Vector2)_dir / 2, _zoom);
+            camLux.SetCam(new Vector2(lux.position.x, lux.position.y + 6) + (Vector2)_dir / 2, _zoom);
             camBan.SetCam(camLux.transform.position, _zoom);
         }
         else
@@ -199,7 +199,7 @@ public class WSB_CameraManager : MonoBehaviour
             else if (_dist > MaxCamZoom) SwitchCamType(CamType.SplitDynamic, camLux.transform.position);
             else _zoom = (-_dist -MinCamZoom) / 2;
 
-            camLux.SetCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, _zoom));
+            camLux.SetCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + 6 + _dir.y / 2, _zoom));
             camBan.SetCam(camLux.transform.position);
         }
     }
@@ -224,8 +224,13 @@ public class WSB_CameraManager : MonoBehaviour
     {
         float _dist = (Vector2.Distance(ban.position, lux.position)) / (camLux.Cam.fieldOfView / 90);
         Vector3 _dir = lux.position - ban.position;
-        Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * (MaxCamZoom * ((camLux.Cam.fieldOfView / 90) / 1.5f))), lux.position.y - (_dir.normalized.y * (MinCamZoom * (camLux.Cam.fieldOfView / 90))), camLux.transform.position.z);
-        Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * (MaxCamZoom * ((camLux.Cam.fieldOfView / 90) / 1.5f))), ban.position.y + (_dir.normalized.y * (MinCamZoom * (camLux.Cam.fieldOfView / 90))), camBan.transform.position.z);
+        //Debug.LogError(_dir.y);
+        Vector3 _luxOffset = new Vector3(lux.position.x - (_dir.normalized.x * (MaxCamZoom * ((camLux.Cam.fieldOfView / 90) / 1.5f))),(lux.position.y + 6) - (_dir.normalized.y * (MinCamZoom * (camLux.Cam.fieldOfView / 90))), camLux.transform.position.z);
+        Vector3 _banOffset = new Vector3(ban.position.x + (_dir.normalized.x * (MaxCamZoom * ((camLux.Cam.fieldOfView / 90) / 1.5f))),(ban.position.y + 6) + (_dir.normalized.y * (MinCamZoom * (camLux.Cam.fieldOfView / 90))), camBan.transform.position.z);
+        //if (_dir.y > 10)
+        //    _luxOffset.y += 8;
+        //else if (_dir.y < -1)
+        //    _banOffset.y += 8;
         if(_dist <= MaxCamZoom * 1.5f)
         {
             if (_dist < MaxCamZoom)
@@ -236,31 +241,30 @@ public class WSB_CameraManager : MonoBehaviour
             }
 
             Vector3 _dirOffset = _luxOffset - _banOffset;
-            targetPositionCamBan = new Vector3(_luxOffset.x - (_dirOffset.x * (_dist / (maxCamZoom * 3))), _luxOffset.y - (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))), targetPositionCamBan.z);
+            targetPositionCamBan = new Vector3(_luxOffset.x - (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))), _luxOffset.y/* + 4*/ - (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))), targetPositionCamBan.z);
             if(IsOrtho) camBan.SetCam(targetPositionCamBan, targetPositionCamBan.z);
             else camBan.SetCam(targetPositionCamBan);
 
-            targetPositionCamLux = new Vector3(_banOffset.x + (_dirOffset.x * (_dist / (maxCamZoom * 3))), _banOffset.y + (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))), targetPositionCamLux.z);
+            targetPositionCamLux = new Vector3(_banOffset.x + (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))), _banOffset.y /*+ 4*/ + (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))), targetPositionCamLux.z);
             if(IsOrtho) camLux.SetCam(targetPositionCamLux, targetPositionCamLux.z);
             else camLux.SetCam(targetPositionCamLux);
         }
         else
         {
-            if(isOrtho)
+            if (isOrtho)
             {
-                camBan.SetCam((Vector2)_banOffset, MaxCamZoom);
-                camLux.SetCam((Vector2)_luxOffset, MaxCamZoom);
+                camBan.SetCam((Vector2)_banOffset /*+ Vector2.up * 8*/, MaxCamZoom);
+                camLux.SetCam((Vector2)_luxOffset /*+ Vector2.up * 8*/, MaxCamZoom);
             }
             else
             {
-                camBan.SetCam(new Vector3(_banOffset.x, _banOffset.y, targetPositionCamBan.z));
-                camLux.SetCam(new Vector3(_luxOffset.x, _luxOffset.y, targetPositionCamLux.z));
+                camBan.SetCam(new Vector3(_banOffset.x, _banOffset.y /*+ 4*/, targetPositionCamBan.z));
+                camLux.SetCam(new Vector3(_luxOffset.x, _luxOffset.y /*+ 4*/, targetPositionCamLux.z));
             }
         }
         float _angle = Mathf.Atan2(_dir.y, _dir.x) * Mathf.Rad2Deg;
         split.transform.eulerAngles = new Vector3(0, 0, _angle - 90);
     }
-
     void ToggleSplit(bool _status) => bigSplit.SetActive(_status);
 }
 

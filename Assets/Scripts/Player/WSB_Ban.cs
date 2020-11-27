@@ -236,6 +236,11 @@ public class WSB_Ban : WSB_Player
 
     IEnumerator RechargeWind()
     {
+        if (windCharges >= maxWindCharges)
+        {
+            rechargeWind = null;
+            yield break;
+        }
         yield return new WaitForSeconds(windChargeDelay);
         windCharges++;
         UpdateChargesUI(windTextCharges, windCharges.ToString());
@@ -264,10 +269,19 @@ public class WSB_Ban : WSB_Player
             for (int i = 0; i < _hits.Length; i++)
             {
                 _hit = _hits[i];
+
+                RaycastHit2D[] _checkPlayerOn = new RaycastHit2D[10];
+                _hit.Cast(Vector2.up, new ContactFilter2D(), _checkPlayerOn);
+                if (_checkPlayerOn.Any(_r => _r && _r.transform.GetComponent<WSB_Player>()))
+                    continue;
+
+
                 _physics = _hit.gameObject.GetComponent<Rigidbody2D>();
                 // if(raycast(pos, dir(pos, _hits.pos)) pas gêné, blow
                 if (_physics && _physics.mass < windMaxMass)
                 {
+                    if (_hit.GetComponent<WSB_Pot>())
+                        _hit.GetComponent<WSB_Pot>().BreakSeed();
                     _physics.AddForce(Vector2.up * (windPower - (Vector2.Distance(transform.position, _hit.transform.position) / 2))); // jsp
                     blownObjects.Add(_physics);
                     objectsVelocity.Add(_physics.velocity);
