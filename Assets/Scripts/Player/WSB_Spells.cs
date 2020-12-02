@@ -43,6 +43,18 @@ public class WSB_Spells : MonoBehaviour
             allSpells.ToList().ForEach(_g => _g.SetActive(false));
             active = false;
         }
+        int _index = 0;
+        float _height = allSpells[0].transform.position.y;
+        for (int i = 1; i < allSpells.Length; i++)
+        {
+            if (allSpells[i].transform.position.y > _height)
+            {
+                _height = allSpells[i].transform.position.y;
+                _index = i;
+            }
+        }
+
+        allSpells[_index].SetActive(true);
     }
 
     public void ShowWheel(InputAction.CallbackContext _context)
@@ -61,13 +73,27 @@ public class WSB_Spells : MonoBehaviour
     {
         if (!_context.canceled || WSB_PlayTestManager.Paused) return;
         allSpells.ToList().ForEach(_g => _g.SetActive(false));
+
+        int _index = 0;
+        float _height = allSpells[0].transform.position.y;
+        for (int i = 1; i < allSpells.Length; i++)
+        {
+            if(allSpells[i].transform.position.y > _height)
+            {
+                _height = allSpells[i].transform.position.y;
+                _index = i;
+            }
+        }
+
+        allSpells[_index].SetActive(true);
+
         active = false;
     }
 
     public void UseSpell(InputAction.CallbackContext _context)
     {
         if (_context.canceled) owner.StopSpell();
-        if (!_context.started || !active || WSB_PlayTestManager.Paused) return;
+        if (!_context.started /*|| !active*/ || WSB_PlayTestManager.Paused) return;
         int _i = 0;
         float _y = allSpells[0].transform.position.y;
         for (int i = 1; i < allSpells.Length; i++)

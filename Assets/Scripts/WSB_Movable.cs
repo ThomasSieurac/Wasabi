@@ -3,26 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D))]
-public class WSB_Player : MonoBehaviour
+public class WSB_Movable : MonoBehaviour
 {
-    #region debug
-
-    [SerializeField] GameObject nose = null;
-
-    #endregion
-
     protected Rigidbody2D Physic = null;
     protected BoxCollider2D Collider = null;
 
-    protected bool isRight = true;
+
 
     #region Unity
-    protected virtual void Awake()
+    private void Awake()
     {
-        // Gets needed components if not set.
-        // Throw errors if not found them destroy itself
-
         if (!Physic) Physic = GetComponent<Rigidbody2D>();
         if (!Physic)
         {
@@ -35,170 +25,28 @@ public class WSB_Player : MonoBehaviour
             Debug.LogError($"Erreur, component Collider2D manquant sur {transform.name}");
             Destroy(this);
         }
-
-        // Set debug nose position
-        nose.transform.localPosition = new Vector3((isRight ? .5f : -.5f), .5f);
     }
 
-    protected virtual void Update()
+    private void Update()
     {
-        // Adds input's horizontal movement
-        AddHorizontalMovement(xMovement);
-
-        // Check if user wants to climb
-        if (Mathf.Abs(yMovement) > 0 && canClimb)
-        {
-            force.y = 0;
-            isClimbing = true;
-            AddVerticalMovement(yMovement * controllerValues.ClimbSpeed);
-        }
-        // Unset climb bool if can't climb anymore
-        else if (!canClimb)
-            isClimbing = false;
-
-        // Makes character jump while input is pressed & grounded or climbing
-        if (jumpInput)
-        {
-            if (isGrounded || isClimbing || (Time.time - coyoteVar < controllerValues.JumpDelay))
-                Jump();
-            else
-                jumpBufferVar = Time.time;
-        }
-
-        // Calculate jump height value
-        if (isJumping)
-        {
-            // Stop the jump if input is released & peak of jump icn't reached yet
-            if (!jumpInput && jumpVar < .3f)
-            {
-                jumpOriginHeight -= controllerValues.JumpCurve.Evaluate(.3f) - controllerValues.JumpCurve.Evaluate(jumpVar);
-                jumpVar = .3f;
-            }
-            // Get the value corresponding to the curve set
-            else
-            {
-                jumpVar += Time.deltaTime;
-
-                // Stop jump if peak reached
-                if (jumpVar > controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time)
-                {
-                    jumpVar = controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time;
-                    StopJump();
-                }
-
-                AddVerticalMovement((jumpOriginHeight + controllerValues.JumpCurve.Evaluate(jumpVar) - Physic.position.y) / Time.deltaTime);
-            }
-        }
-        else if (!isClimbing)
-            ApplyGravity();
-
+        ApplyGravity();
 
         if ((force + instantForce + movement) != Vector2.zero)
         {
             Vector2 _pos = Physic.position;
 
-            // Push/pull grabbed object if there is any
-            if (grabbedObject && grabbedObject.GetComponent<WSB_Movable>())
-                grabbedObject.GetComponent<WSB_Movable>().AddInstantForce(GetVeloctity());
-
-            // Reduce x force
             ComputeVelocity();
-
-            // Calcul collision around character
             CalculCollision();
-
-            // Refresh transform position based on physic position
             RefreshPosition();
-
 
             OnAppliedVelocity(Physic.position - _pos);
 
             instantForce = movement = Vector2.zero;
-                
         }
         else
             OnAppliedVelocity(Vector2.zero);
 
-        // Drop grabbedObject if distance is too big
-        if (grabbedObject)
-        {
-            if (!isGrounded || Vector2.Distance(grabbedObject.transform.position, transform.position) > 2)
-                grabbedObject = null;
-        }
     }
-
-    #endregion
-
-    #region Input Reading
-
-    float xMovement = 0;
-    float yMovement = 0;
-    [SerializeField] GameObject grabbedObject = null;
-    [SerializeField] ContactFilter2D grabContactFilter = new ContactFilter2D();
-
-    // Reads x & y movement and sets it in xMovement & yMovement
-    public void Move(InputAction.CallbackContext _context)
-    {
-        if (WSB_PlayTestManager.Paused)
-            return;
-        if (_context.valueType != typeof(Vector2)) return;
-        xMovement = _context.ReadValue<Vector2>().x;
-        if (xMovement < 0)
-            isRight = false;
-        if (xMovement > 0)
-            isRight = true;
-        nose.transform.localPosition = new Vector3((isRight ? .5f : -.5f), .5f);
-        yMovement = _context.ReadValue<Vector2>().y;
-    }
-
-    // Reads jump input and sets it in jumpInput
-    public void Jump(InputAction.CallbackContext _context)
-    {
-        if (WSB_PlayTestManager.Paused/* || IsDialogue*/)
-            return;
-        if (_context.valueType == typeof(float))
-            jumpInput = _context.ReadValue<float>() == 1;
-    }
-
-    // Reads grab input and try to grab object
-    public void GrabObject(InputAction.CallbackContext _context)
-    {
-        // Drop object if input canceled
-        if (_context.canceled && grabbedObject)
-            grabbedObject = null;
-
-        else if (_context.started && !grabbedObject)
-        {
-            RaycastHit2D[] _hit = new RaycastHit2D[1];
-
-            // Cast on facing direction to check if there is an object
-            if (Collider.Cast(isRight ? Vector2.right : Vector2.left, grabContactFilter, _hit, .8f) > 0)
-            {
-                // Search for WSB_Pot component
-                if (_hit[0].transform.GetComponent<WSB_Pot>())
-                    // Breaks seed if pot found & not Carnivore or Trampoline seed
-                    if(_hit[0].transform.childCount > 0 && _hit[0].transform.GetChild(0).tag != "Carnivore" && _hit[0].transform.GetChild(0).tag != "Trampoline")
-                        _hit[0].transform.GetComponent<WSB_Pot>().BreakSeed();
-
-                // Sets grabbedObject var
-                grabbedObject = _hit[0].transform.gameObject;
-            }
-        }
-    }
-
-
-    public virtual void UseSpell(string _s)
-    {
-        if (grabbedObject)
-            return;
-    }
-    public virtual void StopSpell()
-    {
-        if (grabbedObject)
-            return;
-    }
-
-    public void CanClimb(bool _s) => canClimb = _s;
 
     #endregion
 
@@ -214,22 +62,18 @@ public class WSB_Player : MonoBehaviour
     [SerializeField] Vector2 groundNormal = new Vector2();
 
     [SerializeField] bool isGrounded = false;
-    [SerializeField] bool isJumping = false;
-    [SerializeField] bool isClimbing = false;
-    [SerializeField] bool canClimb = false;
 
 
 
     void OnAppliedVelocity(Vector2 _velocity)
     {
-        if (isJumping)
-            jumpOriginHeight += _velocity.y - (movement.y * Time.deltaTime);
+
     }
 
     void ComputeVelocity()
     {
-        if (force.x != 0)
-            force.x = Mathf.MoveTowards(force.x, 0, controllerValues.Deceleration * Time.deltaTime);
+        //if (force.x != 0)
+        //    force.x = Mathf.MoveTowards(force.x, 0, controllerValues.Deceleration * Time.deltaTime);
     }
 
     void RefreshPosition()
@@ -246,42 +90,6 @@ public class WSB_Player : MonoBehaviour
     }
 
 
-    #region Jump
-
-    [SerializeField] bool jumpInput = false;
-    [SerializeField] ContactFilter2D semiSolidFilter = new ContactFilter2D();
-
-    float jumpVar = 0;
-    float jumpOriginHeight = 0;
-    float coyoteVar = -999;
-    float jumpBufferVar = -999;
-
-    void Jump()
-    {
-        if(yMovement < -.2f)
-        {
-            RaycastHit2D[] _hits = new RaycastHit2D[1];
-            if (Collider.Cast(Vector3.down, semiSolidFilter, _hits) > 0)
-            {
-                ignoredCollider = _hits[0].collider;
-                return;
-            }
-        }
-
-        isJumping = true;
-        jumpVar = force.y = 0;
-        jumpOriginHeight = transform.position.y;
-        coyoteVar = -999;
-    }
-
-    void StopJump() => isJumping = false;
-
-    public void TrampolineJump(Vector2 _f)
-    {
-        force.y = 0;
-        AddForce(_f);
-    }
-    #endregion
 
 
     #region Collision
@@ -314,12 +122,6 @@ public class WSB_Player : MonoBehaviour
         {
             if (force != Vector2.zero)
                 force -= castBuffer[i].normal * Vector2.Dot(force, castBuffer[i].normal);
-
-            if (isJumping && castBuffer[i].normal.y == -1)
-            {
-                isJumping = true;
-                groundNormal = castBuffer[i].normal;
-            }
 
             if (!_isGrounded && (castBuffer[i].normal.y > controllerValues.GroundMin))
             {
@@ -458,11 +260,7 @@ public class WSB_Player : MonoBehaviour
         {
             if (ignoredCollider)
                 ignoredCollider = null;
-            if (Time.time - jumpBufferVar < controllerValues.JumpBufferDelay)
-                Jump();
         }
-        else
-            coyoteVar = Time.time;
     }
 
     void ClimbStep(ref Vector2 _velocity, RaycastHit2D _hit)
@@ -512,26 +310,7 @@ public class WSB_Player : MonoBehaviour
 
     #region AddForces
 
-    float 所有 = 0;
-
-
     public void AddForce(Vector2 _force) => force += _force;
-
-    void AddVerticalMovement(float _velocity) => movement.y += _velocity;
-
-    void AddHorizontalMovement(float _velocity)
-    {
-        if (_velocity == 0)
-        {
-            所有 = speed = 0;
-            return;
-        }
-
-        所有 = Mathf.Min(所有 + Time.deltaTime, controllerValues.SpeedCurve[controllerValues.SpeedCurve.length - 1].time);
-        speed = controllerValues.SpeedCurve.Evaluate(所有);
-
-        movement.x += _velocity * speed;
-    }
 
     public void AddInstantForce(Vector2 _velocity) => instantForce += _velocity;
 

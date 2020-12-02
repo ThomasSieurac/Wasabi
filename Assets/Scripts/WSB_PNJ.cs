@@ -18,17 +18,17 @@ public class WSB_PNJ : MonoBehaviour
     {
         if (collision.GetComponent<WSB_Ban>())
         {
-            collision.GetComponent<WSB_Player>().IsDialogue = true;
+            //collision.GetComponent<WSB_Player>().IsDialogue = true;
             banIn = true;
             actionBan.FindAction("Use").performed += StartDialogue;
-            actionBan.FindAction("Jump").performed += StartDialogue;
+            //actionBan.FindAction("Jump").performed += StartDialogue;
         }
         if (collision.GetComponent<WSB_Lux>())
         {
-            collision.GetComponent<WSB_Player>().IsDialogue = true;
+            //collision.GetComponent<WSB_Player>().IsDialogue = true;
             luxIn = true;
             actionLux.FindAction("Use").performed += StartDialogue;
-            actionLux.FindAction("Jump").performed += StartDialogue;
+            //actionLux.FindAction("Jump").performed += StartDialogue;
         }
     }
 
@@ -36,17 +36,17 @@ public class WSB_PNJ : MonoBehaviour
     {
         if (collision.GetComponent<WSB_Ban>())
         {
-            collision.GetComponent<WSB_Player>().IsDialogue = false;
+            //collision.GetComponent<WSB_Player>().IsDialogue = false;
             banIn = false;
             actionBan.FindAction("Use").performed -= StartDialogue;
-            actionBan.FindAction("Jump").performed -= StartDialogue;
+            //actionBan.FindAction("Jump").performed -= StartDialogue;
         }
         if (collision.GetComponent<WSB_Lux>())
         {
-            collision.GetComponent<WSB_Player>().IsDialogue = false;
+            //collision.GetComponent<WSB_Player>().IsDialogue = false;
             luxIn = false;
             actionLux.FindAction("Use").performed -= StartDialogue;
-            actionLux.FindAction("Jump").performed -= StartDialogue;
+            //actionLux.FindAction("Jump").performed -= StartDialogue;
         }
         if (!banIn && !luxIn)
         {

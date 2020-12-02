@@ -656,6 +656,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1094644995832282397}
     m_Modifications:
+    - target: {fileID: 2140465771, guid: 4f63d398157508647ad35719b0360b11, type: 3}
+      propertyPath: grabContactFilter.useLayerMask
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2140465771, guid: 4f63d398157508647ad35719b0360b11, type: 3}
+      propertyPath: grabContactFilter.layerMask.m_Bits
+      value: 8704
+      objectReference: {fileID: 0}
     - target: {fileID: 3075282508786744326, guid: 4f63d398157508647ad35719b0360b11,
         type: 3}
       propertyPath: m_LocalPosition.x
