@@ -101,15 +101,9 @@ public class WSB_Player : MonoBehaviour
             if (grabbedObject && grabbedObject.GetComponent<WSB_Movable>())
                 grabbedObject.GetComponent<WSB_Movable>().AddInstantForce(GetVeloctity());
 
-            // Reduce x force
             ComputeVelocity();
-
-            // Calcul collision around character
             CalculCollision();
-
-            // Refresh transform position based on physic position
             RefreshPosition();
-
 
             OnAppliedVelocity(Physic.position - _pos);
 
@@ -186,18 +180,23 @@ public class WSB_Player : MonoBehaviour
         }
     }
 
-
+    // Virtual method
     public virtual void UseSpell(string _s)
     {
-        if (grabbedObject)
-            return;
-    }
-    public virtual void StopSpell()
-    {
+        // Stops if grabbedObject
         if (grabbedObject)
             return;
     }
 
+    // Virtual method
+    public virtual void StopSpell()
+    {
+        // Stops if grabbedObject
+        if (grabbedObject)
+            return;
+    }
+
+    // Set canClimb bool
     public void CanClimb(bool _s) => canClimb = _s;
 
     #endregion
@@ -226,19 +225,27 @@ public class WSB_Player : MonoBehaviour
             jumpOriginHeight += _velocity.y - (movement.y * Time.deltaTime);
     }
 
+    // Reduce x force based on Deceleration
     void ComputeVelocity()
     {
         if (force.x != 0)
             force.x = Mathf.MoveTowards(force.x, 0, controllerValues.Deceleration * Time.deltaTime);
     }
 
+    // Refresh Physic position
     void RefreshPosition()
     {
+        // Cast collider around itself
         int _amount = Collider.OverlapCollider(controllerValues.Contact, overlapBuffer);
+
+        // Loop through colliders found
         for (int i = 0; i < _amount; i++)
         {
+            // Skips this collider if tagged as ignored
             if (overlapBuffer[i] == ignoredCollider)
                 continue;
+
+            // Push out Physic position from the collider
             ColliderDistance2D _distance = Collider.Distance(overlapBuffer[i]);
             if (_distance.isOverlapped && (!overlapBuffer[i].transform.GetComponent<PlatformEffector2D>() || _distance.normal.y == -1))
                 Physic.position += _distance.normal * _distance.distance;
@@ -256,21 +263,30 @@ public class WSB_Player : MonoBehaviour
     float coyoteVar = -999;
     float jumpBufferVar = -999;
 
+    // Makes the character jump
     void Jump()
     {
-        if(yMovement < -.2f)
+        // Checks if input was in direction of the ground
+        if(yMovement < -.8f)
         {
+            // Cast below character to found if there is any SemiSolid plateform
             RaycastHit2D[] _hits = new RaycastHit2D[1];
             if (Collider.Cast(Vector3.down, semiSolidFilter, _hits) > 0)
             {
+                // If found set collider in ignoredCollider and don't do the jump
                 ignoredCollider = _hits[0].collider;
                 return;
             }
         }
 
         isJumping = true;
+
         jumpVar = force.y = 0;
+
+        // Set originHeight for jump curve calculs
         jumpOriginHeight = transform.position.y;
+
+        // Reset coyoteVar to unobtainable number
         coyoteVar = -999;
     }
 
@@ -291,11 +307,14 @@ public class WSB_Player : MonoBehaviour
     private static readonly RaycastHit2D[] castBuffer = new RaycastHit2D[4];
     private static readonly Collider2D[] overlapBuffer = new Collider2D[4];
 
+    // Main collision method
     void CalculCollision()
     {
         Vector2 _velocity = GetVeloctity();
+
         if (isGrounded)
         {
+            // Rotates _velocity such as it behaves on the normal flat surface
             Vector2 _x = Vector2.Perpendicular(groundNormal);
             if (_x.x < 0)
                 _x *= -1;
@@ -310,6 +329,7 @@ public class WSB_Player : MonoBehaviour
         CalculCollisionRecursively(_velocity, groundNormal);
 
         bool _isGrounded = false;
+
         for (int i = 0; i < bufferAmount; i++)
         {
             if (force != Vector2.zero)

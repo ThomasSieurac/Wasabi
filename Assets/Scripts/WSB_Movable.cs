@@ -29,6 +29,10 @@ public class WSB_Movable : MonoBehaviour
 
     private void Update()
     {
+        // Hold if game is on Pause
+        if (WSB_PlayTestManager.Paused)
+            return;
+
         ApplyGravity();
 
         if ((force + instantForce + movement) != Vector2.zero)
@@ -316,7 +320,7 @@ public class WSB_Movable : MonoBehaviour
 
     #endregion
 
-    Vector2 GetVeloctity() => ((force + movement) * Time.deltaTime) + instantForce * controllerValues.SpeedCoef;
+    public Vector2 GetVeloctity() => ((force + movement) * Time.deltaTime) + instantForce * controllerValues.SpeedCoef;
 
     #endregion
 }
