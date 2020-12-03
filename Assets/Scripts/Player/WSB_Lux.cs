@@ -22,29 +22,6 @@ public class WSB_Lux : WSB_Player
     int ladderCharges = 10;
     #endregion
 
-    #region Trampoline Seed
-    //[Header("Trampoline Seed"), Space, Space, SerializeField] float trampolineChargeDelay = 10;
-
-    //Coroutine rechargeTrampoline = null;
-    #endregion
-
-    #region Carnivore Seed
-    //[Header("Carnivore Seed"), Space, Space, SerializeField]  float carnivoreChargeDelay = 10;
-
-    //Coroutine rechargeCarnivore = null;
-    #endregion
-
-    #region Ladder Seed
-    //[Header("Ladder Seed"), Space, Space, SerializeField] float ladderChargeDelay = 10;
-
-    //Coroutine rechargeLadder = null;
-    #endregion
-
-    #region Bridge Seed
-    //[Header("Bridge Seed"), Space, Space, SerializeField] float bridgeChargeDelay = 10;
-
-    //Coroutine rechargeBridge = null;
-    #endregion
 
     [SerializeField] float shrinkSpeed = 10;
     [SerializeField] float shrinkDuration = 20;
@@ -57,15 +34,17 @@ public class WSB_Lux : WSB_Player
     [SerializeField] List<TMP_Text> trampolineTextCharges = new List<TMP_Text>();
     [SerializeField] List<TMP_Text> carnivoreTextCharges = new List<TMP_Text>();
 
+    // Populate the Instance of this script
     protected override void Awake()
     {
         base.Awake();
         I = this;
     }
+
+    // Set default calues to charges and adds custom update in game global update
     void Start()
     {
         WSB_PlayTestManager.OnUpdate += MyUpdate;
-        //WSB_PlayTestManager.OnUpdate += base.Update;
         bridgeCharges = maxBridgeCharges;
         trampolineCharges = maxTrampolineCharges;
         ladderCharges = maxLadderCharges;
@@ -75,9 +54,10 @@ public class WSB_Lux : WSB_Player
 
     protected override void Update()
     {
-        //base.Update();
+        // Has to be here and empty to override Unity update and use MyUpdate below
     }
 
+    // Update called on bound event
     void MyUpdate()
     {
         base.Update();
@@ -86,27 +66,45 @@ public class WSB_Lux : WSB_Player
     public override void UseSpell(string _s)
     {
         base.UseSpell(_s);
+
+        // Exit if game paused
         if (WSB_PlayTestManager.Paused)
             return;
 
+        // Search for pot in corresponding direction
         RaycastHit2D _hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - .8f), isRight ? Vector2.right : Vector2.left, range, potLayer);
 
         if(_hit)
         {
             WSB_Pot _pot = _hit.transform.GetComponent<WSB_Pot>();
-            if (!_pot) return;
+
+            // Exist if WSB_Pot doesn't exist
+            if (!_pot)
+                return;
+
+            // Exit if growing a seed isn't possible
             if (!_pot.GrowSeed(_s))
                 return;
-            if (_s == "Trampoline" && trampolineCharges > 0) Trampoline();
-            else if (_s == "Bridge" && bridgeCharges > 0) Bridge(_pot);
-            else if (_s == "Ladder" && ladderCharges > 0) Ladder();
-            else if (_s == "Carnivore" && carnivoreCharges > 0) Carnivore();
+
+            // Switch on the given string to find the corresponding seed to grow
+            if (_s == "Trampoline" && trampolineCharges > 0) 
+                Trampoline();
+
+            else if (_s == "Bridge" && bridgeCharges > 0) 
+                Bridge(_pot);
+
+            else if (_s == "Ladder" && ladderCharges > 0) 
+                Ladder();
+
+            else if (_s == "Carnivore" && carnivoreCharges > 0) 
+                Carnivore();
         }
 
     }
 
     public void RechargeSeed(string _s)
     {
+        // Switch on given string to find the corresponding charges to increase if not already full and updates corresponding UI
         if (_s == "Trampoline" && trampolineCharges < maxTrampolineCharges)
         {
             trampolineCharges++;
@@ -131,121 +129,83 @@ public class WSB_Lux : WSB_Player
 
     public bool Shrink()
     {
+        // If a shrink has already been done, exit with return that shrink wasn't done
         if (shrink != null)
             return false;
+
+        // Start a shrink and return that shrink was done
         shrink = StartCoroutine(DelayShrink());
         return true;
     }
 
     [SerializeField] LayerMask shrinkLayer = 0;
 
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawRay(transform.position + Vector3.right, Vector3.up * 2);
-    //    Gizmos.DrawRay(transform.position + Vector3.left, Vector3.up * 2);
-    //}
-
     IEnumerator DelayShrink()
     {
+        // Stock start sizes
         Vector2 _startSize = Collider.size;
         Vector3 _startRenderSize = render.transform.localScale;
+
+        // Reduce size to half of the start's
         while(Collider.size != _startSize/2)
         {
             Collider.size = Vector2.MoveTowards(Collider.size, _startSize / 2, Time.deltaTime * shrinkSpeed);
             render.transform.localScale = Vector3.MoveTowards(render.transform.localScale, _startRenderSize / 2, Time.deltaTime * shrinkSpeed);
             yield return new WaitForEndOfFrame();
         }
+
+        // Wait for shrink duration
         yield return new WaitForSeconds(shrinkDuration);
 
-        //RaycastHit2D[] _hits = new RaycastHit2D[1];
+        // Checks above behind if there is a roof, loops until there isn't anymore
         while (Physics2D.Raycast(transform.position + Vector3.right, Vector2.up, 2, shrinkLayer) || Physics2D.Raycast(transform.position + Vector3.left, Vector2.up, 2, shrinkLayer)) 
             yield return new WaitForSeconds(.1f);
 
+        // Increase size back to the stocked start size
         while(Collider.size != _startSize)
         {
             Collider.size = Vector2.MoveTowards(Collider.size, _startSize, Time.deltaTime * shrinkSpeed);
             render.transform.localScale = Vector3.MoveTowards(render.transform.localScale, _startRenderSize, Time.deltaTime * shrinkSpeed);
             yield return new WaitForEndOfFrame();
         }
+
         shrink = null;
     }
 
-    #region Trampoline
     void Trampoline()
     {
+        // Reduce trampoline charges and update corresponding UI
         trampolineCharges--;
         UpdateChargesUI(trampolineTextCharges, trampolineCharges.ToString());
-        //if (rechargeTrampoline == null) StartCoroutine(RechargeTrampoline());
     }
 
-    //IEnumerator RechargeTrampoline()
-    //{
-    //    yield return new WaitForSeconds(trampolineChargeDelay);
-    //    trampolineCharges++;
-    //    UpdateChargesUI(trampolineTextCharges, trampolineCharges.ToString());
-    //    if (trampolineCharges < maxTrampolineCharges) rechargeTrampoline = StartCoroutine(RechargeTrampoline());
-    //    else rechargeTrampoline = null;
-    //}
-    #endregion
-
-    #region Carnivore
     void Carnivore()
     {
+        // Reduce carnivore charges and update corresponding UI
         carnivoreCharges--;
         UpdateChargesUI(carnivoreTextCharges, carnivoreCharges.ToString());
-        //if (rechargeCarnivore == null) StartCoroutine(RechargeCarnivore());
     }
 
-    //IEnumerator RechargeCarnivore()
-    //{
-    //    yield return new WaitForSeconds(carnivoreChargeDelay);
-    //    carnivoreCharges++;
-    //    UpdateChargesUI(carnivoreTextCharges, carnivoreCharges.ToString());
-    //    if (carnivoreCharges < maxCarnivoreCharges) rechargeCarnivore = StartCoroutine(RechargeCarnivore());
-    //    else rechargeCarnivore = null;
-    //}
-    #endregion
-
-    #region Bridge
     void Bridge(WSB_Pot _pot)
     {
+        // Deploy bridge and gives it the direction it needs to grow
         _pot.GrownSeed.GetComponent<WSB_Bridge>().StartCoroutine(_pot.GrownSeed.GetComponent<WSB_Bridge>().DeployBridge(transform.position.x < _pot.transform.position.x));
+
+        // Reduce bridge charges and update corresponding UI
         bridgeCharges--;
         UpdateChargesUI(bridgeTextCharges, bridgeCharges.ToString());
-        //if (rechargeBridge == null) StartCoroutine(RechargeBridge());
     }
 
-    //IEnumerator RechargeBridge()
-    //{
-    //    yield return new WaitForSeconds(bridgeChargeDelay);
-    //    bridgeCharges++;
-    //    UpdateChargesUI(bridgeTextCharges, bridgeCharges.ToString());
-    //    if (bridgeCharges < maxBridgeCharges) rechargeBridge = StartCoroutine(RechargeBridge());
-    //    else rechargeBridge = null;
-    //}
-    #endregion
-
-    #region Ladder
     void Ladder()
     {
+        // Reduce ladder charges and update corresponding UI
         ladderCharges--;
         UpdateChargesUI(ladderTextCharges, ladderCharges.ToString());
-        //if(rechargeLadder == null) StartCoroutine(RechargeLadder());
     }
-
-    //IEnumerator RechargeLadder()
-    //{
-    //    yield return new WaitForSeconds(ladderChargeDelay);
-    //    ladderCharges++;
-    //    UpdateChargesUI(ladderTextCharges, ladderCharges.ToString());
-    //    if (ladderCharges < maxLadderCharges) rechargeLadder = StartCoroutine(RechargeLadder());
-    //    else rechargeLadder = null;
-    //}
-    #endregion
 
     void UpdateChargesUI(List<TMP_Text> _list, string _value)
     {
+        // Sets text of each object in the list to the value given
         foreach (TMP_Text _txt in _list)
         {
             _txt.text = _value;

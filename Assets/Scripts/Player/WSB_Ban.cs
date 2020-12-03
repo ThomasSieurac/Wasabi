@@ -80,6 +80,10 @@ public class WSB_Ban : WSB_Player
         lightCharges = maxLightCharges;
         shrinkCharges = maxShrinkCharges;
     }
+    protected override void Update()
+    {
+        // Has to be here and empty to override Unity update and use MyUpdate below
+    }
 
     // Update called on bound event
     void MyUpdate()
