@@ -111,7 +111,6 @@ public class WSB_Camera : MonoBehaviour
                 Mathf.MoveTowards(transform.position.x, _pos.x, Time.time * WSB_CameraManager.I.CamMoveSpeed),
                 Mathf.MoveTowards(transform.position.y, _pos.y, Time.time * WSB_CameraManager.I.CamMoveSpeed),
                 Mathf.MoveTowards(transform.position.z, _pos.z, Time.time * WSB_CameraManager.I.CamZoomSpeed));
-                //Vector3.MoveTowards(transform.position, _pos, Time.deltaTime * (WSB_CameraManager.I.CamMoveSpeed));
             yield return new WaitForEndOfFrame();
         }
         if (_needCallBack) WSB_CameraManager.I.SwitchCamType(CamType.Dynamic, transform.position);

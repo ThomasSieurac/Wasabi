@@ -20,6 +20,8 @@ public class CE_PressurePlate : Editor
     {
         WSB_PressurePlate _b = (WSB_PressurePlate)serializedObject.targetObject;
         owner = _b.gameObject;
+
+        // Populate serialized properties
         activateEvent = serializedObject.FindProperty("onActivate");
         deactivateEvent = serializedObject.FindProperty("onDeactivate");
         massNeeded = serializedObject.FindProperty("massNeeded");
@@ -28,27 +30,34 @@ public class CE_PressurePlate : Editor
 
     public override void OnInspectorGUI()
     {
-        //customEditor = GUILayout.Toggle(customEditor, "Toggle Custom Editor");
-        //GUILayout.Space(25);
+        // Toggle or not the custom editor
+        customEditor = GUILayout.Toggle(customEditor, "Toggle Custom Editor");
+        GUILayout.Space(25);
+
         if (customEditor)
         {
             serializedObject.Update();
+
             EditorGUILayout.LabelField("The mass needed for the plate to be active :");
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(massNeeded);
             EditorGUILayout.Space();
+
             showEvents = EditorGUILayout.Foldout(showEvents, "Show Events", true);
             if (showEvents)
             {
                 EditorGUILayout.PropertyField(activateEvent);
                 EditorGUILayout.PropertyField(deactivateEvent);
             }
+
             serializedObject.ApplyModifiedProperties();
         }
-        else base.OnInspectorGUI();
+        else
+            base.OnInspectorGUI();
     }
 
+    // Basically some ugly search to find the Gameobjects where the events calls
     private void OnSceneGUI()
     {
         var path = activateEvent.propertyPath.Replace(".Array.data[", "[");
@@ -81,6 +90,7 @@ public class CE_PressurePlate : Editor
                         GameObject _target = (GameObject)_object;
                         if (_target)
                         {
+                            // Draw of line from button to object activated by button
                             Handles.color = Color.green;
                             Handles.DrawLine(_target.transform.position, owner.transform.position);
 

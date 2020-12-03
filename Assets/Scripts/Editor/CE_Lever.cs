@@ -19,6 +19,8 @@ public class CE_Lever : Editor
     {
         WSB_Lever _b = (WSB_Lever)serializedObject.targetObject;
         owner = _b.gameObject;
+
+        // Populate serialized properties
         activateEvent = serializedObject.FindProperty("onActivate");
         deactivateEvent = serializedObject.FindProperty("onDeactivate");
     }
@@ -26,8 +28,10 @@ public class CE_Lever : Editor
 
     public override void OnInspectorGUI()
     {
-        //customEditor = GUILayout.Toggle(customEditor, "Toggle Custom Editor");
-        //GUILayout.Space(25);
+        // Toggle or not the custom editor
+        customEditor = GUILayout.Toggle(customEditor, "Toggle Custom Editor");
+        GUILayout.Space(25);
+
         if (customEditor)
         {
             serializedObject.Update();
@@ -38,11 +42,14 @@ public class CE_Lever : Editor
                 EditorGUILayout.PropertyField(activateEvent);
                 EditorGUILayout.PropertyField(deactivateEvent);
             }
+
             serializedObject.ApplyModifiedProperties();
         }
-        else base.OnInspectorGUI();
+        else
+            base.OnInspectorGUI();
     }
 
+    // Basically some ugly search to find the Gameobjects where the events calls
     private void OnSceneGUI()
     {
         var path = activateEvent.propertyPath.Replace(".Array.data[", "[");
@@ -75,6 +82,7 @@ public class CE_Lever : Editor
                         GameObject _target = (GameObject)_object;
                         if (_target)
                         {
+                            // Draw of line from button to object activated by button
                             Handles.color = Color.green;
                             Handles.DrawLine(_target.transform.position, owner.transform.position);
 
@@ -123,8 +131,6 @@ public class CE_Lever : Editor
             }
         }
     }
-
-
     private static object GetValue_Imp(object source, string name)
     {
         if (source == null)
@@ -147,12 +153,9 @@ public class CE_Lever : Editor
     }
     private static object GetValue_Imp(object source, string name, int index)
     {
-        var enumerable = GetValue_Imp(source, name) as System.Collections.IEnumerable;
+        var enumerable = GetValue_Imp(source, name) as IEnumerable;
         if (enumerable == null) return null;
         var enm = enumerable.GetEnumerator();
-        //while (index-- >= 0)
-        //    enm.MoveNext();
-        //return enm.Current;
 
         for (int i = 0; i <= index; i++)
         {

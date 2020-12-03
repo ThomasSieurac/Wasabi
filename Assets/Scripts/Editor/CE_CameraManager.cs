@@ -17,6 +17,7 @@ public class CE_CameraManager : Editor
 
     private void OnEnable()
     {
+        // Populate serialized properties
         isOrtho = serializedObject.FindProperty("isOrtho");
         camMoveSpeed = serializedObject.FindProperty("camMoveSpeed");
         camZoomSpeed = serializedObject.FindProperty("camZoomSpeed");
@@ -28,6 +29,7 @@ public class CE_CameraManager : Editor
 
     public override void OnInspectorGUI()
     {
+        // Fetch all Camera Manager, throw an error if there is more than one in the scene
         WSB_CameraManager[] _foundManagers = FindObjectsOfType<WSB_CameraManager>();
         if(_foundManagers.Length > 1)
         {
@@ -41,14 +43,17 @@ public class CE_CameraManager : Editor
         }
 
 
-
+        // Toggle or not the custom editor
         ceActive = EditorGUILayout.ToggleLeft("Toggle custom editor", ceActive);
 
-        if (!ceActive) base.OnInspectorGUI();
+        if (!ceActive)
+            base.OnInspectorGUI();
+
         else
         {
             serializedObject.Update();
 
+            // Create GUIStyle for categories
             GUIStyle _style = new GUIStyle();
             _style.fontStyle = FontStyle.Bold;
             _style.fontSize = _style.fontSize + 15;
@@ -57,6 +62,7 @@ public class CE_CameraManager : Editor
             EditorGUILayout.LabelField("Parameters :", _style);
             EditorGUILayout.Space();
 
+            // Decrease fontsize a bit
             _style.fontSize = _style.fontSize - 15;
 
             EditorGUILayout.PropertyField(isOrtho);

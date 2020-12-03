@@ -25,6 +25,10 @@ public class WSB_TriggerCam : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        // For easy use
+        // Color selected based on trigger type
+        // Draw the trigger in that color
+        // Draw a line to the position the camera will go
         switch (Type)
         {
             case CamType.Fixe:
@@ -54,6 +58,8 @@ public class WSB_TriggerCam : MonoBehaviour
 
     private void Awake()
     {
+        // Gets needed components if not set.
+        // Throw errors if not found them destroy itself
         if (!trigger) trigger = GetComponent<BoxCollider2D>();
         if(!trigger)
         {
@@ -64,14 +70,18 @@ public class WSB_TriggerCam : MonoBehaviour
 
     private void Start()
     {
+        // Setup trigger
         trigger.isTrigger = true;
         trigger.size = triggerSize;
-        if (WSB_CameraManager.I.IsOrtho) changePositionTo = new Vector3(changePositionTo.x, changePositionTo.y, changeZoomTo);
+        if (WSB_CameraManager.I.IsOrtho)
+            changePositionTo = new Vector3(changePositionTo.x, changePositionTo.y, changeZoomTo);
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.GetComponent<PlayerInput>()) WSB_CameraManager.I.TriggerEntered(this);
+        // If any player enters this trigger, send the trigger information to the camera manager
+        if (col.GetComponent<PlayerInput>())
+            WSB_CameraManager.I.TriggerEntered(this);
     }
 
 }
