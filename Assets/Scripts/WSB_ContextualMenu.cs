@@ -13,8 +13,11 @@ public class WSB_ContextualMenu : MonoBehaviour
     {
         if (collision.GetComponent<WSB_Player>())
         {
+            // Increase the stocked number of players in the trigger
             playersIn++;
-            Show();
+
+            // Activate the thing to show
+            toShow.SetActive(true);
         }
     }
 
@@ -22,23 +25,13 @@ public class WSB_ContextualMenu : MonoBehaviour
     {
         if (collision.GetComponent<WSB_Player>())
         {
+            // Decrease the stocked number of players in the trigger
             playersIn--;
+
+            // If there is no players left in the trigger, disable the thing to show
             if(playersIn == 0)
-                Hide();
+                toShow.SetActive(false);
         }
     }
-
-    void Show()
-    {
-        if (toShow)
-            toShow.SetActive(true);
-    }
-
-    void Hide()
-    {
-        if (toShow)
-            toShow.SetActive(false);
-    }
-
 
 }

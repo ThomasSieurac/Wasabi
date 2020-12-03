@@ -18,17 +18,19 @@ public class WSB_PNJ : MonoBehaviour
     {
         if (collision.GetComponent<WSB_Ban>())
         {
-            //collision.GetComponent<WSB_Player>().IsDialogue = true;
+            // Stocks ban entered the trigger of the PNJ
             banIn = true;
+
+            // Bind StartDialogue method on ban's Use action
             actionBan.FindAction("Use").performed += StartDialogue;
-            //actionBan.FindAction("Jump").performed += StartDialogue;
         }
         if (collision.GetComponent<WSB_Lux>())
         {
-            //collision.GetComponent<WSB_Player>().IsDialogue = true;
+            // Stocks lux entered the trigger of the PNJ
             luxIn = true;
+
+            // Bind StartDialogue method on lux's Use action
             actionLux.FindAction("Use").performed += StartDialogue;
-            //actionLux.FindAction("Jump").performed += StartDialogue;
         }
     }
 
@@ -36,18 +38,22 @@ public class WSB_PNJ : MonoBehaviour
     {
         if (collision.GetComponent<WSB_Ban>())
         {
-            //collision.GetComponent<WSB_Player>().IsDialogue = false;
+            // Stocks ban left the trigger of the PNJ
             banIn = false;
+
+            // Unbind StartDialogue method of ban's Use action
             actionBan.FindAction("Use").performed -= StartDialogue;
-            //actionBan.FindAction("Jump").performed -= StartDialogue;
         }
         if (collision.GetComponent<WSB_Lux>())
         {
-            //collision.GetComponent<WSB_Player>().IsDialogue = false;
+            // Stocks lux left the trigger of the PNJ
             luxIn = false;
+
+            // Unbind StartDialogue method of lux's Use action
             actionLux.FindAction("Use").performed -= StartDialogue;
-            //actionLux.FindAction("Jump").performed -= StartDialogue;
         }
+
+        // If both Lux and Ban aren't in the PNJ trigger disable the dialogue and tells the gamemanager
         if (!banIn && !luxIn)
         {
             dialogue.gameObject.SetActive(false);
@@ -57,10 +63,15 @@ public class WSB_PNJ : MonoBehaviour
 
     void StartDialogue(InputAction.CallbackContext obj)
     {
+        // Exit if game paused or dialogue isn't set
         if (!dialogue || WSB_PlayTestManager.Paused)
             return;
+
+        // If the dialogue is already playing, skips to the next line or dialogue
         if (dialogue.gameObject.activeSelf)
             dialogue.Skip(obj);
+
+        // If not, start a new dialogue
         else if(!WSB_PlayTestManager.IsDialogue)
         {
             WSB_PlayTestManager.SetDialogue(true);

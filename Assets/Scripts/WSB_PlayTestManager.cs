@@ -25,6 +25,7 @@ public class WSB_PlayTestManager : MonoBehaviour
 
     private void Start()
     {
+        // Get every Rigidbody in the scene and freeze them
         Rigidbody2D[] _physics = FindObjectsOfType<Rigidbody2D>();
         foreach (Rigidbody2D _r in _physics)
         {
@@ -32,6 +33,8 @@ public class WSB_PlayTestManager : MonoBehaviour
             _r.velocity = Vector2.zero;
             _r.angularVelocity = 0;
         }
+
+        // Disable mouse interaction on main menu
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(menu.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
     }
@@ -43,6 +46,7 @@ public class WSB_PlayTestManager : MonoBehaviour
 
     private void Update()
     {
+        // Just messing around to make the warning disco
         if(menu.activeSelf)
         {
             Color _c = warning.color;
@@ -78,7 +82,11 @@ public class WSB_PlayTestManager : MonoBehaviour
             }
             warning.color = _c;
         }
+
+        // Activates the warning if there is no gamepad connected
         warningObj.SetActive(Gamepad.all.Count == 0);
+
+        // Invoke the main Update of the game if it is not paused
         if (!Paused)
             OnUpdate?.Invoke();
     }
@@ -87,9 +95,11 @@ public class WSB_PlayTestManager : MonoBehaviour
 
     public void ChangeCharacter(InputAction.CallbackContext _ctx)
     {
+        // Exit if the game is paused or input isn't started
         if (!_ctx.started || Paused)
             return;
 
+        // Switch the PlayerInput if the game is in SinglePlayer mode
         if(singlePlayer)
         {
             inputBan.enabled = !inputBan.enabled;
@@ -99,9 +109,14 @@ public class WSB_PlayTestManager : MonoBehaviour
 
     public void Pause(InputAction.CallbackContext _ctx)
     {
-        if (_ctx.ReadValue<float>() != 1 || !_ctx.started) 
+        // If input isn't start exit
+        if (!_ctx.started)
             return;
+
+        // Inverse pause state
         Paused = !Paused;
+
+        // If the game is paused, invoke event, show menu and disable mouse input on this menu
         if (Paused)
         {
             OnPause?.Invoke();
@@ -115,6 +130,7 @@ public class WSB_PlayTestManager : MonoBehaviour
 
     public void Resume()
     {
+        // Set Pause state to false, invoke resume event, hide pause menu
         Paused = false;
         OnResume?.Invoke();
         menuPause.SetActive(false);
@@ -122,10 +138,14 @@ public class WSB_PlayTestManager : MonoBehaviour
 
     public void StartGame(bool _singlePlayer)
     {
+        // If there isn't enough gamepad detected for the selected gamemode exit
         if (Gamepad.all.Count == 0 || (_singlePlayer && Gamepad.all.Count != 1) || (!_singlePlayer && Gamepad.all.Count != 2))
             return;
 
+        // Set gamemode
         singlePlayer = _singlePlayer;
+
+        // Get all the rigidbody in the scene and unfreeze them
         Rigidbody2D[] _physics = FindObjectsOfType<Rigidbody2D>();
         foreach (Rigidbody2D _r in _physics)
         {
@@ -133,18 +153,26 @@ public class WSB_PlayTestManager : MonoBehaviour
                 continue;
             _r.isKinematic = false;
         }
+
+        // Set Pause to false
         Paused = false;
+
+        // Setup inputs to only one character
         if(singlePlayer)
         {
             inputBan.enabled = true;
             inputLux.enabled = false;
         }
+
         OnResume?.Invoke();
+
+        // Hide menu
         menu.SetActive(false);
     }
 
     public void ReloadScene()
     {
+        // Reset all the events and load PlayTest scene
         OnUpdate = null;
         OnPause = null;
         OnResume = null;
@@ -154,27 +182,3 @@ public class WSB_PlayTestManager : MonoBehaviour
     public void QuitGame() => Application.Quit();
 
 }
-
-/*
- * 
- * 
- * changer de persos    DONE (singleplayer uniquement, les multi s'échangeront la manette et pis merde)
- *      enable / disable les scripts sur select  (faire en sorte que les deux players se contrôlent avec la même manette)
- * 
- * 
- * tutoriels    DONE
- *      déplacement
- *      pouvoirs
- *      changement de persos
- *      
- * 
- * reset de la salle    DONE
- * 
- * mode 1 joueur    DONE
- * 
- * mode 2 joueurs   DONE
- * 
- * 
- * 
- * 
- */

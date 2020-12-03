@@ -39,7 +39,6 @@ public class WSB_Movable : MonoBehaviour
         {
             Vector2 _pos = Physic.position;
 
-            ComputeVelocity();
             CalculCollision();
             RefreshPosition();
 
@@ -74,19 +73,20 @@ public class WSB_Movable : MonoBehaviour
 
     }
 
-    void ComputeVelocity()
-    {
-        //if (force.x != 0)
-        //    force.x = Mathf.MoveTowards(force.x, 0, controllerValues.Deceleration * Time.deltaTime);
-    }
-
+    // Refresh Physic position
     void RefreshPosition()
     {
+        // Cast collider around itself
         int _amount = Collider.OverlapCollider(controllerValues.Contact, overlapBuffer);
+
+        // Loop through colliders found
         for (int i = 0; i < _amount; i++)
         {
+            // Skips this collider if tagged as ignored
             if (overlapBuffer[i] == ignoredCollider)
                 continue;
+
+            // Push out Physic position from the collider
             ColliderDistance2D _distance = Collider.Distance(overlapBuffer[i]);
             if (_distance.isOverlapped && (!overlapBuffer[i].transform.GetComponent<PlatformEffector2D>() || _distance.normal.y == -1))
                 Physic.position += _distance.normal * _distance.distance;
@@ -103,11 +103,13 @@ public class WSB_Movable : MonoBehaviour
     private static readonly RaycastHit2D[] castBuffer = new RaycastHit2D[4];
     private static readonly Collider2D[] overlapBuffer = new Collider2D[4];
 
+    // Main collision method
     void CalculCollision()
     {
         Vector2 _velocity = GetVeloctity();
         if (isGrounded)
         {
+            // Rotates _velocity such as it behaves on the normal flat surface
             Vector2 _x = Vector2.Perpendicular(groundNormal);
             if (_x.x < 0)
                 _x *= -1;
