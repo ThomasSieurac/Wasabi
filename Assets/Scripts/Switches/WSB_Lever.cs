@@ -17,11 +17,13 @@ public class WSB_Lever : MonoBehaviour
 
     public void Interact()
     {
+        // Call activate event and inverse active bool
         if(active)
         {
             onDeactivate?.Invoke();
             active = false;
         }
+        // Call deactivate event and inverse active bool
         else
         {
             onActivate?.Invoke();

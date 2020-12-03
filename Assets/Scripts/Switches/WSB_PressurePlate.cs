@@ -6,8 +6,6 @@ using UnityEngine.Events;
 
 public class WSB_PressurePlate : MonoBehaviour
 {
-    [SerializeField] float massNeeded = 10;
-
     [SerializeField] UnityEvent onActivate = null;
     [SerializeField] UnityEvent onDeactivate = null;
 
@@ -26,18 +24,28 @@ public class WSB_PressurePlate : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<Rigidbody2D>() && collision.GetComponent<Rigidbody2D>().mass > massNeeded)
+        // Look for any RigidBody2D component on the collider that came
+        if (collision.GetComponent<Rigidbody2D>())
         {
-            if(objectsOn == 0) onActivate?.Invoke();
+            // Invoke activate event if there wasn't already an object on
+            if(objectsOn == 0)
+                onActivate?.Invoke();
+
+            // Add this object to the count
             objectsOn++;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.GetComponent<Rigidbody2D>() && collision.GetComponent<Rigidbody2D>().mass > massNeeded)
+        // Look for any RigidBody2D component on the collider that came
+        if (collision.GetComponent<Rigidbody2D>())
         {
-            if(objectsOn == 1) onDeactivate?.Invoke();
+            // Invoke deactivate event if there is not another object on
+            if (objectsOn == 1)
+                onDeactivate?.Invoke();
+
+            // Remove this object from the count
             objectsOn--;
         }
     }

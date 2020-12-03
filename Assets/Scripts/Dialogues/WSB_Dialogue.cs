@@ -12,12 +12,6 @@ public class WSB_Dialogue : MonoBehaviour
     int currentLine = 0;
     int currentChar = 0;
 
-    //int wobbleMin = 50;
-    //int wobbleMax = 150;
-
-    //List<int> wobbleCharIndexStart = new List<int>();
-    //List<int> wobbleCharIndexEnd = new List<int>();
-
     [SerializeField] TMP_Text shownLine = null;
     [SerializeField] TMP_Text shownNameRight = null;
     [SerializeField] TMP_Text shownNameLeft = null;
@@ -30,40 +24,53 @@ public class WSB_Dialogue : MonoBehaviour
 
     private void OnEnable()
     {
+        // If dialogues are empty stop
         if (Dialogues.Count < 0)
             return;
+
+        // Setup first dialogue
         dialogue = Dialogues[0];
 
+        // Set the side of the character image
         CheckSide();
 
+        // Start the dialogue
         shownLine.text = dialogue.GetText(0);
         playLine = StartCoroutine(PlayLine());
     }
 
     public void Skip(UnityEngine.InputSystem.InputAction.CallbackContext _ctx)
     {
-        if (!_ctx.performed) return;
+        // Exit if input is wrong
+        if (!_ctx.performed) 
+            return;
+
+        // Call to stop the displayed line
         NullPlay();
+
+        // If the line is complete
         if (shownLine.maxVisibleCharacters == shownLine.text.Length)
         {
+            // If there is another line in the dialogue go to next line
             if (dialogue.Texts.Count - 1 > currentLine)
-            {
                 NextLine();
-            }
+
+            // If there is no other line in the dialogue go to next dialogue
             else
-            {
                 NextDialoge();
-            }
         }
+        // End the line
         else
-        {
             EndLine();
-        }
     }
 
     void NullPlay()
     {
-        if (playLine == null) return;
+        // If there is not a line playing exit
+        if (playLine == null)
+            return;
+
+        // Stop the line playing
         currentChar = 0;
         StopCoroutine(playLine);
         playLine = null;
@@ -71,78 +78,66 @@ public class WSB_Dialogue : MonoBehaviour
 
     IEnumerator PlayLine()
     {
+        // Loop until the line is fully shown
         while (shownLine.text.Length > currentChar)
         {
+            // Hold if the game is paused
             while(WSB_PlayTestManager.Paused)
             {
                 yield return new WaitForSeconds(.2f);
             }
+
+            // Check if a RichText element starts
             if (shownLine.text[currentChar] == '<')
             {
                 int _i = currentChar;
+
+                // Count the number of char there is between the < & > characters
                 while (true)
                 {
                     if (shownLine.text[_i] == '>')
                         break;
                     _i++;
                 }
+
+                // Instantly show the whole richText element instead of one by one char
                 currentChar += _i - currentChar;
             }
+            // Increase the current char
             else
                 currentChar++;
 
+            // Show the updated number of char
             shownLine.maxVisibleCharacters = currentChar;
+
             yield return new WaitForFixedUpdate();
         }
+        // Stop this coroutine
         NullPlay();
     }
 
 
-    //IEnumerator Wobble()
-    //{
-    //    while (true)
-    //    {
-    //        for (int i = 0; i < wobbleCharIndexStart.Count; i++)
-    //        {
-    //            for (int j = wobbleCharIndexStart[i]; j < wobbleCharIndexEnd[i]; j++)
-    //            {
-
-    //            }
-    //        }
-    //        yield return new WaitForFixedUpdate();
-    //    }
-    //}
-
-    /*
-     * List<int> charWobbleIndex
-     *      --> PlayLine if (shownLine.text[currentChar] == '<' && shownLine.Contains("wobble>", currentChar)
-     *                      add shownLine.text[currentChar] while(shownLine.text[currentChar] != '<') currentChar++
-     * 
-     * IEnumerator Wobble()
-     * {
-     *      pour chaque char dans le <line-height=value>
-     *          pingpong value entre min & max avec décalage du précédent
-     * }
-     * 
-     */
-
     void EndLine()
     {
+        // Reset currentChar & show all the line
         currentChar = 0;
         shownLine.maxVisibleCharacters = shownLine.text.Length;
     }
 
     void NextLine()
     {
+        // Reset currentChar
         currentChar = 0;
-        //wobbleCharIndexEnd.Clear();
-        //wobbleCharIndexStart.Clear();
+
+        // Increase the line, updates it and start to play it
         currentLine++;
         shownLine.text = dialogue.GetText(currentLine);
         playLine = StartCoroutine(PlayLine());
     }
+
     void CheckSide()
     {
+        // Enable each element on the right side and disable thoses on the left side
         if (dialogue.IsImageRight)
         {
             charImageRight.sprite = dialogue.GetSprite();
@@ -151,6 +146,7 @@ public class WSB_Dialogue : MonoBehaviour
             charImageRight.enabled = shownNameRight.enabled = true;
             charImageLeft.enabled = shownNameLeft.enabled = false;
         }
+        // Enable each element on the left side and disable thoses on the right side
         else
         {
             charImageLeft.sprite = dialogue.GetSprite();
@@ -164,79 +160,32 @@ public class WSB_Dialogue : MonoBehaviour
 
     void NextDialoge()
     {
+        // Increase the current dialogue, reset line and char
         currentDialogue++;
-        //wobbleCharIndexEnd.Clear();
-        //wobbleCharIndexStart.Clear();
         currentLine = 0;
         currentChar = 0;
+
+        // Check if there is no more dialogue
         if (currentDialogue >= Dialogues.Count)
         {
+            // Stop everything and tells the game this dialogue is over
             StopAllCoroutines();
             WSB_PlayTestManager.SetDialogue(false);
             transform.gameObject.SetActive(false);
             return;
         }
+
+        // Get the new dialogue to show
         dialogue = Dialogues[currentDialogue];
-        CheckSide();
+        
+        // Get the newt text to show
         shownLine.text = dialogue.GetText(0);
+
+        // Set the side of the character image
+        CheckSide();
+
+        // Play the next line
         playLine = StartCoroutine(PlayLine());
     }
 
 }
-
-/*
- * 
- * 
- *      Debug : 
- *      Update(OnKeyDown(space) Skip()
- * 
- *      [SerializeField] List<SO_Dialogue> dialogues
- * 
- *      int currentLine
- *      int currentDialogue
- *      int currentChar
- *      
- *      string lineShown
- *      
- *      image charImage
- * 
- *      Coroutine playLine
- *  
- * 
- *      Start() OnStartDialogue?.Invoke()  <-- pour call les blocages des personnages par exemple
- * 
- *      Skip()
- *          - NullPlay()
- *          - Check si ligne terminée
- *              y - Check si le dialogue est terminé
- *                  y - NextDialogue()
- *                  n - NextLine()
- *              n - EndLine()
- *              
- *      Endline()
- *          - lineShown = line
- *          - feedback = enabled
- *      
- *      NextLine()
- *          - currentLine++
- *          - line = lines[currentLine]      
- *      
- *      NextDialogue()
- *          - currentDialogue++
- *          - charImage = dialogues[currentDialogue].image
- *          - charImage.position = dialogue[currentDialogue].isRight ? right : left
- *          - dialogue = dialogues[currentDialogue]
- *          
- *      
- *      Coroutine PlayLine()
- *          - while(dialogue[currentDialogue].line[currentLine].count > int currentChar)
- *              - lineShown = lineshown + dialogue[currentDialogue].line[currentLine][currentChar]
- *              - currentChar++
- *              - yield return temps
- *          - NullPlay()
- * 
- * 
- *      NullPlay()
- *          - StopCoroutine(playLine)
- *          - playLine = null
- */

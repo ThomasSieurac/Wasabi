@@ -13,8 +13,7 @@ public class WSB_Button : MonoBehaviour
     [SerializeField] bool active = false;
     [SerializeField, Min(.01f)] float duration = 1;
     [SerializeField] UnityEvent onActivate = null;
-
-    int playersIn = 0;
+    [SerializeField] UnityEvent onDeactivate = null;
 
     private void Start()
     {
@@ -28,26 +27,34 @@ public class WSB_Button : MonoBehaviour
     }
 
 
-    private void OnEnable()
-    {
-        inputBan.FindAction("Use").performed += Interact;
-        inputLux.FindAction("Use").performed += Interact;
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<WSB_Player>()) playersIn++;
+        // If ban enter this trigger, its Use action is bound to the Interact method
+        if (collision.GetComponent<WSB_Ban>())
+            inputBan.FindAction("Use").performed += Interact;
+
+        // If lux enter this trigger, its Use action is bound to the Interact method
+        if (collision.GetComponent<WSB_Lux>())
+            inputLux.FindAction("Use").performed += Interact;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.GetComponent<WSB_Player>()) playersIn--;
+        // If ban exits this trigger, its Interact method is unbound from the Use action
+        if (collision.GetComponent<WSB_Ban>())
+            inputBan.FindAction("Use").performed -= Interact;
+
+        // If lux exits this trigger, its Interact method is unbound from the Use action
+        if (collision.GetComponent<WSB_Lux>())
+            inputLux.FindAction("Use").performed -= Interact;
     }
 
     void Interact(InputAction.CallbackContext obj)
     {
-        if (!active && playersIn > 0)
+        // Check if the button isn't already active
+        if (!active)
         {
+            // Activates the button, invoke the event and start the delay for the deactivation
             active = true;
             onActivate?.Invoke();
             StartCoroutine(Delay());
@@ -56,13 +63,9 @@ public class WSB_Button : MonoBehaviour
 
     IEnumerator Delay()
     {
+        // Wait for duration and reset
         yield return new WaitForSeconds(duration);
+        onDeactivate?.Invoke();
         active = false;
-    }
-
-    private void OnDisable()
-    {
-        inputBan.FindAction("Use").performed -= Interact;
-        inputLux.FindAction("Use").performed -= Interact;
     }
 }
