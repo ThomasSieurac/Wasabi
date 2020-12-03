@@ -20,8 +20,11 @@ public class WSB_Pot : MonoBehaviour
 
     private void Awake()
     {
+        // Populate rend var if not set properly
         if (!rend)
             rend = GetComponent<MeshRenderer>();
+
+        // Initiate the curse of the pot
         SetCurse(isCursed);
     }
 
@@ -33,6 +36,7 @@ public class WSB_Pot : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Calls a recharge on Lux if there was a seed in this pot
         if(GrownSeed)
             WSB_Lux.I.RechargeSeed(GrownSeed.tag);
     }
@@ -40,13 +44,18 @@ public class WSB_Pot : MonoBehaviour
 
     public bool GrowSeed(string _seed)
     {
+        // Don't do anything if the pot is cursed
         if (isCursed)
             return false;
+
+        // Break the seed and don't do anything else if there was already a seed in this pot
         if (GrownSeed)
         {
             BreakSeed();
             return false;
         }
+
+        // Switch on the seed name to spawn corresponding prefab
         switch (_seed)
         {
             case "Carnivore":
@@ -64,14 +73,20 @@ public class WSB_Pot : MonoBehaviour
             default:
                 return false;
         }
+
+        // Set the seed as a child of this pot to be able to move the pot with the plant following it
         GrownSeed.transform.SetParent(this.transform);
+
         return true;
     }
 
     public void BreakSeed()
     {
+        // If there is not seed, exit
         if (!GrownSeed)
             return;
+
+        // Call the recharge of the seed and destroy the seed
         WSB_Lux.I.RechargeSeed(GrownSeed.tag);
         Destroy(GrownSeed.gameObject);
         GrownSeed = null;
@@ -79,12 +94,14 @@ public class WSB_Pot : MonoBehaviour
 
     public void SetCurse(bool _state)
     {
+        // If the pot is cursed break any seed planted and change the material to cursed
         if(_state)
         {
             BreakSeed();
             rend.material = cursedMat;
             isCursed = true;
         }
+        // If the pot isn't cursed change the material to uncursed
         else
         {
             rend.material = uncursedMat;

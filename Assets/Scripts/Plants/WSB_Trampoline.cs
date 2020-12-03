@@ -8,14 +8,18 @@ public class WSB_Trampoline : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
+        // Checks if collider is physics and if it is above this object
         if (collider.GetComponent<Rigidbody2D>() && collider.transform.position.y > transform.position.y)
         {
+            // Search if this is a Player and make him jump
             if (collider.GetComponent<WSB_Player>())
                 collider.GetComponent<WSB_Player>().TrampolineJump(Vector2.up * force);
-            else
+
+            // Search if this is a movable element and make it jump
+            else if (collider.GetComponent<WSB_Movable>())
             {
-                collider.GetComponent<Rigidbody2D>().velocity = new Vector2(collider.GetComponent<Rigidbody2D>().velocity.x, 0);
-                collider.GetComponent<Rigidbody2D>().AddForce(Vector2.up * (force * 50));
+                collider.GetComponent<WSB_Movable>().StopVerticalForce();
+                collider.GetComponent<WSB_Movable>().AddForce(Vector2.up * force);
             }
         }
     }

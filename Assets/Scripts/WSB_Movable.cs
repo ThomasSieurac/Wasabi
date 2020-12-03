@@ -313,6 +313,7 @@ public class WSB_Movable : MonoBehaviour
 
 
     #region AddForces
+    public void StopVerticalForce() => force.y = 0;
 
     public void AddForce(Vector2 _force) => force += _force;
 

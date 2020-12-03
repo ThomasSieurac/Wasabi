@@ -11,6 +11,8 @@ public class WSB_Ladder : MonoBehaviour
 
     private void Start()
     {
+        // Gets needed components if not set.
+        // Throw errors if not found them destroy itself
         if (!ladderCollider) ladderCollider = GetComponent<BoxCollider2D>();
         if(!ladderCollider)
         {
@@ -22,30 +24,36 @@ public class WSB_Ladder : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Checks if collision is a player and tells it that climb is available
         if (collision.GetComponent<WSB_Player>())
             collision.GetComponent<WSB_Player>().CanClimb(true);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        // Checks if collision is a player and tells it that climb isn't available
         if (collision.GetComponent<WSB_Player>())
             collision.GetComponent<WSB_Player>().CanClimb(false);
     }
 
     IEnumerator DeployLadder()
     {
+        // Loop until ladder has reached its definite size
         while (true)
         {
             yield return new WaitForEndOfFrame();
 
+            // Grow the scale of the ladder
             transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(transform.localScale.x, maxLength, .1f), Time.deltaTime * growSpeed);
 
-            //ladderCollider.size = Vector2.MoveTowards(ladderCollider.size, new Vector2(ladderCollider.size.x, maxLength), Time.deltaTime * growSpeed);
-            //ladderCollider.offset = Vector2.MoveTowards(ladderCollider.offset, new Vector2(ladderCollider.offset.x, ladderCollider.size.y / 2), Time.deltaTime * growSpeed);
+            // Checks if the ladder has a roof above itself and stop if yes
             Collider2D _hit;
-            if ((_hit = Physics2D.OverlapBox(new Vector2(transform.position.x, transform.position.y + ladderCollider.size.y), Vector2.one, 0, stopLayer)) && _hit.gameObject != transform.parent.gameObject) StopAllCoroutines();
+            if ((_hit = Physics2D.OverlapBox(new Vector2(transform.position.x, transform.position.y + ladderCollider.size.y), Vector2.one, 0, stopLayer)) && _hit.gameObject != transform.parent.gameObject)
+                StopAllCoroutines();
 
-            if (ladderCollider.bounds.size.y == 10) StopAllCoroutines();
+            // Stop if the ladder had reached its max size
+            if (ladderCollider.bounds.size.y == maxLength)
+                StopAllCoroutines();
         }
     }
 
