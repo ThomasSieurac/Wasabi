@@ -19,13 +19,15 @@ public class CE_WSB_Dialogue : Editor
 
     private void OnEnable()
     {
+        // Get the inspected list of dialogues
         dialogues = serializedObject.FindProperty("Dialogues");
     }
 
     public override void OnInspectorGUI()
     {
-        ceActive = EditorGUILayout.ToggleLeft("Toggle custom editor ", ceActive);
 
+        // Toggle or not the custom editor
+        ceActive = EditorGUILayout.ToggleLeft("Toggle custom editor ", ceActive);
         if (!ceActive)
         {
             base.OnInspectorGUI();
@@ -35,17 +37,23 @@ public class CE_WSB_Dialogue : Editor
         serializedObject.Update();
         Undo.RecordObjects(serializedObject.targetObjects, "Dialog Change");
 
+        // Setup the GUIStyle of the delete buttons
         deleteStyle = new GUIStyle(EditorStyles.miniButton);
         deleteStyle.fontStyle = FontStyle.Bold;
         deleteStyle.normal.textColor = Color.white;
 
+        // Stock the default color of the background
         defaultColor = GUI.backgroundColor;
 
         EditorGUILayout.Space();
 
+        // Button to add new dialogue
         if (GUILayout.Button("Add new dialogue", GUILayout.MaxWidth(200)))
         {
+            // Create a new dialogue in the list
             dialogues.InsertArrayElementAtIndex(dialogues.arraySize);
+
+            // Set to null if not null
             if (dialogues.GetArrayElementAtIndex(dialogues.arraySize - 1).objectReferenceValue != null)
                 dialogues.DeleteArrayElementAtIndex(dialogues.arraySize - 1);
         }
@@ -64,23 +72,30 @@ public class CE_WSB_Dialogue : Editor
 
     void ShowDialogues()
     {
+        // Loop through the entire dialogues list
         for (int i = 0; i < dialogues.arraySize; i++)
         {
             DrawLine(new Color(.7f, .7f, .7f, 1));
 
             EditorGUILayout.Space();
 
+            // Get the current dialogue
             SerializedProperty _dialogue = dialogues.GetArrayElementAtIndex(i);
 
             EditorGUILayout.BeginHorizontal();
 
             GUI.backgroundColor = new Color(2, 0, 0, 1);
 
+            // Button to delete the current dialogue
             if (GUILayout.Button("Delete this dialogue", deleteStyle, GUILayout.Width(150)))
             {
+                // Set to null if not null
                 if (_dialogue.objectReferenceValue != null)
                     dialogues.DeleteArrayElementAtIndex(i);
+
+                // Remove the current dialogue
                 dialogues.DeleteArrayElementAtIndex(i);
+                // break to avoid nullRef
                 break;
             }
 
@@ -94,10 +109,11 @@ public class CE_WSB_Dialogue : Editor
 
             EditorGUILayout.Space();
 
-
+            // Stop if the current dialogue is null
             if (_dialogue.objectReferenceValue == null)
                 continue;
 
+            // Get the property of the current dialogue object
             dialogueObject = new SerializedObject(_dialogue.objectReferenceValue);
 
             dialogueObject.Update();
@@ -138,11 +154,14 @@ public class CE_WSB_Dialogue : Editor
                     }
                 }
 
+                // Button to create a new text
                 if (GUILayout.Button("Add new text"))
                 {
+                    // Create a new entry in the text & showTextPreview lists on the dialogueObject and set default values
                     _text.InsertArrayElementAtIndex(_text.arraySize);
-                    _showTextPreview.InsertArrayElementAtIndex(_text.arraySize-1);
                     _showTextPreview.GetArrayElementAtIndex(_text.arraySize - 1).boolValue = false;
+
+                    _showTextPreview.InsertArrayElementAtIndex(_text.arraySize-1);
                     _text.GetArrayElementAtIndex(_text.arraySize - 1).stringValue = "";
                 }
 
@@ -162,6 +181,7 @@ public class CE_WSB_Dialogue : Editor
 
     void ShowText(SerializedProperty _text)
     {
+        // Loop through the text list
         for (int j = 0; j < _text.arraySize; j++)
         {
             Rect _rect = EditorGUILayout.GetControlRect();
@@ -182,6 +202,7 @@ public class CE_WSB_Dialogue : Editor
             EditorGUILayout.Space();
             EditorGUILayout.Space();
 
+            // Use GUILayout.TextArea to have it stretch and squish based on the text size
             _text.GetArrayElementAtIndex(j).stringValue = GUILayout.TextArea(_text.GetArrayElementAtIndex(j).stringValue);
 
             EditorGUILayout.Space();
@@ -225,6 +246,7 @@ public class CE_WSB_Dialogue : Editor
 
         lastTextSelected = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
 
+        // Adds <b> and </b> with the selected text between
         if (GUILayout.Button("Bold"))
         {
             if (!string.IsNullOrEmpty(lastTextSelected.text) && lastTextSelected.hasSelection)
@@ -234,6 +256,7 @@ public class CE_WSB_Dialogue : Editor
             }
         }
 
+        // Adds <u> and </u> with the selected text between
         if (GUILayout.Button("Underline"))
         {
             if (!string.IsNullOrEmpty(lastTextSelected.text) && lastTextSelected.hasSelection)
@@ -243,6 +266,7 @@ public class CE_WSB_Dialogue : Editor
             }
         }
 
+        // Adds <i> and </i> with the selected text between
         if (GUILayout.Button("Italic"))
         {
             if (!string.IsNullOrEmpty(lastTextSelected.text) && lastTextSelected.hasSelection)
@@ -270,6 +294,9 @@ public class CE_WSB_Dialogue : Editor
         {
             serializedObject.Update();
             dialogueObject.Update();
+            Undo.RecordObjects(serializedObject.targetObjects, "Main object");
+            Undo.RecordObjects(dialogueObject.targetObjects, "Dialog object");
+            Undo.RecordObjects(_text.serializedObject.targetObjects, "Text object");
 
             lastTextSelected.ReplaceSelection($"<size={_s}>{lastTextSelected.SelectedText}</size>");
 
