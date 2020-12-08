@@ -8,11 +8,10 @@ TagManager:
   - Light
   - Shrink
   - Wind
-  - Movable
-  - Bridge
   - Ladder
-  - Carnivore
+  - Bridge
   - Trampoline
+  - Carnivore
   layers:
   - Default
   - TransparentFX
@@ -22,12 +21,12 @@ TagManager:
   - UI
   - 
   - 
-  - Split
   - Movable
-  - Ground
   - Destroyable
-  - Wall
   - Pot
+  - Wall
+  - Ground
+  - 
   - 
   - 
   - 
