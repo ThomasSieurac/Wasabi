@@ -9,6 +9,7 @@ public class WSB_Lux : WSB_Player
 
     [SerializeField] float range = 5;
     [SerializeField] LayerMask potLayer = 0;
+    [SerializeField] LayerMask shrinkLayer = 0;
 
     [SerializeField] WSB_Spells spells = null;
 
@@ -31,10 +32,10 @@ public class WSB_Lux : WSB_Player
 
     Coroutine shrink = null;
 
-    [SerializeField] List<TMP_Text> ladderTextCharges = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> bridgeTextCharges = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> trampolineTextCharges = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> carnivoreTextCharges = new List<TMP_Text>();
+    //[SerializeField] List<TMP_Text> ladderTextCharges = new List<TMP_Text>();
+    //[SerializeField] List<TMP_Text> bridgeTextCharges = new List<TMP_Text>();
+    //[SerializeField] List<TMP_Text> trampolineTextCharges = new List<TMP_Text>();
+    //[SerializeField] List<TMP_Text> carnivoreTextCharges = new List<TMP_Text>();
 
     // Populate the Instance of this script
     protected override void Awake()
@@ -139,8 +140,6 @@ public class WSB_Lux : WSB_Player
         shrink = StartCoroutine(DelayShrink());
         return true;
     }
-
-    [SerializeField] LayerMask shrinkLayer = 0;
 
     IEnumerator DelayShrink()
     {

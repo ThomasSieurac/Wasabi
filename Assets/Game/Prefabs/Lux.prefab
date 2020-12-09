@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 460986513811073508}
   - component: {fileID: 460986513811073511}
   - component: {fileID: 460986513811073510}
-  - component: {fileID: 460986513811073509}
   - component: {fileID: 460986513811073505}
+  - component: {fileID: 460986513811073509}
   m_Layer: 0
   m_Name: Lux
   m_TagString: Untagged
@@ -83,79 +83,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
---- !u!114 &460986513811073509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 460986513811073504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f69a53196015d3647936abf24f267e40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nose: {fileID: 3317674845058840298}
-  grabbedObject: {fileID: 0}
-  grabContactFilter:
-    useTriggers: 0
-    useLayerMask: 0
-    useDepth: 0
-    useOutsideDepth: 0
-    useNormalAngle: 0
-    useOutsideNormalAngle: 0
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 0
-    minDepth: 0
-    maxDepth: 0
-    minNormalAngle: 0
-    maxNormalAngle: 0
-  controllerValues: {fileID: 11400000, guid: c75d547f7cba61d4e860f56cbc581edf, type: 2}
-  force: {x: 0, y: 0}
-  instantForce: {x: 0, y: 0}
-  movement: {x: 0, y: 0}
-  speed: 5
-  groundNormal: {x: 0, y: 0}
-  isGrounded: 0
-  isJumping: 0
-  isClimbing: 0
-  canClimb: 0
-  jumpInput: 0
-  semiSolidFilter:
-    useTriggers: 0
-    useLayerMask: 0
-    useDepth: 0
-    useOutsideDepth: 0
-    useNormalAngle: 0
-    useOutsideNormalAngle: 0
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 0
-    minDepth: 0
-    maxDepth: 0
-    minNormalAngle: 0
-    maxNormalAngle: 0
-  ignoredCollider: {fileID: 0}
-  range: 5
-  potLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  spells: {fileID: 460986514101218577}
-  maxTrampolineCharges: 10
-  maxCarnivoreCharges: 10
-  maxBridgeCharges: 10
-  maxLadderCharges: 10
-  shrinkSpeed: 10
-  shrinkDuration: 20
-  render: {fileID: 0}
-  ladderTextCharges: []
-  bridgeTextCharges: []
-  trampolineTextCharges: []
-  carnivoreTextCharges: []
-  shrinkLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &460986513811073505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,6 +257,75 @@ MonoBehaviour:
   m_DefaultActionMap: Controler
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &460986513811073509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460986513811073504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f69a53196015d3647936abf24f267e40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nose: {fileID: 3317674845058840298}
+  grabbedObject: {fileID: 0}
+  grabContactFilter:
+    useTriggers: 0
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 1280
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  controllerValues: {fileID: 11400000, guid: c75d547f7cba61d4e860f56cbc581edf, type: 2}
+  force: {x: 0, y: 0}
+  instantForce: {x: 0, y: 0}
+  movement: {x: 0, y: 0}
+  speed: 5
+  groundNormal: {x: 0, y: 0}
+  isGrounded: 0
+  isJumping: 0
+  isClimbing: 0
+  canClimb: 0
+  jumpInput: 0
+  semiSolidFilter:
+    useTriggers: 0
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 4096
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  ignoredCollider: {fileID: 0}
+  range: 5
+  potLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  shrinkLayer:
+    serializedVersion: 2
+    m_Bits: 6144
+  spells: {fileID: 460986514101218577}
+  maxTrampolineCharges: 10
+  maxCarnivoreCharges: 10
+  maxBridgeCharges: 10
+  maxLadderCharges: 10
+  shrinkSpeed: 10
+  shrinkDuration: 20
+  render: {fileID: 5829831898867405037}
 --- !u!1 &3317674845058840298
 GameObject:
   m_ObjectHideFlags: 0
