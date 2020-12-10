@@ -90,8 +90,8 @@ GameObject:
   - component: {fileID: 6072583074700945354}
   - component: {fileID: 6072583074700945353}
   - component: {fileID: 6072583074700945352}
-  - component: {fileID: 6072583074700945355}
   - component: {fileID: 6072583074700945399}
+  - component: {fileID: 6072583074700945355}
   m_Layer: 0
   m_Name: Ban
   m_TagString: Untagged
@@ -162,86 +162,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
---- !u!114 &6072583074700945355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6072583074700945398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aa93e43e4e1e094b8d95631fcff2656, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nose: {fileID: 979944617920082720}
-  grabbedObject: {fileID: 0}
-  grabContactFilter:
-    useTriggers: 0
-    useLayerMask: 0
-    useDepth: 0
-    useOutsideDepth: 0
-    useNormalAngle: 0
-    useOutsideNormalAngle: 0
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 0
-    minDepth: 0
-    maxDepth: 0
-    minNormalAngle: 0
-    maxNormalAngle: 0
-  controllerValues: {fileID: 11400000, guid: c75d547f7cba61d4e860f56cbc581edf, type: 2}
-  force: {x: 0, y: 0}
-  instantForce: {x: 0, y: 0}
-  movement: {x: 0, y: 0}
-  speed: 5
-  groundNormal: {x: 0, y: 0}
-  isGrounded: 0
-  isJumping: 0
-  isClimbing: 0
-  canClimb: 0
-  jumpInput: 0
-  semiSolidFilter:
-    useTriggers: 0
-    useLayerMask: 0
-    useDepth: 0
-    useOutsideDepth: 0
-    useNormalAngle: 0
-    useOutsideNormalAngle: 0
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 0
-    minDepth: 0
-    maxDepth: 0
-    minNormalAngle: 0
-    maxNormalAngle: 0
-  ignoredCollider: {fileID: 0}
-  spells: {fileID: 6072583073526823031}
-  maxEarthCharges: 10
-  maxShrinkCharges: 10
-  maxWindCharges: 10
-  maxLightCharges: 10
-  earthZone: {fileID: 0}
-  earthSize: 5
-  earthDuration: 20
-  earthChargeDelay: 10
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  lightObject: {fileID: 0}
-  lightDuration: 10
-  lightChargeDelay: 10
-  shrinkChargeDelay: 10
-  windRange: 5
-  windPower: 2
-  windChargeDelay: 10
-  moveLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  windTextCharges: []
-  earthTextCharges: []
-  shrinkTextCharges: []
-  lightTextCharges: []
 --- !u!114 &6072583074700945399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,9 +333,87 @@ MonoBehaviour:
     m_ActionName: Controler/Use[/XInputControllerWindows/buttonWest]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Debug
+  m_DefaultActionMap: Controler
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &6072583074700945355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6072583074700945398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa93e43e4e1e094b8d95631fcff2656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nose: {fileID: 979944617920082720}
+  grabbedObject: {fileID: 0}
+  grabContactFilter:
+    useTriggers: 0
+    useLayerMask: 0
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  controllerValues: {fileID: 11400000, guid: c75d547f7cba61d4e860f56cbc581edf, type: 2}
+  force: {x: 0, y: 0}
+  instantForce: {x: 0, y: 0}
+  movement: {x: 0, y: 0}
+  speed: 5
+  groundNormal: {x: 0, y: 0}
+  isGrounded: 0
+  isJumping: 0
+  isClimbing: 0
+  canClimb: 0
+  jumpInput: 0
+  semiSolidFilter:
+    useTriggers: 0
+    useLayerMask: 0
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  ignoredCollider: {fileID: 0}
+  spells: {fileID: 6072583073526823031}
+  maxEarthCharges: 10
+  maxShrinkCharges: 10
+  maxWindCharges: 10
+  maxLightCharges: 10
+  earthZone: {fileID: 4527061628381027093, guid: d92145150fb4b354fbeb7824872b4115,
+    type: 3}
+  earthSize: 5
+  earthDuration: 20
+  earthChargeDelay: 10
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  lightObject: {fileID: 5346021174561631932, guid: 9afcf495c830c674daf9f5203a6c5692,
+    type: 3}
+  lightDuration: 10
+  lightChargeDelay: 10
+  shrinkChargeDelay: 10
+  windRange: 5
+  windPower: 2
+  windChargeDelay: 10
+  moveLayer:
+    serializedVersion: 2
+    m_Bits: 1280
 --- !u!1 &9155746077021035123
 GameObject:
   m_ObjectHideFlags: 0

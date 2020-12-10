@@ -89,6 +89,7 @@
     <Compile Include="Assets\Game\Scripts\WSB_GameManager.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_Movable.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_PNJ.cs" />
+    <Compile Include="Assets\Tools\SceneLoader\Scripts\SceneLoaderProfile.cs" />
     <Compile Include="Assets\Unity\Scripts\SimpleCameraController.cs" />
     <Compile Include="Assets\Unity\TutorialInfo\Scripts\Readme.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

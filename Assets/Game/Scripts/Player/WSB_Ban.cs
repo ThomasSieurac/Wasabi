@@ -9,7 +9,6 @@ public class WSB_Ban : WSB_Player
 {
     public static WSB_Ban I { get; private set; }
 
-    [Header("Ban")]
     [SerializeField] WSB_Spells spells = null;
 
     #region Spell Charges
@@ -24,7 +23,7 @@ public class WSB_Ban : WSB_Player
     int lightCharges = 10;
     #endregion
     #region Earth Spell
-    [Header("Earth Spell"), Space, Space, SerializeField] GameObject earthZone = null;
+    [SerializeField] GameObject earthZone = null;
 
     [SerializeField] int earthSize = 5;
     [SerializeField] float earthDuration = 20;
@@ -35,7 +34,7 @@ public class WSB_Ban : WSB_Player
     [SerializeField] LayerMask groundLayer = 0;
     #endregion
     #region Light Spell
-    [Header("Light Spell"), Space, Space, SerializeField] GameObject lightObject = null;
+    [SerializeField] GameObject lightObject = null;
 
     [SerializeField] float lightDuration = 10;
     [SerializeField] float lightChargeDelay = 10;
@@ -43,12 +42,12 @@ public class WSB_Ban : WSB_Player
     Coroutine rechargeLight = null;
     #endregion
     #region Shrink Spell
-    [Header("Shrink Spell"), SerializeField] float shrinkChargeDelay = 10;
+    [SerializeField] float shrinkChargeDelay = 10;
 
     Coroutine rechargeShrink = null;
     #endregion
     #region Wind Spell
-    [Header("Wind Spell"), Space, Space, SerializeField] float windRange = 5;
+    [SerializeField] float windRange = 5;
     [SerializeField] float windPower = 2;
     [SerializeField] float windChargeDelay = 10;
 
@@ -58,11 +57,6 @@ public class WSB_Ban : WSB_Player
     [SerializeField] LayerMask moveLayer = 0;
 
     #endregion
-
-    [SerializeField] List<TMP_Text> windTextCharges = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> earthTextCharges = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> shrinkTextCharges = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> lightTextCharges = new List<TMP_Text>();
 
     // Sets instance of this object
     protected override void Awake()
