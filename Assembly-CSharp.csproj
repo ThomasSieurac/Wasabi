@@ -67,6 +67,8 @@
     <Compile Include="Assets\Game\Scripts\Camera\Scripts\WSB_Camera.cs" />
     <Compile Include="Assets\Game\Scripts\Camera\Scripts\WSB_CameraManager.cs" />
     <Compile Include="Assets\Game\Scripts\Camera\Scripts\WSB_TriggerCam.cs" />
+    <Compile Include="Assets\Game\Scripts\Checkpoints\WSB_Checkpoint.cs" />
+    <Compile Include="Assets\Game\Scripts\Checkpoints\WSB_CheckpointManager.cs" />
     <Compile Include="Assets\Game\Scripts\Controls\Controls Ban.cs" />
     <Compile Include="Assets\Game\Scripts\Controls\Controls Lux.cs" />
     <Compile Include="Assets\Game\Scripts\Dialogues\SO_Dialogue.cs" />

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Profile Hugo
   m_EditorClassIdentifier: 
   Folders:
-  - Hogu
-  ActivatedFolders: 00
+  - Hugo
+  - Camille
+  ActivatedFolders: 0100

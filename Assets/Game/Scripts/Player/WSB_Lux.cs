@@ -32,11 +32,6 @@ public class WSB_Lux : WSB_Player
 
     Coroutine shrink = null;
 
-    //[SerializeField] List<TMP_Text> ladderTextCharges = new List<TMP_Text>();
-    //[SerializeField] List<TMP_Text> bridgeTextCharges = new List<TMP_Text>();
-    //[SerializeField] List<TMP_Text> trampolineTextCharges = new List<TMP_Text>();
-    //[SerializeField] List<TMP_Text> carnivoreTextCharges = new List<TMP_Text>();
-
     // Populate the Instance of this script
     protected override void Awake()
     {
@@ -52,6 +47,10 @@ public class WSB_Lux : WSB_Player
         trampolineCharges = maxTrampolineCharges;
         ladderCharges = maxLadderCharges;
         carnivoreCharges = maxCarnivoreCharges;
+        spells.UpdateChargesUI(SpellType.Bridge, bridgeCharges.ToString());
+        spells.UpdateChargesUI(SpellType.Trampoline, trampolineCharges.ToString());
+        spells.UpdateChargesUI(SpellType.Ladder, ladderCharges.ToString());
+        spells.UpdateChargesUI(SpellType.Carnivore, carnivoreCharges.ToString());
     }
 
 
@@ -85,22 +84,22 @@ public class WSB_Lux : WSB_Player
             if (!_pot)
                 return;
 
-            // Exit if growing a seed isn't possible
-            if (!_pot.GrowSeed(_s))
-                return;
 
             // Switch on the given string to find the corresponding seed to grow
             if (_s == "Trampoline" && trampolineCharges > 0) 
-                Trampoline();
+                Trampoline(_pot);
 
             else if (_s == "Bridge" && bridgeCharges > 0) 
                 Bridge(_pot);
 
             else if (_s == "Ladder" && ladderCharges > 0) 
-                Ladder();
+                Ladder(_pot);
 
             else if (_s == "Carnivore" && carnivoreCharges > 0) 
-                Carnivore();
+                Carnivore(_pot);
+
+            else 
+                _pot.BreakSeed();
         }
 
     }
@@ -112,21 +111,25 @@ public class WSB_Lux : WSB_Player
         {
             trampolineCharges++;
             spells.UpdateChargesUI(SpellType.Trampoline, trampolineCharges.ToString());
+            spells.UpdateEmptyCharges(SpellType.Trampoline, 1);
         }
         else if (_s == "Bridge" && bridgeCharges < maxBridgeCharges)
         {
             bridgeCharges++;
             spells.UpdateChargesUI(SpellType.Bridge, bridgeCharges.ToString());
+            spells.UpdateEmptyCharges(SpellType.Bridge, 1);
         }
         else if (_s == "Ladder" && ladderCharges < maxLadderCharges)
         {
             ladderCharges++;
             spells.UpdateChargesUI(SpellType.Ladder, ladderCharges.ToString());
+            spells.UpdateEmptyCharges(SpellType.Ladder, 1);
         }
         else if (_s == "Carnivore" && carnivoreCharges < maxCarnivoreCharges)
         {
             carnivoreCharges++;
             spells.UpdateChargesUI(SpellType.Carnivore, carnivoreCharges.ToString());
+            spells.UpdateEmptyCharges(SpellType.Carnivore, 1);
         }
     }
 
@@ -173,34 +176,58 @@ public class WSB_Lux : WSB_Player
         shrink = null;
     }
 
-    void Trampoline()
+    void Trampoline(WSB_Pot _pot)
     {
+        // Exit if growing a seed isn't possible
+        if (!_pot.GrowSeed("Trampoline"))
+            return;
+
         // Reduce trampoline charges and update corresponding UI
         trampolineCharges--;
         spells.UpdateChargesUI(SpellType.Trampoline, trampolineCharges.ToString());
+        if(trampolineCharges == 0)
+            spells.UpdateEmptyCharges(SpellType.Trampoline, 0);
     }
 
-    void Carnivore()
+    void Carnivore(WSB_Pot _pot)
     {
+        // Exit if growing a seed isn't possible
+        if (!_pot.GrowSeed("Carnivore"))
+            return;
+
         // Reduce carnivore charges and update corresponding UI
         carnivoreCharges--;
         spells.UpdateChargesUI(SpellType.Carnivore, carnivoreCharges.ToString());
+        if(carnivoreCharges == 0)
+            spells.UpdateEmptyCharges(SpellType.Carnivore, 0);
     }
 
     void Bridge(WSB_Pot _pot)
     {
+        // Exit if growing a seed isn't possible
+        if (!_pot.GrowSeed("Bridge"))
+            return;
+
         // Deploy bridge and gives it the direction it needs to grow
         _pot.GrownSeed.GetComponent<WSB_Bridge>().StartCoroutine(_pot.GrownSeed.GetComponent<WSB_Bridge>().DeployBridge(transform.position.x < _pot.transform.position.x));
 
         // Reduce bridge charges and update corresponding UI
         bridgeCharges--;
         spells.UpdateChargesUI(SpellType.Bridge, bridgeCharges.ToString());
+        if (bridgeCharges == 0)
+            spells.UpdateEmptyCharges(SpellType.Bridge, 0);
     }
 
-    void Ladder()
+    void Ladder(WSB_Pot _pot)
     {
+        // Exit if growing a seed isn't possible
+        if (!_pot.GrowSeed("Ladder"))
+            return;
+
         // Reduce ladder charges and update corresponding UI
         ladderCharges--;
         spells.UpdateChargesUI(SpellType.Ladder, ladderCharges.ToString());
+        if (ladderCharges == 0)
+            spells.UpdateEmptyCharges(SpellType.Ladder, 0);
     }
 }

@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Game/Scenes/Camille_3D.unity
+- path: Assets/Game/Scenes/Hogu_main.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
