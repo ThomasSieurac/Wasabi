@@ -71,6 +71,7 @@
     <Compile Include="Assets\Game\Scripts\Checkpoints\WSB_CheckpointManager.cs" />
     <Compile Include="Assets\Game\Scripts\Controls\Controls Ban.cs" />
     <Compile Include="Assets\Game\Scripts\Controls\Controls Lux.cs" />
+    <Compile Include="Assets\Game\Scripts\Controls\WSB_InputManager.cs" />
     <Compile Include="Assets\Game\Scripts\Dialogues\SO_Dialogue.cs" />
     <Compile Include="Assets\Game\Scripts\Dialogues\WSB_Dialogue.cs" />
     <Compile Include="Assets\Game\Scripts\Plants\WSB_Bridge.cs" />

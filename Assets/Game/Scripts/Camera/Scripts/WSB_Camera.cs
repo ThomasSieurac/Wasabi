@@ -95,6 +95,7 @@ public class WSB_Camera : MonoBehaviour
             }
 
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(_pos.x, _pos.y, transform.position.z), Time.time * WSB_CameraManager.I.CamMoveSpeed);
+            cam.orthographicSize = Mathf.MoveTowards(cam.orthographicSize, _zoom, Time.time * WSB_CameraManager.I.CamMoveSpeed);
 
             yield return new WaitForEndOfFrame();
         }

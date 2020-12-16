@@ -72,10 +72,10 @@ public class WSB_CameraManager : MonoBehaviour
 
         // Initiliaze target position of ban & lux cam's
         Vector3 _camPos = camBan.transform.position;
-        targetPositionCamBan = new Vector3(_camPos.x, _camPos.y + 6, (isOrtho ? camBan.Cam.orthographicSize : _camPos.z));
+        targetPositionCamBan = new Vector3(_camPos.x, _camPos.y, (isOrtho ? camBan.Cam.orthographicSize : _camPos.z));
 
         _camPos = camLux.transform.position;
-        targetPositionCamLux = new Vector3(_camPos.x, _camPos.y + 6, (isOrtho ? camLux.Cam.orthographicSize : _camPos.z));
+        targetPositionCamLux = new Vector3(_camPos.x, _camPos.y, (isOrtho ? camLux.Cam.orthographicSize : _camPos.z));
 
         SetResolution();
     }
@@ -142,7 +142,7 @@ public class WSB_CameraManager : MonoBehaviour
         Vector3 _dir = ban.position - lux.position;
 
         // Set the cameras between lux & ban
-        camBan.SetInstantCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + 6 + _dir.y / 2, -MinCamZoom));
+        camBan.SetInstantCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, -MinCamZoom));
         camLux.SetInstantCam(camBan.transform.position);
     }
 
@@ -262,7 +262,7 @@ public class WSB_CameraManager : MonoBehaviour
         // Get required variables for further calculs
         Vector3 _camPos = camLux.transform.position;
         Vector3 _dir = ban.position - lux.position;
-        float _dist = (Vector2.Distance(ban.position, lux.position)) / (camLux.Cam.fieldOfView / 90); // Will get the distance and normalize it by the FOV
+        float _dist = (Vector2.Distance(ban.position, lux.position)) / (IsOrtho ? 1 : (camLux.Cam.fieldOfView / 90)); // Will get the distance and normalize it by the FOV
         float _zoom = 0;
 
         if(IsOrtho)
@@ -280,7 +280,7 @@ public class WSB_CameraManager : MonoBehaviour
                 _zoom = _dist;
 
             // Set the camera position to between lux & ban and with the appropriate zoom
-            camLux.SetCam(new Vector2(lux.position.x, lux.position.y + 6) + (Vector2)_dir / 2, _zoom);
+            camLux.SetCam(new Vector2(lux.position.x, lux.position.y) + (Vector2)_dir / 2, _zoom);
             camBan.SetCam(camLux.transform.position, _zoom);
         }
 
@@ -299,7 +299,7 @@ public class WSB_CameraManager : MonoBehaviour
                 _zoom = (-_dist -MinCamZoom) / 2;
 
             // Set the camera position to between lux & ban and with the appropriate zoom
-            camLux.SetCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + 6 + _dir.y / 2, _zoom));
+            camLux.SetCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, _zoom));
             camBan.SetCam(camLux.transform.position);
         }
     }
@@ -340,18 +340,18 @@ public class WSB_CameraManager : MonoBehaviour
     void SplitDynamic()
     {
         // Get required variables for further calculs
-        float _dist = (Vector2.Distance(ban.position, lux.position)) / (camLux.Cam.fieldOfView / 90); // Will get the distance and normalize it by the FOV
+        float _dist = (Vector2.Distance(ban.position, lux.position)) / (IsOrtho ? 1 : (camLux.Cam.fieldOfView / 90)); // Will get the distance and normalize it by the FOV
         Vector3 _dir = lux.position - ban.position;
 
         // Get the position of both cameras and offset them by the zoom troward each other
         Vector3 _luxOffset = new Vector3(
-            lux.position.x - (_dir.normalized.x * (MaxCamZoom * ((camLux.Cam.fieldOfView / 90) / 1.5f))),
-            (lux.position.y + 6) - (_dir.normalized.y * (MinCamZoom * (camLux.Cam.fieldOfView / 90))),
+            lux.position.x - (_dir.normalized.x * (MaxCamZoom * (IsOrtho ? 1 : ((camLux.Cam.fieldOfView / 90) / 1.5f)))),
+            (lux.position.y) - (_dir.normalized.y * (MinCamZoom * (IsOrtho ? 1 : ((camLux.Cam.fieldOfView / 90))))),
             camLux.transform.position.z);
 
         Vector3 _banOffset = new Vector3(
-            ban.position.x + (_dir.normalized.x * (MaxCamZoom * ((camLux.Cam.fieldOfView / 90) / 1.5f))),
-            (ban.position.y + 6) + (_dir.normalized.y * (MinCamZoom * (camLux.Cam.fieldOfView / 90))),
+            ban.position.x + (_dir.normalized.x * (MaxCamZoom * ((IsOrtho ? 1 : ((camLux.Cam.fieldOfView / 90) / 1.5f))))),
+            (ban.position.y) + (_dir.normalized.y * (MinCamZoom * ((IsOrtho ? 1 : (camLux.Cam.fieldOfView / 90))))),
             camBan.transform.position.z);
 
         // Loop until the distance between lux & ban is lower than the max zoom * 1.5

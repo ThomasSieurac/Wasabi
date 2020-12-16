@@ -15,122 +15,13 @@ public class @ControlsLux : IInputActionCollection, IDisposable
     ""name"": ""Controls Lux"",
     ""maps"": [
         {
-            ""name"": ""Debug"",
-            ""id"": ""b53390b1-26dc-4737-8195-7c3da98bd360"",
+            ""name"": ""Controls lux"",
+            ""id"": ""eb6ca348-257e-4f2c-af2a-1c2f0a5bbf93"",
             ""actions"": [
                 {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
-                    ""id"": ""16434301-5d73-4477-ad14-8c957ee81dc5"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""Rotate Spells"",
-                    ""type"": ""Value"",
-                    ""id"": ""ccbf410b-2e49-42bb-9d66-b57488bbfa79"",
-                    ""expectedControlType"": ""Analog"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""Show Spells"",
-                    ""type"": ""Button"",
-                    ""id"": ""4a360f5e-3587-4dfb-a27c-f1e9a5d22d9e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""9f33260e-2533-40f5-aaf7-42f15c9912d2"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate Spells"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""29071c4b-4718-444b-8dd2-aa074acb45dd"",
-                    ""path"": ""<Keyboard>/numpad4"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate Spells"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""691ad44e-11d3-4838-a64d-f1ba252daea4"",
-                    ""path"": ""<Keyboard>/numpad6"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate Spells"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6334c354-9501-4113-97ae-210c018d876a"",
-                    ""path"": ""<Keyboard>/numpad8"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Show Spells"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""c7143a77-6d28-40f7-8557-a73c979fc74d"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""2f2c2a42-ef10-4543-9298-c0a3255f7c20"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""73ae1c80-5281-47ba-84ff-90565ed020f1"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                }
-            ]
-        },
-        {
-            ""name"": ""Controler"",
-            ""id"": ""365cca32-05e1-478b-a731-a390aef03aa7"",
-            ""actions"": [
-                {
-                    ""name"": ""Move"",
-                    ""type"": ""Value"",
-                    ""id"": ""4ef44be5-84e2-4270-a730-17964cb44cb7"",
+                    ""id"": ""638cbbd1-dec2-40c1-b1c2-0c7586d149b2"",
                     ""expectedControlType"": ""Stick"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -138,55 +29,55 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 {
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
-                    ""id"": ""6a06e1b1-3291-4b44-b6ec-cc495e88a976"",
+                    ""id"": ""cab4877c-edd6-46cf-b1f3-afe7be49fe4b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Show Spells"",
+                    ""name"": ""Interact"",
                     ""type"": ""Button"",
-                    ""id"": ""d763e7bb-17a8-4f5c-b42f-1be3498c8c93"",
+                    ""id"": ""e645cc83-78a7-4e3f-b115-4d197b7fdd53"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Use Spells"",
+                    ""name"": ""Use spell"",
                     ""type"": ""Button"",
-                    ""id"": ""60b9c4e7-1138-4026-94ba-f8aebf4b5762"",
+                    ""id"": ""bdd8a730-0154-4706-817c-d11732587269"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Rotate Spells"",
+                    ""name"": ""Rotate spell"",
                     ""type"": ""Value"",
-                    ""id"": ""b7fcb421-ede0-42d4-ae91-190e0ea25beb"",
-                    ""expectedControlType"": ""Analog"",
+                    ""id"": ""820cba7d-4b58-496e-9a77-1cca37a2a9d8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Respawn"",
+                    ""type"": ""Button"",
+                    ""id"": ""8006422a-1977-4e23-9ef6-3d6a8a7d02da"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
-                    ""id"": ""ada2943f-cabf-4376-925b-68523e117505"",
+                    ""id"": ""ae67757f-efdb-46cd-a81e-ecce8e6a19b4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Change Character"",
+                    ""name"": ""Switch"",
                     ""type"": ""Button"",
-                    ""id"": ""478b4a37-52b5-4244-b57b-6af606e6996e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
-                    ""name"": ""Use"",
-                    ""type"": ""Button"",
-                    ""id"": ""586bc439-591d-4e1c-91b2-1e0ead15e4b9"",
+                    ""id"": ""4c9c8ef2-51c9-4cf2-81f2-438e94db04e3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -194,74 +85,8 @@ public class @ControlsLux : IInputActionCollection, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": ""Shoulder"",
-                    ""id"": ""3073d1e0-3368-4eaf-bd4b-b477b548e52b"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate Spells"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""eb405f61-9890-49d1-8e23-35f1e384d5a1"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate Spells"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""e8d591fc-f926-42a1-a0b0-89e7cdf7cb5b"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate Spells"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3fae8d50-74d6-4e6c-930a-0b7a2d94d4cd"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Use Spells"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5d091285-44c2-474a-9828-31cbf98d2f5c"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Use Spells"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9a860a4c-c2e1-4ff4-9c9b-e6846abe8ad6"",
-                    ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Show Spells"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""e2a737ba-c65c-43a3-8f8d-2827830a8ea5"",
+                    ""name"": ""2D Vector Controller"",
+                    ""id"": ""f639b539-8c77-47dd-a6f4-f5ff00d38ac4"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -271,90 +96,332 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Up"",
-                    ""id"": ""5010432a-c8a7-4348-b1d2-2380fc3640b2"",
+                    ""name"": ""up"",
+                    ""id"": ""0041df7c-9418-439b-af36-0959b6572aee"",
                     ""path"": ""<Gamepad>/leftStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Controller 2"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Down"",
-                    ""id"": ""a51936cc-8907-4441-afc7-4483f3b42757"",
+                    ""name"": ""down"",
+                    ""id"": ""dc7a85ca-1c3a-4b56-af6c-713048dd0e5b"",
                     ""path"": ""<Gamepad>/leftStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Controller 2"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Left"",
-                    ""id"": ""0289b497-0a0d-4169-aff3-c4b7b24f9426"",
+                    ""name"": ""left"",
+                    ""id"": ""327b4cb2-b6f8-4d4c-b353-fc783b55eaf3"",
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Controller 2"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Right"",
-                    ""id"": ""a4d9e1fc-8b98-4ce2-ba78-11cf6a9b420f"",
+                    ""name"": ""right"",
+                    ""id"": ""360a474c-01dd-4862-9286-2aa2b5aed975"",
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
+                    ""groups"": ""Controller 2"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""2D Vector Keyboard"",
+                    ""id"": ""bed4911b-199f-4eed-b7aa-90d38b09e238"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
                     ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""5dd5d1c8-f7af-4456-9518-fadefb8a4938"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""293c4ef1-16b4-4b45-96c5-05698ab895b8"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""c80e7aba-b0a3-41b5-9f74-8db48fbb86d3"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""80df563d-2bd6-415b-b141-61551dbfaae7"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b431ffc3-efd0-4726-9769-e74eeb5f5679"",
+                    ""id"": ""fc342a47-4507-4904-bc3b-31def39d2a12"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Controller 2"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""48e813cb-039a-468d-9f48-1905a8f319c2"",
-                    ""path"": ""<Gamepad>/start"",
+                    ""id"": ""c83c61d9-f74f-41e2-aab3-714e046f62c2"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b43aeb97-2210-457f-889c-722b18eedf65"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller 2"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5fab7f90-e707-4603-8ee1-b25bd1c2fe45"",
+                    ""path"": ""<Keyboard>/rightCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d3531fe-5596-4579-8c97-92a5721324c9"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller 2"",
+                    ""action"": ""Use spell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""594bbc20-e374-4d6e-bdae-2f371d4dd708"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Use spell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis controller shoulder"",
+                    ""id"": ""02438258-ca85-4f53-9254-1dd30d8e88a6"",
+                    ""path"": ""1DAxis"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
+                    ""action"": ""Rotate spell"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""6ff008be-b6eb-4917-bd5e-2bac13bd9ead"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller 2"",
+                    ""action"": ""Rotate spell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""f3372fb7-7b9e-420a-9ff1-298272f81ff8"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller 2"",
+                    ""action"": ""Rotate spell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis keyboard"",
+                    ""id"": ""714ba73a-1e49-42e6-b6d6-fe6928ca0a45"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate spell"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""23d26734-be4a-41c9-aa1c-75d82d580877"",
+                    ""path"": ""<Keyboard>/pageUp"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Rotate spell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""46a2b9e6-67ba-44eb-9e90-2ff41ce45f5d"",
+                    ""path"": ""<Keyboard>/pageDown"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Rotate spell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis controller trigger"",
+                    ""id"": ""62ac5460-89dd-4cd9-91db-65a53fb2b4d0"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate spell"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""10b94e2b-4c82-461a-ae85-331349adc157"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller 2"",
+                    ""action"": ""Rotate spell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""b0f3c363-0bfe-463d-a3da-7ccb6b99fe37"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller 2"",
+                    ""action"": ""Rotate spell"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a9db7d0-48cc-48a4-82ff-a8fa08225156"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller 2"",
+                    ""action"": ""Respawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e9f8329-7b0d-467a-ace5-220b6540c28f"",
+                    ""path"": ""<Keyboard>/delete"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Respawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""965b4021-96aa-499d-a5ad-e052af2bcaa0"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller 2"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""11c65281-043c-4483-b55f-645c91e549ba"",
-                    ""path"": ""<Gamepad>/select"",
+                    ""id"": ""374ff7bd-1877-45fa-8c2a-357440abbd96"",
+                    ""path"": ""<Keyboard>/backspace"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Change Character"",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""8c30014a-56fb-4586-8e09-7a50df8ec07f"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""id"": ""905f07e0-9390-44e6-a04f-ac6e16e4f4b3"",
+                    ""path"": ""<Gamepad>/select"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Use"",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f39ffe5-f6b4-46e0-b8fe-92c56b6e9cd2"",
+                    ""path"": ""<Keyboard>/numpad0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -363,33 +430,50 @@ public class @ControlsLux : IInputActionCollection, IDisposable
     ],
     ""controlSchemes"": [
         {
+            ""name"": ""Keyboard"",
+            ""bindingGroup"": ""Keyboard"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Controller 2"",
             ""bindingGroup"": ""Controller 2"",
             ""devices"": [
                 {
                     ""devicePath"": ""<Gamepad>"",
-                    ""isOptional"": false,
+                    ""isOptional"": true,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Controller 1"",
+            ""bindingGroup"": ""Controller 1"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": true,
                     ""isOR"": false
                 }
             ]
         }
     ]
 }");
-        // Debug
-        m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
-        m_Debug_Move = m_Debug.FindAction("Move", throwIfNotFound: true);
-        m_Debug_RotateSpells = m_Debug.FindAction("Rotate Spells", throwIfNotFound: true);
-        m_Debug_ShowSpells = m_Debug.FindAction("Show Spells", throwIfNotFound: true);
-        // Controler
-        m_Controler = asset.FindActionMap("Controler", throwIfNotFound: true);
-        m_Controler_Move = m_Controler.FindAction("Move", throwIfNotFound: true);
-        m_Controler_Jump = m_Controler.FindAction("Jump", throwIfNotFound: true);
-        m_Controler_ShowSpells = m_Controler.FindAction("Show Spells", throwIfNotFound: true);
-        m_Controler_UseSpells = m_Controler.FindAction("Use Spells", throwIfNotFound: true);
-        m_Controler_RotateSpells = m_Controler.FindAction("Rotate Spells", throwIfNotFound: true);
-        m_Controler_Pause = m_Controler.FindAction("Pause", throwIfNotFound: true);
-        m_Controler_ChangeCharacter = m_Controler.FindAction("Change Character", throwIfNotFound: true);
-        m_Controler_Use = m_Controler.FindAction("Use", throwIfNotFound: true);
+        // Controls lux
+        m_Controlslux = asset.FindActionMap("Controls lux", throwIfNotFound: true);
+        m_Controlslux_Move = m_Controlslux.FindAction("Move", throwIfNotFound: true);
+        m_Controlslux_Jump = m_Controlslux.FindAction("Jump", throwIfNotFound: true);
+        m_Controlslux_Interact = m_Controlslux.FindAction("Interact", throwIfNotFound: true);
+        m_Controlslux_Usespell = m_Controlslux.FindAction("Use spell", throwIfNotFound: true);
+        m_Controlslux_Rotatespell = m_Controlslux.FindAction("Rotate spell", throwIfNotFound: true);
+        m_Controlslux_Respawn = m_Controlslux.FindAction("Respawn", throwIfNotFound: true);
+        m_Controlslux_Pause = m_Controlslux.FindAction("Pause", throwIfNotFound: true);
+        m_Controlslux_Switch = m_Controlslux.FindAction("Switch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -436,113 +520,64 @@ public class @ControlsLux : IInputActionCollection, IDisposable
         asset.Disable();
     }
 
-    // Debug
-    private readonly InputActionMap m_Debug;
-    private IDebugActions m_DebugActionsCallbackInterface;
-    private readonly InputAction m_Debug_Move;
-    private readonly InputAction m_Debug_RotateSpells;
-    private readonly InputAction m_Debug_ShowSpells;
-    public struct DebugActions
+    // Controls lux
+    private readonly InputActionMap m_Controlslux;
+    private IControlsluxActions m_ControlsluxActionsCallbackInterface;
+    private readonly InputAction m_Controlslux_Move;
+    private readonly InputAction m_Controlslux_Jump;
+    private readonly InputAction m_Controlslux_Interact;
+    private readonly InputAction m_Controlslux_Usespell;
+    private readonly InputAction m_Controlslux_Rotatespell;
+    private readonly InputAction m_Controlslux_Respawn;
+    private readonly InputAction m_Controlslux_Pause;
+    private readonly InputAction m_Controlslux_Switch;
+    public struct ControlsluxActions
     {
         private @ControlsLux m_Wrapper;
-        public DebugActions(@ControlsLux wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Debug_Move;
-        public InputAction @RotateSpells => m_Wrapper.m_Debug_RotateSpells;
-        public InputAction @ShowSpells => m_Wrapper.m_Debug_ShowSpells;
-        public InputActionMap Get() { return m_Wrapper.m_Debug; }
+        public ControlsluxActions(@ControlsLux wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Controlslux_Move;
+        public InputAction @Jump => m_Wrapper.m_Controlslux_Jump;
+        public InputAction @Interact => m_Wrapper.m_Controlslux_Interact;
+        public InputAction @Usespell => m_Wrapper.m_Controlslux_Usespell;
+        public InputAction @Rotatespell => m_Wrapper.m_Controlslux_Rotatespell;
+        public InputAction @Respawn => m_Wrapper.m_Controlslux_Respawn;
+        public InputAction @Pause => m_Wrapper.m_Controlslux_Pause;
+        public InputAction @Switch => m_Wrapper.m_Controlslux_Switch;
+        public InputActionMap Get() { return m_Wrapper.m_Controlslux; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(DebugActions set) { return set.Get(); }
-        public void SetCallbacks(IDebugActions instance)
+        public static implicit operator InputActionMap(ControlsluxActions set) { return set.Get(); }
+        public void SetCallbacks(IControlsluxActions instance)
         {
-            if (m_Wrapper.m_DebugActionsCallbackInterface != null)
+            if (m_Wrapper.m_ControlsluxActionsCallbackInterface != null)
             {
-                @Move.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnMove;
-                @RotateSpells.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnRotateSpells;
-                @RotateSpells.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnRotateSpells;
-                @RotateSpells.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnRotateSpells;
-                @ShowSpells.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnShowSpells;
-                @ShowSpells.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnShowSpells;
-                @ShowSpells.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnShowSpells;
+                @Move.started -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnMove;
+                @Jump.started -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnJump;
+                @Interact.started -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnInteract;
+                @Usespell.started -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnUsespell;
+                @Usespell.performed -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnUsespell;
+                @Usespell.canceled -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnUsespell;
+                @Rotatespell.started -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnRotatespell;
+                @Rotatespell.performed -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnRotatespell;
+                @Rotatespell.canceled -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnRotatespell;
+                @Respawn.started -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnRespawn;
+                @Respawn.performed -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnRespawn;
+                @Respawn.canceled -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnRespawn;
+                @Pause.started -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnPause;
+                @Switch.started -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnSwitch;
+                @Switch.performed -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnSwitch;
+                @Switch.canceled -= m_Wrapper.m_ControlsluxActionsCallbackInterface.OnSwitch;
             }
-            m_Wrapper.m_DebugActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @Move.started += instance.OnMove;
-                @Move.performed += instance.OnMove;
-                @Move.canceled += instance.OnMove;
-                @RotateSpells.started += instance.OnRotateSpells;
-                @RotateSpells.performed += instance.OnRotateSpells;
-                @RotateSpells.canceled += instance.OnRotateSpells;
-                @ShowSpells.started += instance.OnShowSpells;
-                @ShowSpells.performed += instance.OnShowSpells;
-                @ShowSpells.canceled += instance.OnShowSpells;
-            }
-        }
-    }
-    public DebugActions @Debug => new DebugActions(this);
-
-    // Controler
-    private readonly InputActionMap m_Controler;
-    private IControlerActions m_ControlerActionsCallbackInterface;
-    private readonly InputAction m_Controler_Move;
-    private readonly InputAction m_Controler_Jump;
-    private readonly InputAction m_Controler_ShowSpells;
-    private readonly InputAction m_Controler_UseSpells;
-    private readonly InputAction m_Controler_RotateSpells;
-    private readonly InputAction m_Controler_Pause;
-    private readonly InputAction m_Controler_ChangeCharacter;
-    private readonly InputAction m_Controler_Use;
-    public struct ControlerActions
-    {
-        private @ControlsLux m_Wrapper;
-        public ControlerActions(@ControlsLux wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Controler_Move;
-        public InputAction @Jump => m_Wrapper.m_Controler_Jump;
-        public InputAction @ShowSpells => m_Wrapper.m_Controler_ShowSpells;
-        public InputAction @UseSpells => m_Wrapper.m_Controler_UseSpells;
-        public InputAction @RotateSpells => m_Wrapper.m_Controler_RotateSpells;
-        public InputAction @Pause => m_Wrapper.m_Controler_Pause;
-        public InputAction @ChangeCharacter => m_Wrapper.m_Controler_ChangeCharacter;
-        public InputAction @Use => m_Wrapper.m_Controler_Use;
-        public InputActionMap Get() { return m_Wrapper.m_Controler; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ControlerActions set) { return set.Get(); }
-        public void SetCallbacks(IControlerActions instance)
-        {
-            if (m_Wrapper.m_ControlerActionsCallbackInterface != null)
-            {
-                @Move.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnMove;
-                @Jump.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnJump;
-                @Jump.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnJump;
-                @Jump.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnJump;
-                @ShowSpells.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnShowSpells;
-                @ShowSpells.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnShowSpells;
-                @ShowSpells.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnShowSpells;
-                @UseSpells.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnUseSpells;
-                @UseSpells.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnUseSpells;
-                @UseSpells.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnUseSpells;
-                @RotateSpells.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnRotateSpells;
-                @RotateSpells.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnRotateSpells;
-                @RotateSpells.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnRotateSpells;
-                @Pause.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnPause;
-                @Pause.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnPause;
-                @Pause.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnPause;
-                @ChangeCharacter.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnChangeCharacter;
-                @ChangeCharacter.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnChangeCharacter;
-                @ChangeCharacter.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnChangeCharacter;
-                @Use.started -= m_Wrapper.m_ControlerActionsCallbackInterface.OnUse;
-                @Use.performed -= m_Wrapper.m_ControlerActionsCallbackInterface.OnUse;
-                @Use.canceled -= m_Wrapper.m_ControlerActionsCallbackInterface.OnUse;
-            }
-            m_Wrapper.m_ControlerActionsCallbackInterface = instance;
+            m_Wrapper.m_ControlsluxActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Move.started += instance.OnMove;
@@ -551,28 +586,37 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @ShowSpells.started += instance.OnShowSpells;
-                @ShowSpells.performed += instance.OnShowSpells;
-                @ShowSpells.canceled += instance.OnShowSpells;
-                @UseSpells.started += instance.OnUseSpells;
-                @UseSpells.performed += instance.OnUseSpells;
-                @UseSpells.canceled += instance.OnUseSpells;
-                @RotateSpells.started += instance.OnRotateSpells;
-                @RotateSpells.performed += instance.OnRotateSpells;
-                @RotateSpells.canceled += instance.OnRotateSpells;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
+                @Usespell.started += instance.OnUsespell;
+                @Usespell.performed += instance.OnUsespell;
+                @Usespell.canceled += instance.OnUsespell;
+                @Rotatespell.started += instance.OnRotatespell;
+                @Rotatespell.performed += instance.OnRotatespell;
+                @Rotatespell.canceled += instance.OnRotatespell;
+                @Respawn.started += instance.OnRespawn;
+                @Respawn.performed += instance.OnRespawn;
+                @Respawn.canceled += instance.OnRespawn;
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
-                @ChangeCharacter.started += instance.OnChangeCharacter;
-                @ChangeCharacter.performed += instance.OnChangeCharacter;
-                @ChangeCharacter.canceled += instance.OnChangeCharacter;
-                @Use.started += instance.OnUse;
-                @Use.performed += instance.OnUse;
-                @Use.canceled += instance.OnUse;
+                @Switch.started += instance.OnSwitch;
+                @Switch.performed += instance.OnSwitch;
+                @Switch.canceled += instance.OnSwitch;
             }
         }
     }
-    public ControlerActions @Controler => new ControlerActions(this);
+    public ControlsluxActions @Controlslux => new ControlsluxActions(this);
+    private int m_KeyboardSchemeIndex = -1;
+    public InputControlScheme KeyboardScheme
+    {
+        get
+        {
+            if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
+            return asset.controlSchemes[m_KeyboardSchemeIndex];
+        }
+    }
     private int m_Controller2SchemeIndex = -1;
     public InputControlScheme Controller2Scheme
     {
@@ -582,21 +626,24 @@ public class @ControlsLux : IInputActionCollection, IDisposable
             return asset.controlSchemes[m_Controller2SchemeIndex];
         }
     }
-    public interface IDebugActions
+    private int m_Controller1SchemeIndex = -1;
+    public InputControlScheme Controller1Scheme
     {
-        void OnMove(InputAction.CallbackContext context);
-        void OnRotateSpells(InputAction.CallbackContext context);
-        void OnShowSpells(InputAction.CallbackContext context);
+        get
+        {
+            if (m_Controller1SchemeIndex == -1) m_Controller1SchemeIndex = asset.FindControlSchemeIndex("Controller 1");
+            return asset.controlSchemes[m_Controller1SchemeIndex];
+        }
     }
-    public interface IControlerActions
+    public interface IControlsluxActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnShowSpells(InputAction.CallbackContext context);
-        void OnUseSpells(InputAction.CallbackContext context);
-        void OnRotateSpells(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnUsespell(InputAction.CallbackContext context);
+        void OnRotatespell(InputAction.CallbackContext context);
+        void OnRespawn(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
-        void OnChangeCharacter(InputAction.CallbackContext context);
-        void OnUse(InputAction.CallbackContext context);
+        void OnSwitch(InputAction.CallbackContext context);
     }
 }
