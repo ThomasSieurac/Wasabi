@@ -64,7 +64,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""id"": ""8006422a-1977-4e23-9ef6-3d6a8a7d02da"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Hold(duration=1)""
                 },
                 {
                     ""name"": ""Pause"",

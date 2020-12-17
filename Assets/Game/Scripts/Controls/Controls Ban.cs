@@ -64,7 +64,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""id"": ""303cca4d-ce42-4b35-a828-67af0d34dce0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Hold(duration=1)""
                 },
                 {
                     ""name"": ""Pause"",

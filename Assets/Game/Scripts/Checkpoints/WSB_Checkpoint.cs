@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class WSB_Checkpoint : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] Vector2 position;
+    public Vector2 Position { get { return position; } }
+
+    private void OnDrawGizmos()
     {
-        
+        // Only to set properly the spawnpoint of the players
+        Gizmos.color = new Color(2, .3f, 0, .8f);
+        Gizmos.DrawSphere(position, .3f);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        // If a player enter the trigger, tells the manager this is the new checkpoint
+        if(collision.GetComponent<WSB_Player>())
+        {
+            WSB_CheckpointManager.I.SetNewCheckpoint(this);
+        }
     }
 }
