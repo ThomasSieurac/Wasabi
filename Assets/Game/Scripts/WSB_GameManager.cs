@@ -8,11 +8,6 @@ using System.Linq;
 
 public class WSB_GameManager : MonoBehaviour
 {
-    bool singlePlayer = true;
-
-    [SerializeField] PlayerInput inputBan = null;
-    [SerializeField] PlayerInput inputLux = null;
-
     [SerializeField] GameObject menu = null; 
     [SerializeField] GameObject menuPause = null; 
     public static bool Paused { get; private set; } = true;

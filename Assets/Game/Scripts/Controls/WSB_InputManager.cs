@@ -7,8 +7,8 @@ public class WSB_InputManager : MonoBehaviour
 {
     public static WSB_InputManager I { get; private set; }
 
-    [SerializeField] PlayerInput inputBan;
-    [SerializeField] PlayerInput inputLux;
+    [SerializeField] PlayerInput inputBan = null;
+    [SerializeField] PlayerInput inputLux = null;
 
 
     private void Awake()

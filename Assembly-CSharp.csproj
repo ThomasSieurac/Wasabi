@@ -74,6 +74,7 @@
     <Compile Include="Assets\Game\Scripts\Controls\WSB_InputManager.cs" />
     <Compile Include="Assets\Game\Scripts\Dialogues\SO_Dialogue.cs" />
     <Compile Include="Assets\Game\Scripts\Dialogues\WSB_Dialogue.cs" />
+    <Compile Include="Assets\Game\Scripts\Menus\WSB_MainMenu.cs" />
     <Compile Include="Assets\Game\Scripts\Plants\WSB_Bridge.cs" />
     <Compile Include="Assets\Game\Scripts\Plants\WSB_Carnivore.cs" />
     <Compile Include="Assets\Game\Scripts\Plants\WSB_Ladder.cs" />

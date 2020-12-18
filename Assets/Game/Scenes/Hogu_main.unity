@@ -1699,8 +1699,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e05d2ec7e44304389287d236677503, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputBan: {fileID: 365302864}
-  inputLux: {fileID: 575613747}
   menu: {fileID: 112198006}
   menuPause: {fileID: 112198006}
 --- !u!114 &1460882234

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WSB_Checkpoint : MonoBehaviour
 {
-    [SerializeField] Vector2 position;
+    [SerializeField] Vector2 position = Vector2.zero;
     public Vector2 Position { get { return position; } }
 
     private void OnDrawGizmos()
