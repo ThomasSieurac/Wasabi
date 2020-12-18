@@ -4,148 +4,66 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
 using TMPro;
+using UnityEngine.UI;
 
 public class WSB_Spells : MonoBehaviour
 {
 
-    [SerializeField] GameObject[] allSpells = new GameObject[12];
-    [SerializeField] bool active = false;
     [SerializeField] WSB_Player owner = null;
 
-    #region Spell Text Lists
-    [SerializeField] List<TMP_Text> earthTexts = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> windTexts = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> lightTexts = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> shrinkTexts = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> ladderTexts = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> bridgeTexts = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> trampolineTexts = new List<TMP_Text>();
-    [SerializeField] List<TMP_Text> carnivoreTexts = new List<TMP_Text>();
-    #endregion
+    [SerializeField] Image[] images = new Image[4];
 
+    [SerializeField] TMP_Text[] texts = new TMP_Text[4];
+
+    [SerializeField] float rotationSpeed = 2;
+
+    int currentSpell = 0;
+    Coroutine animateCoroutine = null;
+
+    [SerializeField] long target = 0;
+    [SerializeField] float z = 0;
 
     private void Awake()
     {
-        // Checks owner var and try to populate it from parent, destroy itself if not found
-        if (!owner) owner = GetComponentInParent<WSB_Player>();
+        // Checks owner, destroy itself if not found
         if(!owner)
         {
             Debug.LogError($"Erreur, component Wsb_Player manquant sur {transform.name} parent");
             Destroy(this);
         }
 
-        // Populate allSpells list if not correctly done
-        for (int i = 0; i < 12; i++)
+        // Checks Image components, destroy itself if not found
+        if (!images[0] || !images[1] || !images[2] || !images[3])
         {
-            if (!allSpells[i])
-                allSpells[i] = transform.GetChild(i).gameObject;
-
-            // Populates TMP_Texts lists based on the tags of each spells
-            string _tag = allSpells[i].tag;
-            switch (_tag)
-            {
-                case "Earth":
-                    earthTexts.Add(allSpells[i].transform.GetChild(0).GetComponent<TMP_Text>());
-                    break;
-                case "Wind":
-                    windTexts.Add(allSpells[i].transform.GetChild(0).GetComponent<TMP_Text>());
-                    break;
-                case "Shrink":
-                    shrinkTexts.Add(allSpells[i].transform.GetChild(0).GetComponent<TMP_Text>());
-                    break;
-                case "Light":
-                    lightTexts.Add(allSpells[i].transform.GetChild(0).GetComponent<TMP_Text>());
-                    break;
-                case "Ladder":
-                    ladderTexts.Add(allSpells[i].transform.GetChild(0).GetComponent<TMP_Text>());
-                    break;
-                case "Bridge":
-                    bridgeTexts.Add(allSpells[i].transform.GetChild(0).GetComponent<TMP_Text>());
-                    break;
-                case "Trampoline":
-                    trampolineTexts.Add(allSpells[i].transform.GetChild(0).GetComponent<TMP_Text>());
-                    break;
-                case "Carnivore":
-                    carnivoreTexts.Add(allSpells[i].transform.GetChild(0).GetComponent<TMP_Text>());
-                    break;
-            }
+            Debug.LogError($"Erreur, component Image manquant sur {transform.name} parent");
+            Destroy(this);
         }
 
-        // Disable each spell and activates the top ones
-        for (int i = 0; i < 12; i++)
+        // Checks TMP_Text components, destroy itself if not found
+        if (!texts[0] || !texts[1] || !texts[2] || !texts[3])
         {
-            allSpells[i].SetActive(false);
-            if (allSpells[i].transform.position.y > transform.position.y + .1f)
-                allSpells[i].SetActive(true);
+            Debug.LogError($"Erreur, component TMP_Text manquant sur {transform.name} parent");
+            Destroy(this);
         }
 
-        // Disable all spells if the bool isn't active
-        if (!active)
-            allSpells.ToList().ForEach(_g => _g.SetActive(false));
-
-        // Find the top spell and keep it enable
-        int _index = 0;
-        float _height = allSpells[0].transform.position.y;
-        for (int i = 1; i < allSpells.Length; i++)
+        // Sets the correct tags for each players
+        if(owner.GetComponent<WSB_Ban>())
         {
-            // Replace the index and height if the current checked spell is higher
-            if (allSpells[i].transform.position.y > _height)
-            {
-                _height = allSpells[i].transform.position.y;
-                _index = i;
-            }
+            images[0].tag = "Earth";
+            images[1].tag = "Wind";
+            images[2].tag = "Light";
+            images[3].tag = "Shrink";
         }
-        // Activates the highest spell
-        allSpells[_index].SetActive(true);
+        else
+        {
+            currentSpell = 3;
+            images[0].tag = "Ladder";
+            images[1].tag = "Bridge";
+            images[2].tag = "Carnivore";
+            images[3].tag = "Trampoline";
+        }
     }
 
-    public void ShowWheel(InputAction.CallbackContext _context)
-    {
-        // Exit if paused or input isn't started
-        if (!_context.started || WSB_GameManager.Paused)
-            return;
-
-        // Activates all spells
-        allSpells.ToList().ForEach(_g => _g.SetActive(true));
-        for (int i = 0; i < 12; i++)
-        {
-            // Keep active only the top five spells
-            allSpells[i].SetActive(false);
-            if (allSpells[i].transform.position.y > transform.position.y + .1f) 
-                allSpells[i].SetActive(true);
-        }
-
-        // Set global active bool to true
-        active = true;
-    }
-
-    public void HideWheel(InputAction.CallbackContext _context)
-    {
-        // Exist if paused or input isn't canceled
-        if (!_context.canceled || WSB_GameManager.Paused) 
-            return;
-
-        // Disable all spells
-        allSpells.ToList().ForEach(_g => _g.SetActive(false));
-
-        // Find the top spell and keep it enable
-        int _index = 0;
-        float _height = allSpells[0].transform.position.y;
-        for (int i = 1; i < allSpells.Length; i++)
-        {
-            // Replace the index and height if the current checked spell is higher
-            if (allSpells[i].transform.position.y > _height)
-            {
-                _height = allSpells[i].transform.position.y;
-                _index = i;
-            }
-        }
-        // Activates the highest spell
-        allSpells[_index].SetActive(true);
-
-        // Set global active bool to false
-        active = false;
-    }
 
     public void UseSpell(InputAction.CallbackContext _context)
     {
@@ -156,99 +74,100 @@ public class WSB_Spells : MonoBehaviour
         // Exit if paused or input isn't started
         if (!_context.started || WSB_GameManager.Paused) return;
 
-        // Find the highest spell
-        int _i = 0;
-        float _y = allSpells[0].transform.position.y;
-        for (int i = 1; i < allSpells.Length; i++)
-        {
-            if (allSpells[i].transform.position.y > _y)
-            {
-                _i = i;
-                _y = allSpells[i].transform.position.y;
-            }
-        }
-        // Tell owner to use spell called by the found spell's tag
-        owner.UseSpell(allSpells[_i].tag);
+        owner.UseSpell(images[currentSpell].tag);
     }
 
     public void RotateSpells(InputAction.CallbackContext _context)
     {
-        // Exit if spells aren't active, input isn't started or game is paused
-        if (!active || !_context.started || WSB_GameManager.Paused)
+        // Exit is paused or input isn't started
+        if (!_context.started || WSB_GameManager.Paused)
             return;
 
-        // Find in wich way to rotate the wheel
-        bool _right = _context.ReadValue<float>() > 0 ? true : false;
+        int _v = (int)_context.ReadValue<float>();
 
-        // Rotate the wheel by 360/12° in the way found
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z - (_right ? 30 : -30));
-        for (int i = 0; i < 12; i++)
+        // Increment the current spell and keep it between 0 and 3
+        currentSpell += _v;
+        if (currentSpell > 3)
+            currentSpell = 0;
+        if (currentSpell < 0)
+            currentSpell = 3;
+
+        // Adds to the target z rotation
+        target += _v > 0 ? -90 : 90;
+
+        if (animateCoroutine != null)
+            StopCoroutine(animateCoroutine);
+
+        animateCoroutine = StartCoroutine(AnimateWheel(_v > 0));
+
+    }
+
+    IEnumerator AnimateWheel(bool _right)
+    {
+        // Rotates the wheel toward the correct z target
+        while (true)
         {
-            allSpells[i].transform.eulerAngles = new Vector3(allSpells[i].transform.eulerAngles.x, allSpells[i].transform.eulerAngles.y, allSpells[i].transform.eulerAngles.z + (_right ? 30 : -30));
+            if (!_right && z < target)
+            {
+                z = Mathf.Lerp(z, target, Time.deltaTime * (rotationSpeed * 10));
+                transform.eulerAngles = new Vector3(0, 0, z);
+            }
 
-            // Disable the current spell and activates it if it is in the highest 5
-            allSpells[i].SetActive(false);
-            if (allSpells[i].transform.position.y > transform.position.y + .1f)
-                allSpells[i].SetActive(true);
+            else if (_right && z > target)
+            {
+                z = Mathf.Lerp(z, target, Time.deltaTime * (rotationSpeed * 10));
+                transform.eulerAngles = new Vector3(0, 0, z);
+            }
+
+            yield return new WaitForEndOfFrame();
         }
     }
 
     public void UpdateChargesUI(SpellType _type, string _value)
     {
-        // Sets text of each object in the list to the value given
         switch (_type)
         {
             case SpellType.Earth:
-                foreach (TMP_Text _txt in earthTexts)
-                {
-                    _txt.text = _value;
-                }
+            case SpellType.Ladder:
+                texts[0].text = _value.ToString();
                 break;
             case SpellType.Wind:
-                foreach (TMP_Text _txt in windTexts)
-                {
-                    _txt.text = _value;
-                }
+            case SpellType.Bridge:
+                texts[1].text = _value.ToString();
                 break;
             case SpellType.Light:
-                foreach (TMP_Text _txt in lightTexts)
-                {
-                    _txt.text = _value;
-                }
+            case SpellType.Carnivore:
+                texts[2].text = _value.ToString();
                 break;
             case SpellType.Shrink:
-                foreach (TMP_Text _txt in shrinkTexts)
-                {
-                    _txt.text = _value;
-                }
-                break;
-            case SpellType.Ladder:
-                foreach (TMP_Text _txt in ladderTexts)
-                {
-                    _txt.text = _value;
-                }
-                break;
-            case SpellType.Bridge:
-                foreach (TMP_Text _txt in bridgeTexts)
-                {
-                    _txt.text = _value;
-                }
-                break;
             case SpellType.Trampoline:
-                foreach (TMP_Text _txt in trampolineTexts)
-                {
-                    _txt.text = _value;
-                }
-                break;
-            case SpellType.Carnivore:
-                foreach (TMP_Text _txt in carnivoreTexts)
-                {
-                    _txt.text = _value;
-                }
+                texts[3].text = _value.ToString();
                 break;
         }
     }
 
+    public void UpdateEmptyCharges(SpellType _type, float _value)
+    {
+        switch (_type)
+        {
+            case SpellType.Earth:
+            case SpellType.Ladder:
+                images[0].fillAmount = _value;
+                break;
+            case SpellType.Wind:
+            case SpellType.Bridge:
+                images[1].fillAmount = _value;
+                break;
+            case SpellType.Light:
+            case SpellType.Carnivore:
+                images[2].fillAmount = _value;
+                break;
+            case SpellType.Shrink:
+            case SpellType.Trampoline:
+                images[3].fillAmount = _value;
+                break;
+        }
+    }
 }
 
 public enum SpellType

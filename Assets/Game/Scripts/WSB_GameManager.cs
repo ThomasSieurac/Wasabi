@@ -4,14 +4,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 public class WSB_GameManager : MonoBehaviour
 {
-    bool singlePlayer = true;
-
-    [SerializeField] PlayerInput inputBan = null;
-    [SerializeField] PlayerInput inputLux = null;
-
     [SerializeField] GameObject menu = null; 
     [SerializeField] GameObject menuPause = null; 
     public static bool Paused { get; private set; } = true;
@@ -37,78 +33,32 @@ public class WSB_GameManager : MonoBehaviour
             _r.angularVelocity = 0;
         }
 
-        // Disable mouse interaction on main menu
-        EventSystem.current.SetSelectedGameObject(null);
+        InputSystem.onDeviceChange += DeviceChange;
+
+        // Select the first item in the menu
         EventSystem.current.SetSelectedGameObject(menu.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
     }
 
-    Color baseColor = Color.red;
-    [SerializeField] float discoDelay = 2;
-    [SerializeField] TMPro.TMP_Text warning = null;
-    [SerializeField] GameObject warningObj = null; 
+    private void DeviceChange(InputDevice arg1, InputDeviceChange arg2)
+    {
+        if(arg2 == InputDeviceChange.Disconnected)
+        {
+            Paused = true;
+
+            OnPause?.Invoke();
+            menuPause.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(menuPause.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
+        }
+    }
 
     private void Update()
     {
-        // Just messing around to make the warning disco
-        if(menu.activeSelf && warningObj.activeSelf)
-        {
-            Color _c = warning.color;
-            if (baseColor == Color.red)
-            {
-                _c.b = Mathf.MoveTowards(_c.b, 1, Time.deltaTime * discoDelay);
-                if (_c.b == 1) baseColor = Color.magenta;
-            }
-            else if (baseColor == Color.magenta)
-            {
-                _c.r = Mathf.MoveTowards(_c.r, 0, Time.deltaTime * discoDelay);
-                if (_c.r == 0) baseColor = Color.blue;
-            }
-            else if (baseColor == Color.blue)
-            {
-                _c.g = Mathf.MoveTowards(_c.g, 1, Time.deltaTime * discoDelay);
-                if (_c.g == 1) baseColor = Color.cyan;
-            }
-            else if (baseColor == Color.cyan)
-            {
-                _c.b = Mathf.MoveTowards(_c.b, 0, Time.deltaTime * discoDelay);
-                if (_c.b == 0) baseColor = Color.green;
-            }
-            else if (baseColor == Color.green)
-            {
-                _c.r = Mathf.MoveTowards(_c.r, 1, Time.deltaTime * discoDelay);
-                if (_c.r == 1) baseColor = Color.yellow;
-            }
-            else if (baseColor == Color.yellow)
-            {
-                _c.g = Mathf.MoveTowards(_c.g, 0, Time.deltaTime * discoDelay);
-                if (_c.g == 0) baseColor = Color.red;
-            }
-            warning.color = _c;
-        }
-
-        // Activates the warning if there is no gamepad connected
-        warningObj.SetActive(Gamepad.all.Count == 0);
-
         // Invoke the main Update of the game if it is not paused
         if (!Paused)
             OnUpdate?.Invoke();
     }
 
     public static void SetDialogue(bool _state) => IsDialogue = _state;
-
-    public void ChangeCharacter(InputAction.CallbackContext _ctx)
-    {
-        // Exit if the game is paused or input isn't started
-        if (!_ctx.started || Paused)
-            return;
-
-        // Switch the PlayerInput if the game is in SinglePlayer mode
-        if(singlePlayer)
-        {
-            inputBan.enabled = !inputBan.enabled;
-            inputLux.enabled = !inputLux.enabled;
-        }
-    }
 
     public void Pause(InputAction.CallbackContext _ctx)
     {
@@ -119,12 +69,11 @@ public class WSB_GameManager : MonoBehaviour
         // Inverse pause state
         Paused = !Paused;
 
-        // If the game is paused, invoke event, show menu and disable mouse input on this menu
+        // If the game is paused, invoke event, show menu and select the first item in the menu
         if (Paused)
         {
             OnPause?.Invoke();
             menuPause.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(menuPause.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
         }
         else
@@ -139,14 +88,29 @@ public class WSB_GameManager : MonoBehaviour
         menuPause.SetActive(false);
     }
 
-    public void StartGame(bool _singlePlayer)
+    public void SetBanController(bool _isBan)
     {
-        // If there isn't enough gamepad detected for the selected gamemode exit
-        if (Gamepad.all.Count == 0 || (_singlePlayer && Gamepad.all.Count != 1) || (!_singlePlayer && Gamepad.all.Count != 2))
-            return;
+        isBanController = _isBan;
+    }
 
-        // Set gamemode
-        singlePlayer = _singlePlayer;
+    bool isBanController = true;
+
+    public void StartGame(string _m)
+    {
+        switch (_m)
+        {
+            case "Controller":
+                if (!WSB_InputManager.I.ChangeControllers(ControlsMode.Controller, isBanController)) return;
+                break;
+            case "Keyboard":
+                if (!WSB_InputManager.I.ChangeControllers(ControlsMode.Keyboard, isBanController)) return;
+                break;
+            case "Both":
+                if (!WSB_InputManager.I.ChangeControllers(ControlsMode.ControllerKeyboard, isBanController)) return;
+                break;
+            default:
+                return;
+        }
 
         // Get all the rigidbody in the scene and unfreeze them
         Rigidbody2D[] _physics = FindObjectsOfType<Rigidbody2D>();
@@ -160,12 +124,7 @@ public class WSB_GameManager : MonoBehaviour
         // Set Pause to false
         Paused = false;
 
-        // Setup inputs to only one character
-        if(singlePlayer)
-        {
-            inputBan.enabled = true;
-            inputLux.enabled = false;
-        }
+
 
         OnResume?.Invoke();
 
