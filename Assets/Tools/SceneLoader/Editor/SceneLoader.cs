@@ -13,19 +13,29 @@ public class SceneLoader : EditorWindow
 
     SceneLoaderProfile data;
 
+    static EditorWindow window = null;
 
     string editedFolder = "";
+
+    bool showUnlistedScenes = false;
 
     [MenuItem("Tools/Scene Loader")]
     public static void Init()
     {
-        EditorWindow _u = GetWindow(typeof(SceneLoader), false, "Scene Loader");
-        _u.autoRepaintOnSceneChange = true;
+        window = GetWindow(typeof(SceneLoader), false, "Scene Loader");
+        window.autoRepaintOnSceneChange = true;
     }
 
     private void OnEnable()
     {
+        window = GetWindow(typeof(SceneLoader), false, "Scene Loader");
         scrollPosition = new Vector2(0, 0);
+    }
+
+    private void OnDisable()
+    {
+        window.Repaint();
+        EditorUtility.SetDirty(data);
     }
 
     int CreateProfileRecursively(int _i)
@@ -100,7 +110,7 @@ public class SceneLoader : EditorWindow
             {
                 data.Folders.Add(editedFolder);
                 data.ActivatedFolders.Add(false);
-                data.ListedScenes.Add(new List<string>());
+                data.ListedScenes.Add(new ScenesData());
                 EditorGUILayout.EndScrollView();
                 return;
             }
@@ -114,7 +124,7 @@ public class SceneLoader : EditorWindow
         {
             data.Folders.Add(editedFolder);
             data.ActivatedFolders.Add(false);
-            data.ListedScenes.Add(new List<string>());
+            data.ListedScenes.Add(new ScenesData());
             EditorGUILayout.EndScrollView();
             return;
         }
@@ -156,29 +166,35 @@ public class SceneLoader : EditorWindow
         EditorGUILayout.Space();
         Header("Unlisted scenes");
 
-        // Loop through all the scenes
-        for (int i = 0; i < allScenes.Length; i++)
+        showUnlistedScenes = EditorGUILayout.Foldout(showUnlistedScenes, "Show unlisted scenes", true);
+
+        if(showUnlistedScenes)
         {
-            // Get the path to that scene
-            string _scenePath = AssetDatabase.GUIDToAssetPath(allScenes[i]);
-
-            bool _alreadySet = false;
-
-            // Loop though each folder to find the current scene if already located in a folder
-            for (int j = 0; j < data.Folders.Count; j++)
+            // Loop through all the scenes
+            for (int i = 0; i < allScenes.Length; i++)
             {
-                if (data.ListedScenes[j].Contains(_scenePath))
-                {
-                    _alreadySet = true;
-                    break;
-                }
-            }
-            if (_alreadySet)
-                continue;
+                // Get the path to that scene
+                string _scenePath = AssetDatabase.GUIDToAssetPath(allScenes[i]);
 
-            // If not already in a folder, sets it in Unlisted
-            ShowScene(_scenePath);
+                bool _alreadySet = false;
+
+                // Loop though each folder to find the current scene if already located in a folder
+                for (int j = 0; j < data.Folders.Count; j++)
+                {
+                    if (data.ListedScenes[j].Content.Contains(_scenePath))
+                    {
+                        _alreadySet = true;
+                        break;
+                    }
+                }
+                if (_alreadySet)
+                    continue;
+
+                // If not already in a folder, sets it in Unlisted
+                ShowScene(_scenePath);
+            }
         }
+
 
         EditorGUILayout.EndScrollView();
 
@@ -191,13 +207,13 @@ public class SceneLoader : EditorWindow
         data.Folders.RemoveAt(_i);
 
         // Look if there was any scene in the folder and clear the list if so
-        if(data.ListedScenes.Count > 0 && data.ListedScenes[_i].Count > 0)
+        if(data.ListedScenes.Count > 0 && data.ListedScenes[_i].Content.Count > 0)
         {
             for (int j = 0; j < data.Folders.Count; j++)
             {
-                if (data.ListedScenes[j].Contains(data.ListedScenes[_i][0]))
+                if (data.ListedScenes[j].Content.Contains(data.ListedScenes[_i].Content[0]))
                 {
-                    data.ListedScenes[j].Clear();
+                    data.ListedScenes[j].Content.Clear();
                     break;
                 }
             }
@@ -246,9 +262,9 @@ public class SceneLoader : EditorWindow
     void ShowFolder(int _i)
     {
         // Loop through the scenes of the folder
-        for (int i = 0; i < data.ListedScenes[_i].Count; i++)
+        for (int i = 0; i < data.ListedScenes[_i].Content.Count; i++)
         {
-            ShowScene(data.ListedScenes[_i][i]);
+            ShowScene(data.ListedScenes[_i].Content[i]);
         }
     }
 
@@ -260,9 +276,9 @@ public class SceneLoader : EditorWindow
         // Loops through all the folders to find if the path exists somewhere and remove it
         for (int j = 0; j < data.Folders.Count; j++)
         {
-            if (data.ListedScenes[j].Contains(_d[1]))
+            if (data.ListedScenes[j].Content.Contains(_d[1]))
             {
-                data.ListedScenes[j].Remove(_d[1]);
+                data.ListedScenes[j].Content.Remove(_d[1]);
                 break;
             }
         }
@@ -274,7 +290,7 @@ public class SceneLoader : EditorWindow
             return;
 
         // Add the scene to the correct folder
-        data.ListedScenes[_i].Add(_d[1]);
+        data.ListedScenes[_i].Content.Add(_d[1]);
     }
 
 
