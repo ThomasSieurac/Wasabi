@@ -13,15 +13,18 @@ public class SceneLoader : EditorWindow
 
     SceneLoaderProfile data;
 
-    EditorWindow window = null;
+    static EditorWindow window = null;
 
     string editedFolder = "";
 
     bool showUnlistedScenes = false;
 
     [MenuItem("Tools/Scene Loader")]
-    public void Init()
+    public static void Init()
     {
+        if (EditorApplication.isPlaying)
+            return;
+
         window = GetWindow(typeof(SceneLoader), false, "Scene Loader");
         window.autoRepaintOnSceneChange = true;
     }
@@ -35,7 +38,8 @@ public class SceneLoader : EditorWindow
     private void OnDisable()
     {
         window.Repaint();
-        EditorUtility.SetDirty(data);
+        if (data)
+            EditorUtility.SetDirty(data);
     }
 
     int CreateProfileRecursively(int _i)

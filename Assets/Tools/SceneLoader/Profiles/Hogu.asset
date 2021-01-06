@@ -16,7 +16,7 @@ MonoBehaviour:
   - Hugo
   - Camille
   - Flatkit
-  ActivatedFolders: 000000
+  ActivatedFolders: 010000
   ListedScenes:
   - Content:
     - Assets/Game/Scenes/Hogu menus.unity
