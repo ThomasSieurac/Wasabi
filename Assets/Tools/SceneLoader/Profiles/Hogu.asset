@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d58fd6436e0c3e54db50c5cb7f466c4f, type: 3}
+  m_Name: Hogu
+  m_EditorClassIdentifier: 
+  Folders:
+  - Hugo
+  - Camille
+  - Flatkit
+  ActivatedFolders: 010000
+  ListedScenes:
+  - Content:
+    - Assets/Game/Scenes/Hogu menus.unity
+    - Assets/Game/Scenes/Hogu_main.unity
+  - Content:
+    - Assets/Game/Scenes/Camille_3D.unity
+    - Assets/Game/Scenes/test_2D_light/2d_light_test.unity
+  - Content:
+    - Assets/FlatKit/Demos/[Demo] Car/Car - Scene - Set1.unity
+    - Assets/FlatKit/Demos/[Demo] Car/Car - Scene - Set2.unity
+    - Assets/FlatKit/Demos/[Demo] Car/Car - Scene - Set3.unity
+    - Assets/FlatKit/Demos/[Demo] Car/Car - Scene - Set4.unity
+    - Assets/FlatKit/Demos/[Demo] Car/Car - Scene - Set5.unity
+    - Assets/FlatKit/Demos/[Demo] Fruit Vase/1-FruitVaseScene-CelShadingMode-None-CompletelyFlat.unity
+    - Assets/FlatKit/Demos/[Demo] Fruit Vase/2-FruitVaseScene-CelShadingMode-Single.unity
+    - Assets/FlatKit/Demos/[Demo] Fruit Vase/3-FruitVaseScene-CelShadingMode-Steps.unity
+    - Assets/FlatKit/Demos/[Demo] Fruit Vase/4-FruitVaseScene-CelShadingMode-Curve.unity
+    - Assets/FlatKit/Demos/[Demo] Fruit Vase/5-FruitVaseScene-Var-StylizedSurfaceShaderWithOutlines.unity
+    - Assets/FlatKit/Demos/[Demo] Fruit Vase/6-FruitVaseScene-Var-TwoColor.unity
+    - Assets/FlatKit/Demos/[Demo] Fruit Vase/7-FruitVaseScene-Var-OutlineImageEffect.unity
+    - Assets/FlatKit/Demos/[Demo] IslandWithTrees/IslandWithTrees-Scene.unity
+    - Assets/FlatKit/Demos/[Demo] Mugs/Mugs - Scene1 - OneColorVariousParameters.unity
+    - Assets/FlatKit/Demos/[Demo] Mugs/Mugs - Scene2 - ColorfulMisc.unity
+    - Assets/FlatKit/Demos/[Demo] NormalMapsTree/NormalMapsTree - Scene.unity
+    - Assets/FlatKit/Demos/[Demo] Room/Room - scene.unity
+    - Assets/FlatKit/Demos/[Demo] Valley/Valley - Scene - With Fog.unity
+    - Assets/FlatKit/Demos/[Demo] Wanderer/Wanderer - Scene.unity
+    - Assets/FlatKit/Demos/[Water] Ocean Islands/Ocean Islands Scene.unity
+    - Assets/FlatKit/Demos/[Water] Pool/Pool.unity
+    - Assets/FlatKit/Demos/[Water] Various Presets/Water Vessels - Various Water
+      Presets.unity
