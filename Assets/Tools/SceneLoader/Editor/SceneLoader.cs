@@ -13,14 +13,14 @@ public class SceneLoader : EditorWindow
 
     SceneLoaderProfile data;
 
-    static EditorWindow window = null;
+    EditorWindow window = null;
 
     string editedFolder = "";
 
     bool showUnlistedScenes = false;
 
     [MenuItem("Tools/Scene Loader")]
-    public static void Init()
+    public void Init()
     {
         window = GetWindow(typeof(SceneLoader), false, "Scene Loader");
         window.autoRepaintOnSceneChange = true;
