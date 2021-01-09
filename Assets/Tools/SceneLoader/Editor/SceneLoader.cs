@@ -25,21 +25,13 @@ public class SceneLoader : EditorWindow
         if (EditorApplication.isPlaying)
             return;
 
-        window = GetWindow(typeof(SceneLoader), false, "Scene Loader");
+        if(!window) window = GetWindow(typeof(SceneLoader), false, "Scene Loader");
         window.autoRepaintOnSceneChange = true;
     }
 
     private void OnEnable()
     {
-        window = GetWindow(typeof(SceneLoader), false, "Scene Loader");
         scrollPosition = new Vector2(0, 0);
-    }
-
-    private void OnDisable()
-    {
-        window.Repaint();
-        if (data)
-            EditorUtility.SetDirty(data);
     }
 
     int CreateProfileRecursively(int _i)
@@ -84,6 +76,24 @@ public class SceneLoader : EditorWindow
                 AssetDatabase.SaveAssets();
             }
             return;
+        }
+
+        CheckScenes();
+    }
+
+    void CheckScenes()
+    {
+        for (int i = 0; i < data.ListedScenes.Count; i++)
+        {
+            for (int ii = 0; ii < data.ListedScenes[i].Content.Count; ii++)
+            {
+                if (!File.Exists(data.ListedScenes[i].Content[ii]))
+                {
+                    data.ListedScenes[i].Content.RemoveAt(ii);
+                    CheckScenes();
+                    break;
+                }
+            }
         }
     }
 

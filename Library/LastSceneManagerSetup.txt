@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Game/Scenes/Hogu_main.unity
+- path: Assets/Game/Scenes/Hogu/Hogu_controller.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
