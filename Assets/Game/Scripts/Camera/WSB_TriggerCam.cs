@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class WSB_TriggerCam : MonoBehaviour
 {
     [SerializeField] BoxCollider2D trigger = null;
-
+        public BoxCollider2D Trigger { get { return trigger; } }
 
     #region Trigger values
     [SerializeField, Min(.1f)] Vector2 triggerSize = Vector2.one;
@@ -22,6 +22,8 @@ public class WSB_TriggerCam : MonoBehaviour
     [Header("Camera FOV PERSPECTIVE ONLY"), SerializeField] float changeFOVTo = 0;
         public float FOV { get { return changeFOVTo; } }
     #endregion
+
+    public int PlayersIn { get; private set; } = 0;
 
     private void OnDrawGizmos()
     {
@@ -80,8 +82,20 @@ public class WSB_TriggerCam : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D col)
     {
         // If any player enters this trigger, send the trigger information to the camera manager
-        if (col.GetComponent<PlayerInput>())
+        if (col.GetComponent<WSB_Player>())
+        {
+            PlayersIn++;
             WSB_CameraManager.I.TriggerEntered(this);
+        }
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.GetComponent<WSB_Player>())
+        {
+            PlayersIn--;
+            if(PlayersIn == 0)
+                WSB_CameraManager.I.TriggerExit(this);
+        }
+    }
 }

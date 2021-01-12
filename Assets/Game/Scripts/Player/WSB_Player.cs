@@ -89,7 +89,7 @@ public class WSB_Player : MonoBehaviour
                 AddVerticalMovement((jumpOriginHeight + controllerValues.JumpCurve.Evaluate(jumpVar) - Physic.position.y) / Time.deltaTime);
             }
         }
-        else if (!isClimbing)
+        else if (!isClimbing && !IsOnMovingPlateform)
             ApplyGravity();
 
 
@@ -216,7 +216,7 @@ public class WSB_Player : MonoBehaviour
     [SerializeField] bool isJumping = false;
     [SerializeField] bool isClimbing = false;
     [SerializeField] bool canClimb = false;
-
+    public bool IsOnMovingPlateform = false;
 
 
     void OnAppliedVelocity(Vector2 _velocity)
@@ -326,6 +326,7 @@ public class WSB_Player : MonoBehaviour
         }
 
         bufferAmount = 0;
+        
         CalculCollisionRecursively(_velocity, groundNormal);
 
         bool _isGrounded = false;
@@ -350,7 +351,7 @@ public class WSB_Player : MonoBehaviour
 
         if (!_isGrounded)
         {
-            _isGrounded = CastCollider(Vector2.down * Physics2D.defaultContactOffset * 2, out RaycastHit2D _hit) && (_hit.normal.y > controllerValues.GroundMin) && _hit.collider != ignoredCollider;
+            _isGrounded = (CastCollider(Vector2.down * Physics2D.defaultContactOffset * 2, out RaycastHit2D _hit) && (_hit.normal.y > controllerValues.GroundMin) && _hit.collider != ignoredCollider) || IsOnMovingPlateform;
             groundNormal = _isGrounded ? _hit.normal : Vector2.up;
         }
 
@@ -441,7 +442,9 @@ public class WSB_Player : MonoBehaviour
 
         for (int i = 0; i < _amount; i++)
         {
-            if ((castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i].normal.y == -1 || (castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i] == ignoredCollider)
+            if ((castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i].normal.y == -1 ||
+                (castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i] == ignoredCollider ||
+                IsOnMovingPlateform && transform.position.y > castBuffer[i].collider.transform.position.y)
             {
                 ignoredCollider = castBuffer[i].collider;
                 _amount = i;

@@ -33,7 +33,8 @@ public class WSB_Movable : MonoBehaviour
         if (WSB_GameManager.Paused)
             return;
 
-        ApplyGravity();
+        if(!IsOnMovingPlateform)
+            ApplyGravity();
 
         if ((force + instantForce + movement) != Vector2.zero)
         {
@@ -64,6 +65,7 @@ public class WSB_Movable : MonoBehaviour
     [SerializeField] Vector2 groundNormal = new Vector2();
 
     [SerializeField] bool isGrounded = false;
+    public bool IsOnMovingPlateform = false;
 
 
 
@@ -137,7 +139,7 @@ public class WSB_Movable : MonoBehaviour
 
         if (!_isGrounded)
         {
-            _isGrounded = CastCollider(Vector2.down * Physics2D.defaultContactOffset * 2, out RaycastHit2D _hit) && (_hit.normal.y > controllerValues.GroundMin) && _hit.collider != ignoredCollider;
+            _isGrounded = (CastCollider(Vector2.down * Physics2D.defaultContactOffset * 2, out RaycastHit2D _hit) && (_hit.normal.y > controllerValues.GroundMin) && _hit.collider != ignoredCollider) || IsOnMovingPlateform;
             groundNormal = _isGrounded ? _hit.normal : Vector2.up;
         }
 
@@ -228,7 +230,9 @@ public class WSB_Movable : MonoBehaviour
 
         for (int i = 0; i < _amount; i++)
         {
-            if ((castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i].normal.y == -1 || (castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i] == ignoredCollider)
+            if ((castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i].normal.y == -1 ||
+                (castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i] == ignoredCollider ||
+                IsOnMovingPlateform && transform.position.y > castBuffer[i].collider.transform.position.y)
             {
                 ignoredCollider = castBuffer[i].collider;
                 _amount = i;

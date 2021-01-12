@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class WSB_CameraManager : MonoBehaviour
@@ -39,7 +40,7 @@ public class WSB_CameraManager : MonoBehaviour
     public float SplitAngle { get; private set; } = 0;
     #endregion
 
-    WSB_TriggerCam lastTriggered = null;
+    [SerializeField] List<WSB_TriggerCam> lastTriggered = new List<WSB_TriggerCam>();
     [SerializeField] Vector3 targetPositionCamBan = Vector3.zero;
     [SerializeField] Vector3 targetPositionCamLux = Vector3.zero;
 
@@ -146,16 +147,19 @@ public class WSB_CameraManager : MonoBehaviour
         camLux.SetInstantCam(camBan.transform.position);
     }
 
+    public void TriggerExit(WSB_TriggerCam _trigger)
+    {
+        if (lastTriggered.Contains(_trigger))
+            lastTriggered.Remove(_trigger);
+    }
+
     public void TriggerEntered(WSB_TriggerCam _trigger)
     {
-        // If the trigger is a new one and another one is stocked, replace it by the new
-        if (lastTriggered != _trigger)
-        {
-            if(lastTriggered)
-                lastTriggered.gameObject.SetActive(true);
-            _trigger.gameObject.SetActive(false);
-            lastTriggered = _trigger;
-        }
+        // Checks if the trigger is already used or any other triggers have a player inside
+        if (lastTriggered.Contains(_trigger) || lastTriggered.Find(t => t != _trigger && t.PlayersIn > 0))
+            return;
+
+        lastTriggered.Add(_trigger);
 
         // If the FOV has to change, call the methods to do it
         if (!IsOrtho && camBan.Cam.fieldOfView != _trigger.FOV)
