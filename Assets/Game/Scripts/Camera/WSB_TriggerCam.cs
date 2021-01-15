@@ -17,10 +17,10 @@ public class WSB_TriggerCam : MonoBehaviour
         public Vector3 Position { get { return changePositionTo; } }
     [Header("Split angle for SplitFixe"), SerializeField] float changeAngleTo = 0;
         public float Angle { get { return changeAngleTo; } }
-    [Header("Camera Zoom ORTHOGRAPHIC ONLY"), SerializeField] float changeZoomTo = 0;
+    [Header("Camera Zoom"), SerializeField] float changeZoomTo = 0;
         public float Zoom { get { return changeZoomTo; } }
-    [Header("Camera FOV PERSPECTIVE ONLY"), SerializeField] float changeFOVTo = 0;
-        public float FOV { get { return changeFOVTo; } }
+    //[Header("Camera FOV PERSPECTIVE ONLY"), SerializeField] float changeFOVTo = 0;
+    //    public float FOV { get { return changeFOVTo; } }
     #endregion
 
     public int PlayersIn { get; private set; } = 0;
@@ -75,7 +75,7 @@ public class WSB_TriggerCam : MonoBehaviour
         // Setup trigger
         trigger.isTrigger = true;
         trigger.size = triggerSize;
-        if (WSB_CameraManager.I.IsOrtho)
+        //if (WSB_CameraManager.I.IsOrtho)
             changePositionTo = new Vector3(changePositionTo.x, changePositionTo.y, changeZoomTo);
     }
 

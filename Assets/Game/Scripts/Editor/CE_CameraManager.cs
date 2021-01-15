@@ -9,7 +9,7 @@ public class CE_CameraManager : Editor
 
     bool ceActive = true;
 
-    SerializedProperty isOrtho;
+    //SerializedProperty isOrtho;
     SerializedProperty camMoveSpeed;
     SerializedProperty camZoomSpeed;
     SerializedProperty minCamZoom;
@@ -18,7 +18,7 @@ public class CE_CameraManager : Editor
     private void OnEnable()
     {
         // Populate serialized properties
-        isOrtho = serializedObject.FindProperty("isOrtho");
+        //isOrtho = serializedObject.FindProperty("isOrtho");
         camMoveSpeed = serializedObject.FindProperty("camMoveSpeed");
         camZoomSpeed = serializedObject.FindProperty("camZoomSpeed");
         minCamZoom = serializedObject.FindProperty("minCamZoom");
@@ -65,8 +65,8 @@ public class CE_CameraManager : Editor
             // Decrease fontsize a bit
             _style.fontSize = _style.fontSize - 15;
 
-            EditorGUILayout.PropertyField(isOrtho);
-            EditorGUILayout.Space();
+            //EditorGUILayout.PropertyField(isOrtho);
+            //EditorGUILayout.Space();
                         
             EditorGUILayout.LabelField("Camera speeds :", _style);
             EditorGUILayout.BeginHorizontal();

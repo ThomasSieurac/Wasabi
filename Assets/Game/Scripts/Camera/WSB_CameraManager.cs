@@ -14,8 +14,8 @@ public class WSB_CameraManager : MonoBehaviour
     [SerializeField] Transform ban = null;
 
     #region Cameras
-    [SerializeField] bool isOrtho = false;
-        public bool IsOrtho { get { return isOrtho; } }
+    //[SerializeField] bool isOrtho = false;
+        //public bool IsOrtho { get { return isOrtho; } }
 
     [SerializeField] WSB_Camera camLux = null;
     [SerializeField] WSB_Camera camBan = null;
@@ -73,16 +73,18 @@ public class WSB_CameraManager : MonoBehaviour
 
         // Initiliaze target position of ban & lux cam's
         Vector3 _camPos = camBan.transform.position;
-        targetPositionCamBan = new Vector3(_camPos.x, _camPos.y, (isOrtho ? camBan.Cam.orthographicSize : _camPos.z));
+        targetPositionCamBan = new Vector3(_camPos.x, _camPos.y, /*(isOrtho ?*/ camBan.Cam.orthographicSize/* : _camPos.z)*/);
 
         _camPos = camLux.transform.position;
-        targetPositionCamLux = new Vector3(_camPos.x, _camPos.y, (isOrtho ? camLux.Cam.orthographicSize : _camPos.z));
+        targetPositionCamLux = new Vector3(_camPos.x, _camPos.y, /*(isOrtho ? */camLux.Cam.orthographicSize/* : _camPos.z)*/);
 
         SetResolution();
     }
 
     public void LateUpdate()
     {
+        //Debug.LogError(Time.unscaledDeltaTime);
+
         // Hold if the game is paused
         if (WSB_GameManager.Paused)
             return;
@@ -118,7 +120,7 @@ public class WSB_CameraManager : MonoBehaviour
         int _height = Screen.height;
 
         // Set camera's orthographics option
-        camBan.Cam.orthographic = camLux.Cam.orthographic = IsOrtho;
+        //camBan.Cam.orthographic = camLux.Cam.orthographic = IsOrtho;
 
         // If the resolution has chanched
         if (cam2RenderTexture.width != _width || cam2RenderTexture.height != _height)
@@ -161,11 +163,11 @@ public class WSB_CameraManager : MonoBehaviour
 
         lastTriggered.Add(_trigger);
 
-        // If the FOV has to change, call the methods to do it
-        if (!IsOrtho && camBan.Cam.fieldOfView != _trigger.FOV)
-            camBan.SetFOV(_trigger.FOV);
-        if (!IsOrtho && camLux.Cam.fieldOfView != _trigger.FOV)
-            camLux.SetFOV(_trigger.FOV);
+        //// If the FOV has to change, call the methods to do it
+        //if (!IsOrtho && camBan.Cam.fieldOfView != _trigger.FOV)
+        //    camBan.SetFOV(_trigger.FOV);
+        //if (!IsOrtho && camLux.Cam.fieldOfView != _trigger.FOV)
+        //    camLux.SetFOV(_trigger.FOV);
 
         // Change the type of the camera to the trigger given type
         switch (_trigger.Type)
@@ -177,7 +179,7 @@ public class WSB_CameraManager : MonoBehaviour
                 SwitchCamType(CamType.Dynamic, _trigger.Position);
                 break;
             case CamType.SplitFixe:
-                SwitchCamType(CamType.SplitFixe, _trigger.Angle, IsOrtho ? _trigger.Zoom : _trigger.Position.z);
+                SwitchCamType(CamType.SplitFixe, _trigger.Angle, /*IsOrtho ? */_trigger.Zoom/* : _trigger.Position.z*/);
                 break;
             case CamType.SplitDynamic:
                 SwitchCamType(CamType.SplitDynamic, _trigger.Position);
@@ -192,8 +194,13 @@ public class WSB_CameraManager : MonoBehaviour
         if (_t != CamType.Dynamic && _t != CamType.SplitDynamic)
             return;
 
-        // Set the nexw type
+        // Set the new type after checking if the distance and type are correct
+        float _dist = Vector2.Distance(ban.position, lux.position);
+        if (_t == CamType.SplitDynamic && _dist < MaxCamZoom)
+            _t = CamType.Dynamic;
+        
         currentCamType = _t;
+
 
         // Set the given position
         targetPositionCamBan = new Vector3(targetPositionCamBan.x, targetPositionCamBan.y, _position.z);
@@ -252,10 +259,10 @@ public class WSB_CameraManager : MonoBehaviour
         targetPositionCamLux = new Vector3(targetPositionCamLux.x, targetPositionCamLux.y, _position.z);
 
         // Set the camera position with correct zoom
-        if (IsOrtho)
+        //if (IsOrtho)
             camLux.SetCam(_position, _zoom);
-        else
-            camLux.SetCam(_position);
+        //else
+        //    camLux.SetCam(_position);
 
         // Disable the split
         ToggleSplit(false);
@@ -266,11 +273,11 @@ public class WSB_CameraManager : MonoBehaviour
         // Get required variables for further calculs
         Vector3 _camPos = camLux.transform.position;
         Vector3 _dir = ban.position - lux.position;
-        float _dist = (Vector2.Distance(ban.position, lux.position)) / (IsOrtho ? 1 : (camLux.Cam.fieldOfView / 90)); // Will get the distance and normalize it by the FOV
+        float _dist = (Vector2.Distance(ban.position, lux.position))/* / (IsOrtho ? 1 : (camLux.Cam.fieldOfView / 90))*/; // Will get the distance and normalize it by the FOV
         float _zoom = 0;
 
-        if(IsOrtho)
-        {
+        //if(IsOrtho)
+        //{
             // Lock the zoom to the minimum given zoom
             if (_dist < MinCamZoom)
                 _zoom = MinCamZoom;
@@ -286,26 +293,26 @@ public class WSB_CameraManager : MonoBehaviour
             // Set the camera position to between lux & ban and with the appropriate zoom
             camLux.SetCam(new Vector2(lux.position.x, lux.position.y) + (Vector2)_dir / 2, _zoom);
             camBan.SetCam(camLux.transform.position, _zoom);
-        }
+        //}
 
-        else
-        {
-            // Lock the zoom to the minimum given zoom
-            if (_dist < MinCamZoom)
-                _zoom = -MinCamZoom;
+        //else
+        //{
+        //    // Lock the zoom to the minimum given zoom
+        //    if (_dist < MinCamZoom)
+        //        _zoom = -MinCamZoom;
 
-            // Split the screen if the distance is higher than the maximum given zoom
-            else if (_dist > MaxCamZoom)
-                SwitchCamType(CamType.SplitDynamic, camLux.transform.position);
+        //    // Split the screen if the distance is higher than the maximum given zoom
+        //    else if (_dist > MaxCamZoom)
+        //        SwitchCamType(CamType.SplitDynamic, camLux.transform.position);
 
-            // Set the distance in negative and add the minimum given zoom and divide it in half to get the z position of the cam
-            else 
-                _zoom = (-_dist -MinCamZoom) / 2;
+        //    // Set the distance in negative and add the minimum given zoom and divide it in half to get the z position of the cam
+        //    else 
+        //        _zoom = (-_dist -MinCamZoom) / 2;
 
-            // Set the camera position to between lux & ban and with the appropriate zoom
-            camLux.SetCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, _zoom));
-            camBan.SetCam(camLux.transform.position);
-        }
+        //    // Set the camera position to between lux & ban and with the appropriate zoom
+        //    camLux.SetCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, _zoom));
+        //    camBan.SetCam(camLux.transform.position);
+        //}
     }
 
 
@@ -329,33 +336,33 @@ public class WSB_CameraManager : MonoBehaviour
             camBan.transform.position.z);
 
         // Set the correct cameras position and zoom
-        if (IsOrtho)
-        {
+        //if (IsOrtho)
+        //{
             camBan.SetCam(_banOffset, targetPositionCamBan.z);
             camLux.SetCam(_luxOffset, targetPositionCamLux.z);
-        }
-        else
-        {
-            camBan.SetCam(new Vector3(_banOffset.x, _banOffset.y, targetPositionCamBan.z));
-            camLux.SetCam(new Vector3(_luxOffset.x, _luxOffset.y, targetPositionCamLux.z));
-        }
+        //}
+        //else
+        //{
+        //    camBan.SetCam(new Vector3(_banOffset.x, _banOffset.y, targetPositionCamBan.z));
+        //    camLux.SetCam(new Vector3(_luxOffset.x, _luxOffset.y, targetPositionCamLux.z));
+        //}
     }
 
     void SplitDynamic()
     {
         // Get required variables for further calculs
-        float _dist = (Vector2.Distance(ban.position, lux.position)) / (IsOrtho ? 1 : (camLux.Cam.fieldOfView / 90)); // Will get the distance and normalize it by the FOV
+        float _dist = (Vector2.Distance(ban.position, lux.position))/* / (IsOrtho ? 1 : (camLux.Cam.fieldOfView / 90))*/; // Will get the distance and normalize it by the FOV
         Vector3 _dir = lux.position - ban.position;
 
         // Get the position of both cameras and offset them by the zoom troward each other
         Vector3 _luxOffset = new Vector3(
-            lux.position.x - (_dir.normalized.x * (MaxCamZoom * (IsOrtho ? 1 : ((camLux.Cam.fieldOfView / 90) / 1.5f)))),
-            (lux.position.y) - (_dir.normalized.y * (MinCamZoom * (IsOrtho ? 1 : ((camLux.Cam.fieldOfView / 90))))),
+            lux.position.x - (_dir.normalized.x * (MaxCamZoom/* * (IsOrtho ? 1 : ((camLux.Cam.fieldOfView / 90) / 1.5f))*/)),
+            (lux.position.y) - (_dir.normalized.y * (MinCamZoom /** (IsOrtho ? 1 : ((camLux.Cam.fieldOfView / 90)))*/)),
             camLux.transform.position.z);
 
         Vector3 _banOffset = new Vector3(
-            ban.position.x + (_dir.normalized.x * (MaxCamZoom * ((IsOrtho ? 1 : ((camLux.Cam.fieldOfView / 90) / 1.5f))))),
-            (ban.position.y) + (_dir.normalized.y * (MinCamZoom * ((IsOrtho ? 1 : (camLux.Cam.fieldOfView / 90))))),
+            ban.position.x + (_dir.normalized.x * (MaxCamZoom /** ((IsOrtho ? 1 : ((camLux.Cam.fieldOfView / 90) / 1.5f)))*/)),
+            (ban.position.y) + (_dir.normalized.y * (MinCamZoom /** ((IsOrtho ? 1 : (camLux.Cam.fieldOfView / 90)))*/)),
             camBan.transform.position.z);
 
         // Loop until the distance between lux & ban is lower than the max zoom * 1.5
@@ -378,10 +385,10 @@ public class WSB_CameraManager : MonoBehaviour
                 _luxOffset.y - (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))),
                 targetPositionCamBan.z);
 
-            if(IsOrtho)
+            //if(IsOrtho)
                 camBan.SetCam(targetPositionCamBan, targetPositionCamBan.z);
-            else
-                camBan.SetCam(targetPositionCamBan);
+            //else
+            //    camBan.SetCam(targetPositionCamBan);
 
             // Calcul and set ban's cam position and zoom
             targetPositionCamLux = new Vector3(
@@ -389,26 +396,26 @@ public class WSB_CameraManager : MonoBehaviour
                 _banOffset.y + (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))),
                 targetPositionCamLux.z);
 
-            if(IsOrtho)
+            //if(IsOrtho)
                 camLux.SetCam(targetPositionCamLux, targetPositionCamLux.z);
-            else
-                camLux.SetCam(targetPositionCamLux);
+            //else
+            //    camLux.SetCam(targetPositionCamLux);
         }
 
         // If the distance is higher than the max zoom * 1.5
         else
         {
             // Set camera's position to offsets position and set camera's zoom
-            if (isOrtho)
-            {
+            //if (isOrtho)
+            //{
                 camBan.SetCam(_banOffset, MaxCamZoom);
                 camLux.SetCam(_luxOffset, MaxCamZoom);
-            }
-            else
-            {
-                camBan.SetCam(new Vector3(_banOffset.x, _banOffset.y, targetPositionCamBan.z));
-                camLux.SetCam(new Vector3(_luxOffset.x, _luxOffset.y, targetPositionCamLux.z));
-            }
+            //}
+            //else
+            //{
+            //    camBan.SetCam(new Vector3(_banOffset.x, _banOffset.y, targetPositionCamBan.z));
+            //    camLux.SetCam(new Vector3(_luxOffset.x, _luxOffset.y, targetPositionCamLux.z));
+            //}
         }
 
         // Sets the correct angle of the split

@@ -7,8 +7,7 @@ public class WSB_Camera : MonoBehaviour
     public Camera Cam { get { return cam; } }
 
     Coroutine moveCam = null;
-    Coroutine moveFOV = null;
-
+    float lastTime = 0;
 
     private void Awake()
     {
@@ -21,35 +20,7 @@ public class WSB_Camera : MonoBehaviour
         }
     }
 
-    public void SetFOV(float _fov)
-    {
-        // Stop the moveFOV coroutine if it is already playing
-        if (moveFOV != null)
-            StopCoroutine(moveFOV);
-
-        // Start and stock the moveFOV coroutine
-        moveFOV = StartCoroutine(MoveFOV(_fov));
-    }
-
-    IEnumerator MoveFOV(float _fov)
-    {
-        // Loop until the fov of the camera correspond to the required fov
-        while (Cam.fieldOfView != _fov)
-        {
-            // Hold if the game is paused
-            while (WSB_GameManager.Paused)
-            {
-                yield return new WaitForSeconds(.2f);
-            }
-
-            Cam.fieldOfView = Mathf.MoveTowards(Cam.fieldOfView, _fov, Time.deltaTime * 2);
-
-            yield return new WaitForEndOfFrame();
-        }
-    }
-
-
-    public void SetCam(Vector2 _pos, float _zoom) // ortho
+    public void SetCam(Vector2 _pos, float _zoom)
     {
         // Exit if the position and zoom are already set to the given position and zoom
         if ((Vector2)transform.position == _pos && Cam.orthographicSize == _zoom)
@@ -74,7 +45,7 @@ public class WSB_Camera : MonoBehaviour
         }
 
         // Stop the moveCam coroutine if it is already playing
-        if (moveCam != null) 
+        if (moveCam != null)
             StopCoroutine(moveCam);
 
         // Start and stock the correct moveFOV coroutine
@@ -86,7 +57,7 @@ public class WSB_Camera : MonoBehaviour
     IEnumerator MoveCam(Vector2 _pos, float _zoom)
     {
         // Loop until the position and fov of the camera correspond to the required position and fov
-        while (Vector2.Distance(transform.position, _pos) != 0 || Cam.orthographicSize != _zoom)
+        while (Vector2.Distance(transform.position, _pos) > .5f || Cam.orthographicSize != _zoom)
         {
             // Hold if the game is paused
             while (WSB_GameManager.Paused)
@@ -94,17 +65,18 @@ public class WSB_Camera : MonoBehaviour
                 yield return new WaitForSeconds(.2f);
             }
 
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(_pos.x, _pos.y, transform.position.z), Time.time * WSB_CameraManager.I.CamMoveSpeed);
-            cam.orthographicSize = Mathf.MoveTowards(cam.orthographicSize, _zoom, Time.time * WSB_CameraManager.I.CamMoveSpeed);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(_pos.x, _pos.y, transform.position.z), (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed) /*/ 500*/);
+            cam.orthographicSize = Mathf.MoveTowards(cam.orthographicSize, _zoom, (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed) /*/ 500*/);
 
             yield return new WaitForEndOfFrame();
+
         }
     }
 
     IEnumerator MoveCam(Vector3 _pos, bool _needCallBack)
     {
         // Loop until the position of the camera correspond to the required position
-        while (Vector2.Distance(transform.position, _pos) != 0)
+        while (Vector2.Distance(transform.position, _pos) > .5f)
         {
             // Hold if the game is paused
             while (WSB_GameManager.Paused)
@@ -113,9 +85,9 @@ public class WSB_Camera : MonoBehaviour
             }
 
             transform.position = new Vector3(
-                Mathf.MoveTowards(transform.position.x, _pos.x, Time.time * WSB_CameraManager.I.CamMoveSpeed),
-                Mathf.MoveTowards(transform.position.y, _pos.y, Time.time * WSB_CameraManager.I.CamMoveSpeed),
-                Mathf.MoveTowards(transform.position.z, _pos.z, Time.time * WSB_CameraManager.I.CamZoomSpeed));
+                Mathf.MoveTowards(transform.position.x, _pos.x, (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed) /*/ 500*/),
+                Mathf.MoveTowards(transform.position.y, _pos.y, (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed) /*/ 500*/),
+                Mathf.MoveTowards(transform.position.z, _pos.z, (Time.deltaTime * WSB_CameraManager.I.CamZoomSpeed) /*/ 500*/));
 
             yield return new WaitForEndOfFrame();
         }
