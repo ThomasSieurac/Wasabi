@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,6 +118,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -9144,13 +9146,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1115406360}
-  m_LocalRotation: {x: 0.6423256, y: 0.20936224, z: 0.4025657, w: 0.6176781}
+  m_LocalRotation: {x: 0.75802416, y: -0.15594752, z: -0.006371206, w: 0.6332766}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 38.678, y: 83.589005, z: 101.024}
+  m_LocalEulerAnglesHint: {x: 73.354004, y: 226.31999, z: 238.59299}
 --- !u!1001 &1116626025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17596,7 +17598,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 0}
+  sharedProfile: {fileID: 11400000, guid: c093ab080b6c44424b2e4851c9011ba9, type: 2}
 --- !u!1001 &1957945828
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18908,7 +18910,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 028e01397e2c24e2d94b2da5d034a7d4,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.707
+      value: -10.969763
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 028e01397e2c24e2d94b2da5d034a7d4,
         type: 3}
