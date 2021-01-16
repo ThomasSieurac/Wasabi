@@ -1,7 +1,37 @@
 fileFormatVersion: 2
 guid: f2906b6b4d7d5d84685e73a21330134b
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -9171822152131910326
+    second: UI tuto_0
+  - first:
+      213: 7886106475448822472
+    second: UI tuto_1
+  - first:
+      213: -8724415240179154110
+    second: UI tuto_2
+  - first:
+      213: -5710060992776781663
+    second: UI tuto_3
+  - first:
+      213: 754551081155853218
+    second: UI tuto_4
+  - first:
+      213: -3419523502932690507
+    second: UI tuto_5
+  - first:
+      213: -8200326822696930461
+    second: UI tuto_6
+  - first:
+      213: 9002573033318654559
+    second: UI tuto_7
+  - first:
+      213: -761954606439471199
+    second: UI tuto_8
+  - first:
+      213: 2710811396935559397
+    second: UI tuto_9
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -23,6 +53,7 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -54,9 +85,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -121,11 +155,221 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: UI tuto_0
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 888
+        width: 245
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a456e17d85427b080800000000000000
+      internalID: -9171822152131910326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI tuto_1
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 888
+        width: 245
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cae80a9e04117d60800000000000000
+      internalID: 7886106475448822472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI tuto_2
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 649
+        width: 88
+        height: 178
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2430e102096ace680800000000000000
+      internalID: -8724415240179154110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI tuto_3
+      rect:
+        serializedVersion: 2
+        x: 413
+        y: 685
+        width: 89
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a0c9bfb7c9c1c0b0800000000000000
+      internalID: -5710060992776781663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI tuto_4
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 649
+        width: 89
+        height: 178
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ab7e25e534b87a00800000000000000
+      internalID: 754551081155853218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI tuto_5
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 444
+        width: 119
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b9f892dd796b80d0800000000000000
+      internalID: -3419523502932690507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI tuto_6
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 443
+        width: 119
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 363ba03b336923e80800000000000000
+      internalID: -8200326822696930461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI tuto_7
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 96
+        width: 194
+        height: 201
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f522873e9709fec70800000000000000
+      internalID: 9002573033318654559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI tuto_8
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 276
+        width: 119
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a7e33c825efc65f0800000000000000
+      internalID: -761954606439471199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI tuto_9
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 140
+        width: 119
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e8ac6f5a9cbe9520800000000000000
+      internalID: 2710811396935559397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 4c7710bd269d32346a9220e4f508961a
     internalID: 0
     vertices: []
     indices: 

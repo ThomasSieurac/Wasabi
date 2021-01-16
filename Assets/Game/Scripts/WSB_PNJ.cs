@@ -22,7 +22,7 @@ public class WSB_PNJ : MonoBehaviour
             banIn = true;
 
             // Bind StartDialogue method on ban's Use action
-            actionBan.FindAction("Use").performed += StartDialogue;
+            actionBan.FindAction("Interact").performed += StartDialogue;
         }
         if (collision.GetComponent<WSB_Lux>())
         {
@@ -30,7 +30,7 @@ public class WSB_PNJ : MonoBehaviour
             luxIn = true;
 
             // Bind StartDialogue method on lux's Use action
-            actionLux.FindAction("Use").performed += StartDialogue;
+            actionLux.FindAction("Interact").performed += StartDialogue;
         }
     }
 
@@ -42,7 +42,7 @@ public class WSB_PNJ : MonoBehaviour
             banIn = false;
 
             // Unbind StartDialogue method of ban's Use action
-            actionBan.FindAction("Use").performed -= StartDialogue;
+            actionBan.FindAction("Interact").performed -= StartDialogue;
         }
         if (collision.GetComponent<WSB_Lux>())
         {
@@ -50,7 +50,7 @@ public class WSB_PNJ : MonoBehaviour
             luxIn = false;
 
             // Unbind StartDialogue method of lux's Use action
-            actionLux.FindAction("Use").performed -= StartDialogue;
+            actionLux.FindAction("Interact").performed -= StartDialogue;
         }
 
         // If both Lux and Ban aren't in the PNJ trigger disable the dialogue and tells the gamemanager

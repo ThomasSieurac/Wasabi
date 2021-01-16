@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2916364248773082266}
   - component: {fileID: 2916364248773082269}
   - component: {fileID: -8471440574619025135}
+  - component: {fileID: -2221237146618945966}
   m_Layer: 10
   m_Name: Pot
   m_TagString: Untagged
@@ -58,6 +59,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,6 +84,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!61 &2916364248773082266
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -154,3 +157,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-2221237146618945966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2916364248773082268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd73235831b532b44a48e2e22cfc314a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controllerValues: {fileID: 11400000, guid: c75d547f7cba61d4e860f56cbc581edf, type: 2}
+  force: {x: 0, y: 0}
+  instantForce: {x: 0, y: 0}
+  movement: {x: 0, y: 0}
+  groundNormal: {x: 0, y: 0}
+  isGrounded: 0
+  IsOnMovingPlateform: 0
+  ignoredCollider: {fileID: 0}
