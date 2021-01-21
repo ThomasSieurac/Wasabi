@@ -46,106 +46,36 @@
     <ImplicitlyExpandNETStandardFacades>false</ImplicitlyExpandNETStandardFacades>
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
-<<<<<<< Updated upstream
-  <PropertyGroup>
-    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <UnityProjectGenerator>Package</UnityProjectGenerator>
-    <UnityProjectGeneratorVersion>2.0.5</UnityProjectGeneratorVersion>
-    <UnityProjectType>Game:1</UnityProjectType>
-    <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
-    <UnityVersion>2020.2.1f1</UnityVersion>
-  </PropertyGroup>
-  <ItemGroup>
-    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Game\Scripts\Switches\WSB_Lever.cs" />
-    <Compile Include="Assets\Game\Scripts\Dialogues\WSB_Dialogue.cs" />
-    <Compile Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Fog\FogSettings.cs" />
-    <Compile Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Outline\FlatKitDepthNormals.cs" />
-    <Compile Include="Assets\Game\Scripts\Player\WSB_Lux.cs" />
-    <Compile Include="Assets\Game\Scripts\WSB_Movable.cs" />
-    <Compile Include="Assets\Game\Scripts\Player\WSB_Light.cs" />
-    <Compile Include="Assets\Game\Scripts\Player\WSB_MovingPlateform.cs" />
-    <Compile Include="Assets\Game\Scripts\Camera\WSB_TriggerCam.cs" />
-    <Compile Include="Assets\Game\Scripts\Checkpoints\WSB_CheckpointManager.cs" />
-    <Compile Include="Assets\FlatKit\Demos\Common\Scripts\Motion\CameraMouseOrbit.cs" />
-    <Compile Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Fog\FlatKitFog.cs" />
-    <Compile Include="Assets\Game\Scripts\Player\WSB_Spells.cs" />
-    <Compile Include="Assets\Unity\TutorialInfo\Scripts\Readme.cs" />
-    <Compile Include="Assets\FlatKit\Scripts\UvScroller.cs" />
-    <Compile Include="Assets\Game\Scripts\Player\WSB_Player.cs" />
-    <Compile Include="Assets\Game\Scripts\Controls\Controls Ban.cs" />
-    <Compile Include="Assets\Game\Scripts\WSB_OutOfBounds.cs" />
-    <Compile Include="Assets\Game\Scripts\Controls\Controls Lux.cs" />
-    <Compile Include="Assets\Game\Scripts\Switches\WSB_PressurePlate.cs" />
-    <Compile Include="Assets\Game\Scripts\Menus\WSB_MainMenu.cs" />
-    <Compile Include="Assets\Unity\Scripts\SimpleCameraController.cs" />
-    <Compile Include="Assets\Game\Scripts\Plants\WSB_Carnivore.cs" />
-    <Compile Include="Assets\FlatKit\Demos\Common\Scripts\Motion\LinearMotion.cs" />
-    <Compile Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Outline\FlatKitOutline.cs" />
-    <Compile Include="Assets\Game\Scripts\Player\WSB_Ban.cs" />
-    <Compile Include="Assets\Game\Scripts\Dialogues\SO_Dialogue.cs" />
-    <Compile Include="Assets\Game\Scripts\Plants\WSB_Trampoline.cs" />
-    <Compile Include="Assets\Game\Scripts\Plants\WSB_Bridge.cs" />
-    <Compile Include="Assets\Game\Scripts\Camera\WSB_CameraManager.cs" />
-    <Compile Include="Assets\Tools\SceneLoader\Scripts\SceneLoaderProfile.cs" />
-    <Compile Include="Assets\FlatKit\[Render Pipeline] URP\Water\Scripts\Buoyancy.cs" />
-    <Compile Include="Assets\Game\Scripts\WSB_ContextualMenu.cs" />
-    <Compile Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Outline\OutlineSettings.cs" />
-    <Compile Include="Assets\Game\Scripts\Camera\WSB_Camera.cs" />
-    <Compile Include="Assets\Game\Scripts\WSB_PNJ.cs" />
-    <Compile Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Common\ShaderIncludeUtilities.cs" />
-    <Compile Include="Assets\Game\Scripts\Player\SO_ControllerValues.cs" />
-    <Compile Include="Assets\Game\Scripts\Checkpoints\WSB_Checkpoint.cs" />
-    <Compile Include="Assets\Game\Scripts\Controls\WSB_InputManager.cs" />
-    <Compile Include="Assets\Game\Scripts\Plants\WSB_Ladder.cs" />
-    <Compile Include="Assets\Game\Scripts\Plants\WSB_Pot.cs" />
-    <Compile Include="Assets\Game\Scripts\WSB_GameManager.cs" />
-    <Compile Include="Assets\Game\Scripts\Switches\WSB_Button.cs" />
-  </ItemGroup>
-=======
->>>>>>> Stashed changes
   <ItemGroup>
      <Compile Include="Assets\Game\Scripts\Switches\WSB_Lever.cs" />
      <Compile Include="Assets\Game\Scripts\Dialogues\WSB_Dialogue.cs" />
-     <Compile Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Fog\FogSettings.cs" />
-     <Compile Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Outline\FlatKitDepthNormals.cs" />
      <Compile Include="Assets\Game\Scripts\Player\WSB_Lux.cs" />
      <Compile Include="Assets\Game\Scripts\WSB_Movable.cs" />
      <Compile Include="Assets\Game\Scripts\Player\WSB_Light.cs" />
      <Compile Include="Assets\Game\Scripts\Player\WSB_MovingPlateform.cs" />
      <Compile Include="Assets\Game\Scripts\Camera\WSB_TriggerCam.cs" />
      <Compile Include="Assets\Game\Scripts\Checkpoints\WSB_CheckpointManager.cs" />
-     <Compile Include="Assets\FlatKit\Demos\Common\Scripts\Motion\CameraMouseOrbit.cs" />
-     <Compile Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Fog\FlatKitFog.cs" />
      <Compile Include="Assets\Game\Scripts\Player\WSB_Spells.cs" />
      <Compile Include="Assets\Unity\TutorialInfo\Scripts\Readme.cs" />
-     <Compile Include="Assets\FlatKit\Scripts\UvScroller.cs" />
      <Compile Include="Assets\Game\Scripts\Player\WSB_Player.cs" />
      <Compile Include="Assets\Game\Scripts\Controls\Controls Ban.cs" />
      <Compile Include="Assets\Game\Scripts\WSB_OutOfBounds.cs" />
      <Compile Include="Assets\Game\Scripts\Controls\Controls Lux.cs" />
      <Compile Include="Assets\Game\Scripts\Switches\WSB_PressurePlate.cs" />
-     <Compile Include="Assets\FlatKit\Shaders\ImageEffects\Scripts\OutlineImageEffect.cs" />
      <Compile Include="Assets\Game\Scripts\Menus\WSB_MainMenu.cs" />
-     <Compile Include="Assets\FlatKit\Shaders\ImageEffects\Scripts\FogImageEffect.cs" />
+     <Compile Include="Assets\_CORE\Blit\BlitPass.cs" />
      <Compile Include="Assets\Unity\Scripts\SimpleCameraController.cs" />
      <Compile Include="Assets\Game\Scripts\Plants\WSB_Carnivore.cs" />
-     <Compile Include="Assets\FlatKit\Demos\Common\Scripts\Motion\LinearMotion.cs" />
-     <Compile Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Outline\FlatKitOutline.cs" />
      <Compile Include="Assets\Game\Scripts\Player\WSB_Ban.cs" />
      <Compile Include="Assets\Game\Scripts\Dialogues\SO_Dialogue.cs" />
      <Compile Include="Assets\Game\Scripts\Plants\WSB_Trampoline.cs" />
      <Compile Include="Assets\Game\Scripts\Plants\WSB_Bridge.cs" />
      <Compile Include="Assets\Game\Scripts\Camera\WSB_CameraManager.cs" />
      <Compile Include="Assets\Tools\SceneLoader\Scripts\SceneLoaderProfile.cs" />
-     <Compile Include="Assets\FlatKit\[Render Pipeline] URP\Water\Scripts\Buoyancy.cs" />
+     <Compile Include="Assets\_CORE\Blit\Blit.cs" />
      <Compile Include="Assets\Game\Scripts\WSB_ContextualMenu.cs" />
-     <Compile Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Outline\OutlineSettings.cs" />
      <Compile Include="Assets\Game\Scripts\Camera\WSB_Camera.cs" />
      <Compile Include="Assets\Game\Scripts\WSB_PNJ.cs" />
-     <Compile Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Common\ShaderIncludeUtilities.cs" />
      <Compile Include="Assets\Game\Scripts\Player\SO_ControllerValues.cs" />
      <Compile Include="Assets\Game\Scripts\Checkpoints\WSB_Checkpoint.cs" />
      <Compile Include="Assets\Game\Scripts\Controls\WSB_InputManager.cs" />
@@ -155,19 +85,11 @@
      <Compile Include="Assets\Game\Scripts\Switches\WSB_Button.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
-     <None Include="Assets\FlatKit\Shaders\ImageEffects\Resources\OutlinePlus.shader" />
-     <None Include="Assets\FlatKit\Shaders\StylizedSurface\LibraryUrp\LitForwardPass_DR.hlsl" />
-     <None Include="Assets\FlatKit\Shaders\StylizedSurface\DustyroomTerrainSplatmapCommon.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
-     <None Include="Assets\FlatKit\Shaders\StylizedSurface\LibraryUrp\TerrainLitPasses_DR.hlsl" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
-     <None Include="Assets\FlatKit\Shaders\StylizedSurface\LibraryUrp\StylizedInput.hlsl" />
-     <None Include="Assets\FlatKit\Shaders\GradientSkybox\GradientSkybox.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+     <None Include="Assets\Game\shaders\test toonshader\Includes\Lighting.hlsl" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
-     <None Include="Assets\FlatKit\Shaders\StylizedSurface\DustyroomStylizedLighting.cginc" />
-     <None Include="Assets\FlatKit\Shaders\StylizedSurface\LibraryUrp\Lighting_DR.hlsl" />
-     <None Include="Assets\FlatKit\Shaders\StylizedSurface\StylizedSurfaceOutline.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
@@ -175,23 +97,15 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
-     <None Include="Assets\FlatKit\Shaders\ImageEffects\Resources\FogPlus.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-     <None Include="Assets\FlatKit\[READ ME].txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
-     <None Include="Assets\FlatKit\Shaders\StylizedSurface\StylizedSurfaceCutout.shader" />
+     <None Include="Assets\_CORE\Blit\Sobel.hlsl" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
-     <None Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Outline\Resources\FlatKitOutline.shader" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-     <None Include="Assets\FlatKit\[Render Pipeline] URP\RenderFeatures\Fog\Resources\FlatKitFog.shader" />
-     <None Include="Assets\FlatKit\Shaders\StylizedSurface\StylizedSurface.shader" />
-     <None Include="Assets\FlatKit\Shaders\LightPlane.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
-     <None Include="Assets\FlatKit\Shaders\StylizedSurface\Terrain.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
-     <None Include="Assets\FlatKit\[Render Pipeline] URP\Water\Shaders\Water.shader" />
  <Reference Include="UnityEngine">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>

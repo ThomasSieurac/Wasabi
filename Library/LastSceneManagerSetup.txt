@@ -1,9 +1,5 @@
 sceneSetups:
-<<<<<<< Updated upstream
-- path: Assets/Game/Scenes/Hogu/Hogu_main.unity
-=======
 - path: Assets/Game/Scenes/Camille_3D.unity
->>>>>>> Stashed changes
   isLoaded: 1
   isActive: 1
   isSubScene: 0
