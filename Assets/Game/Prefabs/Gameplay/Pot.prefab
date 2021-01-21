@@ -135,7 +135,7 @@ MonoBehaviour:
   cursedMat: {fileID: 2100000, guid: ff8ea58b8e8680c418e653434ba0ba88, type: 2}
   uncursedMat: {fileID: 2100000, guid: 4972f941b55343c4d871c22dd1b87504, type: 2}
   rend: {fileID: 0}
-  spawnPos: {x: 0, y: 0}
+  spawnPos: {x: 0, y: 0.5}
 --- !u!50 &-8471440574619025135
 Rigidbody2D:
   serializedVersion: 4

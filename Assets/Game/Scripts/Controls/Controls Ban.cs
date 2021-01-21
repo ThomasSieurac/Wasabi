@@ -261,39 +261,6 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""1D Axis controller shoulder"",
-                    ""id"": ""8ac9fa70-7cf6-46c8-8d14-8c226bdf95c7"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate spell"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""764a4727-67c4-4616-94f6-c374a2bcfda9"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Controller 1"",
-                    ""action"": ""Rotate spell"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""2252af1f-f9e3-4207-96fe-2384d46c6372"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Controller 1"",
-                    ""action"": ""Rotate spell"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""1D Axis keyboard"",
                     ""id"": ""3c06c162-c451-4019-9628-30f27bb7e123"",
                     ""path"": ""1DAxis"",
@@ -327,7 +294,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""1D Axis controller trigger"",
+                    ""name"": ""1D Axis controller shoulder"",
                     ""id"": ""c7bc045e-ee31-4081-a216-ae261c4ee21b"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -340,7 +307,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""1993b2c9-6fca-4a0d-af83-2207ac6578f7"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller 1"",
@@ -351,7 +318,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""01299ff2-1aa9-440a-8e17-e799f97fc7be"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller 1"",

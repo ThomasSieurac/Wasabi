@@ -129,19 +129,19 @@ public class WSB_Spells : MonoBehaviour
         {
             case SpellType.Earth:
             case SpellType.Ladder:
-                texts[0].text = _value.ToString();
+                texts[1].text = _value.ToString();
                 break;
             case SpellType.Wind:
             case SpellType.Bridge:
-                texts[1].text = _value.ToString();
+                texts[2].text = _value.ToString();
                 break;
             case SpellType.Light:
             case SpellType.Carnivore:
-                texts[2].text = _value.ToString();
+                texts[3].text = _value.ToString();
                 break;
             case SpellType.Shrink:
             case SpellType.Trampoline:
-                texts[3].text = _value.ToString();
+                texts[0].text = _value.ToString();
                 break;
         }
     }
@@ -152,19 +152,19 @@ public class WSB_Spells : MonoBehaviour
         {
             case SpellType.Earth:
             case SpellType.Ladder:
-                images[0].fillAmount = _value;
+                images[1].fillAmount = _value;
                 break;
             case SpellType.Wind:
             case SpellType.Bridge:
-                images[1].fillAmount = _value;
+                images[2].fillAmount = _value;
                 break;
             case SpellType.Light:
             case SpellType.Carnivore:
-                images[2].fillAmount = _value;
+                images[3].fillAmount = _value;
                 break;
             case SpellType.Shrink:
             case SpellType.Trampoline:
-                images[3].fillAmount = _value;
+                images[0].fillAmount = _value;
                 break;
         }
     }

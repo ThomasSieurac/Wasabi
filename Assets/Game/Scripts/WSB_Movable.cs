@@ -7,8 +7,8 @@ public class WSB_Movable : MonoBehaviour
 {
     protected Rigidbody2D Physic = null;
     protected BoxCollider2D Collider = null;
-
-
+    [SerializeField] bool canMove = true;
+    public bool CanMove { get { return canMove; } }
 
     #region Unity
     private void Awake()

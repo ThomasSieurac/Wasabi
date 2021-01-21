@@ -96,7 +96,7 @@ public class WSB_GameManager : MonoBehaviour
         isBanController = _isBan;
     }
 
-    bool isBanController = true;
+    bool isBanController = false;
 
     public void StartGame(string _m)
     {

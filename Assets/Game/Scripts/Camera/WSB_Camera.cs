@@ -88,7 +88,7 @@ public class WSB_Camera : MonoBehaviour
                 Mathf.Lerp(transform.position.x, _pos.x, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
                 Mathf.Lerp(transform.position.y, _pos.y, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
                 transform.position.z);
-            Cam.orthographicSize = Mathf.Lerp(Cam.orthographicSize, _pos.z, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed);
+            Cam.orthographicSize = Mathf.Lerp(Cam.orthographicSize, -_pos.z, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed);
 
             yield return new WaitForEndOfFrame();
         }

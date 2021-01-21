@@ -168,6 +168,8 @@ public class WSB_Player : MonoBehaviour
             // Cast on facing direction to check if there is an object
             if (Collider.Cast(isRight ? Vector2.right : Vector2.left, grabContactFilter, _hit, .8f) > 0)
             {
+                if (_hit[0].transform.GetComponent<WSB_Movable>() && !_hit[0].transform.GetComponent<WSB_Movable>().CanMove)
+                    return;
                 // Search for WSB_Pot component
                 if (_hit[0].transform.GetComponent<WSB_Pot>())
                     // Breaks seed if pot found & not Carnivore or Trampoline seed

@@ -27,7 +27,7 @@ public class WSB_MovingPlateform : MonoBehaviour
     {
         if (objectsOn.Contains(collision.gameObject))
         {
-            StartCoroutine(DelayExit());
+            StartCoroutine(DelayExit(collision.gameObject));
         }
     }
 
@@ -40,7 +40,7 @@ public class WSB_MovingPlateform : MonoBehaviour
         GetComponent<Rigidbody2D>().useFullKinematicContacts = true;
     }
 
-    void Update()
+    void LateUpdate()
     {
         for (int i = 0; i < objectsOn.Count; i++)
         {
@@ -53,7 +53,7 @@ public class WSB_MovingPlateform : MonoBehaviour
         lastFramePos = transform.position;
     }
 
-    IEnumerator DelayExit()
+    IEnumerator DelayExit(GameObject _go)
     {
         yield return new WaitForEndOfFrame();
 
@@ -69,18 +69,14 @@ public class WSB_MovingPlateform : MonoBehaviour
                 _gos.Add(_hits[i].transform.gameObject);
         }
 
-        for (int i = 0; i < objectsOn.Count; i++)
+        if(!_gos.Contains(_go) && objectsOn.Contains(_go))
         {
-            if(!_gos.Contains(objectsOn[i]))
-            {
-                if (objectsOn[i].transform.GetComponent<WSB_Player>())
-                    objectsOn[i].transform.GetComponent<WSB_Player>().IsOnMovingPlateform = false;
-                else if (objectsOn[i].transform.GetComponent<WSB_Movable>())
-                    objectsOn[i].transform.GetComponent<WSB_Movable>().IsOnMovingPlateform = false;
+            if (_go.transform.GetComponent<WSB_Player>())
+                _go.transform.GetComponent<WSB_Player>().IsOnMovingPlateform = false;
+            else if (_go.transform.GetComponent<WSB_Movable>())
+                _go.transform.GetComponent<WSB_Movable>().IsOnMovingPlateform = false;
 
-                objectsOn.RemoveAt(i);
-                break;
-            }
+            objectsOn.Remove(_go);
         }
     }
 
