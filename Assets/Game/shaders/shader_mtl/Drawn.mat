@@ -83,12 +83,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Boolean_4148d20d24c84228b22cb93bcc4cb2b7: 1
-    - Vector1_0951a95c58bc48679cc51566b06e88cb: 0.545
-    - Vector1_2df97d9179b2449e94727feb55d990a9: 0.145
+    - Vector1_0951a95c58bc48679cc51566b06e88cb: 0.5
+    - Vector1_2df97d9179b2449e94727feb55d990a9: 0.4
     - Vector1_7a8e635522a44827b0748bb1b4eca2cd: 0.2
-    - Vector1_a5bfac90b8cf44fd9be2e59989028a37: 0.371
+    - Vector1_a5bfac90b8cf44fd9be2e59989028a37: 0.1
     - Vector1_b48c669dd8ca4c009e2b22540e1c802e: 0.01
-    - Vector1_d2715c67eb0b48db9bdb654b2cc06c0d: 0.615
+    - Vector1_d2715c67eb0b48db9bdb654b2cc06c0d: 0.7
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -96,10 +96,14 @@ Material:
     - _Cutoff: 0.5
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _Fade: 0.14
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Limite1: 0.226
+    - _Limite1: 0.107
+    - _Limite2: 0.272
+    - _Limite3: 0.505
+    - _Limite4: 0.7
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _QueueOffset: 0
@@ -108,12 +112,14 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _StartLimite: 0.01
     - _Surface: 0
-    - _Thickness: 6.28
+    - _Thickness: 8
     - _ThicknessPWR: 5
-    - _Thickness_pwr: 2.24
+    - _Thickness_pwr: 1.5
     - _WorkflowMode: 1
     - _ZWrite: 1
+    - _on_off: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
