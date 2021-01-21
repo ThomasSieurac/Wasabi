@@ -65,8 +65,8 @@ public class WSB_Camera : MonoBehaviour
                 yield return new WaitForSeconds(.2f);
             }
 
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(_pos.x, _pos.y, transform.position.z), (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed) /*/ 500*/);
-            cam.orthographicSize = Mathf.MoveTowards(cam.orthographicSize, _zoom, (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed) /*/ 500*/);
+            transform.position = Vector3.Lerp(transform.position, new Vector3(_pos.x, _pos.y, transform.position.z), (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed) /*/ 500*/);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, _zoom, (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed) /*/ 500*/);
 
             yield return new WaitForEndOfFrame();
 
@@ -85,9 +85,10 @@ public class WSB_Camera : MonoBehaviour
             }
 
             transform.position = new Vector3(
-                Mathf.MoveTowards(transform.position.x, _pos.x, (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed) /*/ 500*/),
-                Mathf.MoveTowards(transform.position.y, _pos.y, (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed) /*/ 500*/),
-                Mathf.MoveTowards(transform.position.z, _pos.z, (Time.deltaTime * WSB_CameraManager.I.CamZoomSpeed) /*/ 500*/));
+                Mathf.Lerp(transform.position.x, _pos.x, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
+                Mathf.Lerp(transform.position.y, _pos.y, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
+                transform.position.z);
+            Cam.orthographicSize = Mathf.Lerp(Cam.orthographicSize, _pos.z, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed);
 
             yield return new WaitForEndOfFrame();
         }

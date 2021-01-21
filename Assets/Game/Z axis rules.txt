@@ -1,0 +1,22 @@
+################################################################################################
+This is to have each types of objects in its own Z axis so we don't get lost in the development.
+
+------------------
+
+Cameras are on -10
+
+~~~~~~
+
+Foreground elements are at -5
+
+~~~~~~
+
+Gameplay (players, objects, grounds) is at 0
+
+~~~~~~
+
+Every background elements that are not the background image are on position from 20 to 80 with 10 units of difference between each
+
+~~~~~~
+
+Background is at 100

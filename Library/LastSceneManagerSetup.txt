@@ -1,5 +1,9 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Game/Scenes/Camille_3D.unity
+=======
+- path: Assets/Game/Scenes/Demo.unity
+>>>>>>> WIP
   isLoaded: 1
   isActive: 1
   isSubScene: 0

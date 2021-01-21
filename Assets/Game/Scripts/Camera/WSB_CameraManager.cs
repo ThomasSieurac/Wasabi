@@ -145,7 +145,7 @@ public class WSB_CameraManager : MonoBehaviour
         Vector3 _dir = ban.position - lux.position;
 
         // Set the cameras between lux & ban
-        camBan.SetInstantCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, -MinCamZoom));
+        camBan.SetInstantCam(new Vector3(lux.position.x + _dir.x / 2, lux.position.y + _dir.y / 2, camBan.transform.position.z));
         camLux.SetInstantCam(camBan.transform.position);
     }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class WSB_MovingPlateform : MonoBehaviour
 {
     [SerializeField] List<GameObject> objectsOn = new List<GameObject>();
@@ -34,15 +35,18 @@ public class WSB_MovingPlateform : MonoBehaviour
     private void Start()
     {
         lastFramePos = transform.position;
+        
+        GetComponent<Rigidbody2D>().isKinematic = true;
+        GetComponent<Rigidbody2D>().useFullKinematicContacts = true;
     }
 
     void Update()
     {
         for (int i = 0; i < objectsOn.Count; i++)
         {
-            if(objectsOn[i].GetComponent<WSB_Player>())
+            if (objectsOn[i].GetComponent<WSB_Player>())
                 objectsOn[i].GetComponent<WSB_Player>().AddInstantForce(Movement);
-            else if(objectsOn[i].GetComponent<WSB_Movable>())
+            else if (objectsOn[i].GetComponent<WSB_Movable>())
                 objectsOn[i].GetComponent<WSB_Movable>().AddInstantForce(Movement);
         }
 
@@ -52,19 +56,32 @@ public class WSB_MovingPlateform : MonoBehaviour
     IEnumerator DelayExit()
     {
         yield return new WaitForEndOfFrame();
-        RaycastHit2D[] _hits = new RaycastHit2D[0];
 
-        GetComponent<Collider2D>().Cast(Vector2.up, _hits);
+        RaycastHit2D[] _hits = new RaycastHit2D[10];
+
+        GetComponent<Collider2D>().Cast(Vector2.zero, _hits);
+
+        List<GameObject> _gos = new List<GameObject>();
 
         for (int i = 0; i < _hits.Length; i++)
         {
-            if(!objectsOn.Contains(_hits[i].transform.gameObject))
+            if (_hits[i])
+                _gos.Add(_hits[i].transform.gameObject);
+        }
+
+        for (int i = 0; i < objectsOn.Count; i++)
+        {
+            if(!_gos.Contains(objectsOn[i]))
             {
-                if (_hits[i].transform.GetComponent<WSB_Player>())
-                    _hits[i].transform.GetComponent<WSB_Player>().IsOnMovingPlateform = false;
-                else if (_hits[i].transform.GetComponent<WSB_Movable>())
-                    _hits[i].transform.GetComponent<WSB_Movable>().IsOnMovingPlateform = false;
+                if (objectsOn[i].transform.GetComponent<WSB_Player>())
+                    objectsOn[i].transform.GetComponent<WSB_Player>().IsOnMovingPlateform = false;
+                else if (objectsOn[i].transform.GetComponent<WSB_Movable>())
+                    objectsOn[i].transform.GetComponent<WSB_Movable>().IsOnMovingPlateform = false;
+
+                objectsOn.RemoveAt(i);
+                break;
             }
         }
     }
+
 }
