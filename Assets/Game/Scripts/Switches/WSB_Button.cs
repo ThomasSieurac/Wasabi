@@ -31,22 +31,22 @@ public class WSB_Button : MonoBehaviour
     {
         // If ban enter this trigger, its Use action is bound to the Interact method
         if (collision.GetComponent<WSB_Ban>())
-            inputBan.FindAction("Use").performed += Interact;
+            inputBan.FindAction("Interact").performed += Interact;
 
         // If lux enter this trigger, its Use action is bound to the Interact method
         if (collision.GetComponent<WSB_Lux>())
-            inputLux.FindAction("Use").performed += Interact;
+            inputLux.FindAction("Interact").performed += Interact;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         // If ban exits this trigger, its Interact method is unbound from the Use action
         if (collision.GetComponent<WSB_Ban>())
-            inputBan.FindAction("Use").performed -= Interact;
+            inputBan.FindAction("Interact").performed -= Interact;
 
         // If lux exits this trigger, its Interact method is unbound from the Use action
         if (collision.GetComponent<WSB_Lux>())
-            inputLux.FindAction("Use").performed -= Interact;
+            inputLux.FindAction("Interact").performed -= Interact;
     }
 
     void Interact(InputAction.CallbackContext obj)

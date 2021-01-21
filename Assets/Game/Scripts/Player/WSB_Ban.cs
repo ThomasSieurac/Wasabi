@@ -469,7 +469,7 @@ public class WSB_Ban : WSB_Player
                         _hit.GetComponent<WSB_Pot>().BreakSeed();
 
                     // Add vertical force on the physic of the object
-                    _physics.AddForce(Vector2.up * (windPower - (Vector2.Distance(transform.position, _hit.transform.position) / 2)));
+                    _physics.AddForce(Vector2.up * (windPower/* - (Vector2.Distance(transform.position, _hit.transform.position) / 2)*/));
                 }
             }
             yield return new WaitForEndOfFrame();

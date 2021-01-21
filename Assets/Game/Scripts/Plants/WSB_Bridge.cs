@@ -14,7 +14,7 @@ public class WSB_Bridge : MonoBehaviour
     {
         // Gets needed components if not set.
         // Throw errors if not found them destroy itself
-        if (!bridgeCollider) bridgeCollider = GetComponent<BoxCollider2D>();
+        if (!bridgeCollider) bridgeCollider = GetComponentInChildren<BoxCollider2D>();
         if (!bridgeCollider)
         {
             Debug.LogError($"Erreur, component BoxCollider2D manquant sur {this.name}");
@@ -25,6 +25,8 @@ public class WSB_Bridge : MonoBehaviour
     public IEnumerator DeployBridge(bool _right)
     {
         Vector2 _pos = transform.position;
+
+        bridgeCollider.transform.localPosition = new Vector3(bridgeCollider.transform.localPosition.x + (_right ? .5f : -.5f), bridgeCollider.transform.localPosition.y, bridgeCollider.transform.localPosition.z);
 
         // Loop until bridge has reached its destination
         while (transform.localScale != new Vector3(maxLength, transform.localScale.y, 1) && (Vector2)transform.position != new Vector2(_pos.x + (_right ? maxLength - 1 : -maxLength - 1) / 2, _pos.y))
@@ -37,10 +39,7 @@ public class WSB_Bridge : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
 
-            // Grow the scale of the bridge in the given direction
             transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(maxLength, transform.localScale.y, 1), Time.deltaTime * growSpeed);
-            // Offset the position based on the growing scale and given direction
-            transform.position = Vector2.MoveTowards(transform.position, new Vector2(_pos.x + (_right ? maxLength - 1 : -maxLength - 1) / 2, _pos.y), Time.deltaTime * growSpeed);
 
             // Checks if the bridge hits something and stops to grow if an found
             List<RaycastHit2D> _hit = new List<RaycastHit2D>();
