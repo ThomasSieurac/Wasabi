@@ -84,6 +84,7 @@
     <Compile Include="Assets\Game\Scripts\Blit_shader_scripts\Blit.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_ContextualMenu.cs" />
     <Compile Include="Assets\Game\Scripts\Camera\WSB_Camera.cs" />
+    <Compile Include="Assets\Game\Scripts\WSB_InteractiveElement.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_PNJ.cs" />
     <Compile Include="Assets\Game\Scripts\Player\SO_ControllerValues.cs" />
     <Compile Include="Assets\Game\Scripts\Checkpoints\WSB_Checkpoint.cs" />
@@ -92,7 +93,6 @@
     <Compile Include="Assets\Game\Scripts\Plants\WSB_Pot.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_GameManager.cs" />
     <Compile Include="Assets\Game\Scripts\Switches\WSB_Button.cs" />
-    <Compile Include="Assets\Game\Scripts\WSB_InteractiveElement.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

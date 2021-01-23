@@ -1,47 +1,86 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class WSB_MovingPlateform : MonoBehaviour
 {
     [SerializeField] List<GameObject> objectsOn = new List<GameObject>();
     [SerializeField] Vector3 lastFramePos = Vector3.zero;
+    [SerializeField] LayerMask moveLayer = 0;
+    [SerializeField] BoxCollider2D hitbox = null;
     public Vector3 Movement { get { return transform.position - lastFramePos; } }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(!objectsOn.Contains(collision.gameObject) && collision.transform.GetComponent<WSB_Player>())
-        {
-            collision.transform.GetComponent<WSB_Player>().IsOnMovingPlateform = true;
-            objectsOn.Add(collision.gameObject);
-        }
-        else if (!objectsOn.Contains(collision.gameObject) && collision.transform.GetComponent<WSB_Movable>())
-        {
-            collision.transform.GetComponent<WSB_Movable>().IsOnMovingPlateform = true;
-            objectsOn.Add(collision.gameObject);
-        }
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if(!objectsOn.Contains(collision.gameObject) && collision.transform.GetComponent<WSB_Player>())
+    //    {
+    //        collision.transform.GetComponent<WSB_Player>().IsOnMovingPlateform = true;
+    //        objectsOn.Add(collision.gameObject);
+    //    }
+    //    else if (!objectsOn.Contains(collision.gameObject) && collision.transform.GetComponent<WSB_Movable>())
+    //    {
+    //        collision.transform.GetComponent<WSB_Movable>().IsOnMovingPlateform = true;
+    //        objectsOn.Add(collision.gameObject);
+    //    }
+    //}
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (objectsOn.Contains(collision.gameObject))
-        {
-            StartCoroutine(DelayExit(collision.gameObject));
-        }
-    }
+    //private void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    if (objectsOn.Contains(collision.gameObject))
+    //    {
+    //        StartCoroutine(DelayExit(collision.gameObject));
+    //    }
+    //}
 
 
     private void Start()
     {
+        if (!hitbox)
+            hitbox = GetComponent<BoxCollider2D>();
+
         lastFramePos = transform.position;
         
         GetComponent<Rigidbody2D>().isKinematic = true;
         GetComponent<Rigidbody2D>().useFullKinematicContacts = true;
     }
 
-    void LateUpdate()
+    void Update()
     {
+        Collider2D[] _cols = Physics2D.OverlapBoxAll(transform.position, hitbox.size * transform.localScale, 0, moveLayer);
+        List<GameObject> _gos = new List<GameObject>();
+
+        foreach (Collider2D col in _cols)
+            _gos.Add(col.gameObject);
+
+
+        for (int i = 0; i < _cols.Length; i++)
+        {
+            GameObject _go = _cols[i].gameObject;
+
+            if(!objectsOn.Contains(_go))
+            {
+                if(_go.GetComponent<WSB_Player>())
+                {
+                    _go.GetComponent<WSB_Player>().IsOnMovingPlateform = true;
+                    objectsOn.Add(_go.gameObject);
+                }
+                else if (_go.GetComponent<WSB_Movable>())
+                {
+                    _go.GetComponent<WSB_Movable>().IsOnMovingPlateform = true;
+                    objectsOn.Add(_go.gameObject);
+                }
+            }
+        }
+
+        for (int i = 0; i < objectsOn.Count; i++)
+        {
+            if (!_gos.Contains(objectsOn[i]))
+                StartCoroutine(DelayExit(objectsOn[i]));
+        }
+
+
         for (int i = 0; i < objectsOn.Count; i++)
         {
             if (objectsOn[i].GetComponent<WSB_Player>())
@@ -53,13 +92,14 @@ public class WSB_MovingPlateform : MonoBehaviour
         lastFramePos = transform.position;
     }
 
+
     IEnumerator DelayExit(GameObject _go)
     {
         yield return new WaitForEndOfFrame();
 
         RaycastHit2D[] _hits = new RaycastHit2D[10];
 
-        GetComponent<Collider2D>().Cast(Vector2.zero, _hits);
+        hitbox.Cast(Vector2.zero, _hits);
 
         List<GameObject> _gos = new List<GameObject>();
 

@@ -643,6 +643,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectsOn: []
   lastFramePos: {x: 0, y: 0, z: 0}
+  moveLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  hitbox: {fileID: 527014512}
 --- !u!50 &527014517
 Rigidbody2D:
   serializedVersion: 4
@@ -1081,6 +1085,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ban
+      objectReference: {fileID: 0}
+    - target: {fileID: 6072583074700945398, guid: f2d1e886c7be13145b0bff919eb24845,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6072583074700945399, guid: f2d1e886c7be13145b0bff919eb24845,
         type: 3}
