@@ -39,7 +39,7 @@ public class WSB_GameManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(menu.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
 
         // Debug to start game
-        Resume();
+        //Resume();
     }
 
     private void DeviceChange(InputDevice arg1, InputDeviceChange arg2)
@@ -119,7 +119,7 @@ public class WSB_GameManager : MonoBehaviour
         Rigidbody2D[] _physics = FindObjectsOfType<Rigidbody2D>();
         foreach (Rigidbody2D _r in _physics)
         {
-            if (_r.GetComponent<WSB_Player>() || _r.GetComponent<WSB_Movable>())
+            if (_r.GetComponent<WSB_Player>() || _r.GetComponent<WSB_Movable>() || _r.GetComponent<WSB_MovingPlateform>())
                 continue;
             _r.isKinematic = false;
         }
