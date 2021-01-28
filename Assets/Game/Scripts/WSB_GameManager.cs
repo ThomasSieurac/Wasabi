@@ -9,7 +9,8 @@ using System.Linq;
 public class WSB_GameManager : MonoBehaviour
 {
     [SerializeField] GameObject menu = null; 
-    [SerializeField] GameObject menuPause = null; 
+    [SerializeField] GameObject menuPause = null;
+    [SerializeField] Animator elevatorAnimator = null;
     public static bool Paused { get; private set; } = true;
     public static bool IsDialogue { get; private set; } = false;
 
@@ -145,5 +146,12 @@ public class WSB_GameManager : MonoBehaviour
     }
 
     public void QuitGame() => Application.Quit();
+
+
+
+    public void ElevatorRepaired()
+    {
+        elevatorAnimator.SetTrigger("Repaired");
+    }
 
 }

@@ -144,7 +144,7 @@ public class WSB_Movable : MonoBehaviour
         }
 
         if (_isGrounded)
-            force.y = 0;
+            force.y = force.x = 0;
 
         if (_isGrounded != isGrounded)
             OnSetGrounded(_isGrounded);

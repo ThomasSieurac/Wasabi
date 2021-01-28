@@ -12,6 +12,7 @@ TagManager:
   - Bridge
   - Trampoline
   - Carnivore
+  - DestroyPlant
   layers:
   - Default
   - TransparentFX
@@ -29,7 +30,7 @@ TagManager:
   - SemiSolid
   - Bloom
   - GroundNoDirt
-  - 
+  - WindMovable
   - 
   - 
   - 

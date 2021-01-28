@@ -4,8 +4,25 @@ using UnityEngine;
 
 public class WSB_InteractiveElement : MonoBehaviour
 {
-    [SerializeField] Animator animator = null;
+    [SerializeField] List<Animator> animators = new List<Animator>();
+    [SerializeField] bool isOneTimeUse = false;
+    [SerializeField] bool isAnimationPlayOnTrigger = false;
 
-    public void ActivateAnimator() => animator.SetTrigger("Activate");
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isAnimationPlayOnTrigger)
+            ActivateAnimators();
+    }
+
+    public void ActivateAnimators()
+    {
+        for (int i = 0; i < animators.Count; i++)
+        {
+            animators[i].SetTrigger("Activate");
+        }
+        if (isOneTimeUse)
+            Destroy(this.gameObject);
+    }
 
 }

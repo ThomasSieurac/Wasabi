@@ -55,6 +55,7 @@ public class WSB_Ban : WSB_Player
     //Coroutine rechargeWind = null;
 
     [SerializeField] LayerMask moveLayer = 0;
+    [SerializeField] LayerMask windLayer = 0;
 
     #endregion
 
@@ -246,21 +247,6 @@ public class WSB_Ban : WSB_Player
         //rechargeShrink = StartCoroutine(RechargeShrink());
     }
 
-    //IEnumerator RechargeShrink()
-    //{
-    //    // Wait for shrinkchargesdelay
-    //    yield return new WaitForSeconds(shrinkChargeDelay);
-
-    //    // Increase shrink charges and update corresponding UI
-    //    shrinkCharges++;
-    //    spells.UpdateChargesUI(SpellType.Shrink, shrinkCharges.ToString());
-
-    //    // Checks if shrink charges are full, repeat this coroutine if not
-    //    if (shrinkCharges < maxShrinkCharges)
-    //        rechargeShrink = StartCoroutine(RechargeShrink());
-    //    else
-    //        rechargeShrink = null;
-    //}
     #endregion
 
 
@@ -331,21 +317,6 @@ public class WSB_Ban : WSB_Player
         Destroy(_ref);
     }
 
-    //IEnumerator RechargeEarth()
-    //{
-    //    // Wait for earthchargedelay
-    //    yield return new WaitForSeconds(earthChargeDelay);
-
-    //    // Increase earth charges and update corresponding UI
-    //    earthCharges++;
-    //    spells.UpdateChargesUI(SpellType.Earth, earthCharges.ToString());
-
-    //    // Checks if earth charges are full, repeat this coroutine if not
-    //    if (earthCharges < maxEarthCharges) 
-    //        rechargeEarth = StartCoroutine(RechargeEarth());
-    //    else
-    //        rechargeEarth = null;
-    //}
     #endregion
 
     #region Light
@@ -396,21 +367,6 @@ public class WSB_Ban : WSB_Player
         Destroy(_ref);
     }
 
-    //IEnumerator RechargeLight()
-    //{
-    //    // Wait for lightchargedelay
-    //    yield return new WaitForSeconds(lightChargeDelay);
-
-    //    // Increase light charges and update corresponding UI
-    //    lightCharges++;
-    //    spells.UpdateChargesUI(SpellType.Light, lightCharges.ToString());
-
-    //    // Checks if light charges are full, repeat this coroutine if not
-    //    if (lightCharges < maxLightCharges)
-    //        rechargeLight = StartCoroutine(RechargeLight());
-    //    else
-    //        rechargeLight = null;
-    //}
     #endregion
 
     #region Wind
@@ -443,7 +399,7 @@ public class WSB_Ban : WSB_Player
             }
 
             // Find all corresponding objects in range
-            Collider2D[] _hits = Physics2D.OverlapCircleAll(transform.position, windRange, moveLayer);
+            Collider2D[] _hits = Physics2D.OverlapCircleAll(transform.position, windRange, windLayer);
             Collider2D _hit;
 
             // Loops through found objects
@@ -476,22 +432,6 @@ public class WSB_Ban : WSB_Player
         }
     }
 
-    //IEnumerator RechargeWind()
-    //{
-    //    // Wait for windchargedelay
-    //    yield return new WaitForSeconds(windChargeDelay);
-
-    //    // Increase wind charges and update corresponding UI
-    //    windCharges++;
-    //    spells.UpdateChargesUI(SpellType.Wind, windCharges.ToString());
-
-
-    //    // Checks if wind charges are full, repeat this coroutine if not
-    //    if (windCharges < maxWindCharges)
-    //        rechargeWind = StartCoroutine(RechargeWind());
-    //    else
-    //        rechargeWind = null;
-    //}
 
     #endregion
 

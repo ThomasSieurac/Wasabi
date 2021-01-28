@@ -27,6 +27,23 @@ public class WSB_Pot : MonoBehaviour
         // Initiate the curse of the pot
         SetCurse(isCursed);
     }
+    private void Update()
+    {
+        if(GrownSeed)
+        {
+            RaycastHit2D[] _hits = new RaycastHit2D[10];
+            Physics2D.RaycastNonAlloc(transform.position, Vector2.up, _hits, 1);
+
+            foreach (RaycastHit2D hit in _hits)
+            {
+                if (hit && hit.transform.gameObject != this.gameObject && !hit.transform.GetComponent<WSB_Player>())
+                {
+                    BreakSeed();
+                    return;
+                }
+            }
+        }
+    }
 
     private void OnDrawGizmos()
     {
@@ -53,6 +70,15 @@ public class WSB_Pot : MonoBehaviour
         {
             BreakSeed();
             return false;
+        }
+
+        RaycastHit2D[] _hits = new RaycastHit2D[10];
+        Physics2D.RaycastNonAlloc(transform.position, Vector2.up, _hits, 1);
+
+        foreach (RaycastHit2D hit in _hits)
+        {
+            if (hit && hit.transform.gameObject != this.gameObject)
+                return false;
         }
 
         // Switch on the seed name to spawn corresponding prefab

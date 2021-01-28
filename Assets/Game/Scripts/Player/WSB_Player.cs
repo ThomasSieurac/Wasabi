@@ -46,7 +46,7 @@ public class WSB_Player : MonoBehaviour
         AddHorizontalMovement(xMovement);
 
         // Check if user wants to climb
-        if (Mathf.Abs(yMovement) > 0 && canClimb)
+        if ((Mathf.Abs(yMovement) > 0 || jumpInput) && canClimb)
         {
             force.y = 0;
             isClimbing = true;
@@ -125,8 +125,8 @@ public class WSB_Player : MonoBehaviour
 
     #region Input Reading
 
-    float xMovement = 0;
-    float yMovement = 0;
+    [SerializeField] float xMovement = 0;
+    [SerializeField] float yMovement = 0;
     [SerializeField] GameObject grabbedObject = null;
     [SerializeField] ContactFilter2D grabContactFilter = new ContactFilter2D();
 
@@ -269,7 +269,7 @@ public class WSB_Player : MonoBehaviour
     void Jump()
     {
         // Checks if input was in direction of the ground
-        if(yMovement < -.8f)
+        if(yMovement < 0)
         {
             // Cast below character to found if there is any SemiSolid plateform
             RaycastHit2D[] _hits = new RaycastHit2D[1];
