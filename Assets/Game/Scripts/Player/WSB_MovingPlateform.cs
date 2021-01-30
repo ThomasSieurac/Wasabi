@@ -12,28 +12,6 @@ public class WSB_MovingPlateform : MonoBehaviour
     [SerializeField] BoxCollider2D hitbox = null;
     public Vector3 Movement { get { return transform.position - lastFramePos; } }
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if(!objectsOn.Contains(collision.gameObject) && collision.transform.GetComponent<WSB_Player>())
-    //    {
-    //        collision.transform.GetComponent<WSB_Player>().IsOnMovingPlateform = true;
-    //        objectsOn.Add(collision.gameObject);
-    //    }
-    //    else if (!objectsOn.Contains(collision.gameObject) && collision.transform.GetComponent<WSB_Movable>())
-    //    {
-    //        collision.transform.GetComponent<WSB_Movable>().IsOnMovingPlateform = true;
-    //        objectsOn.Add(collision.gameObject);
-    //    }
-    //}
-
-    //private void OnCollisionExit2D(Collision2D collision)
-    //{
-    //    if (objectsOn.Contains(collision.gameObject))
-    //    {
-    //        StartCoroutine(DelayExit(collision.gameObject));
-    //    }
-    //}
-
 
     private void Start()
     {

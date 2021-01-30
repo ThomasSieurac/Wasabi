@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 public class WSB_InputManager : MonoBehaviour
 {
@@ -16,12 +17,29 @@ public class WSB_InputManager : MonoBehaviour
         I = this;
     }
 
+    private void Start()
+    {
+        InputSystem.onDeviceChange += InputSystem_onDeviceChange;
+    }
+
+    private void InputSystem_onDeviceChange(InputDevice arg1, InputDeviceChange arg2)
+    {
+        if(arg2 == InputDeviceChange.Disconnected)
+        {
+            Debug.LogError("in");
+            inputLux.user.UnpairDevice(arg1);
+            inputBan.user.UnpairDevice(arg1);
+        }
+    }
+
+
     public bool ChangeControllers(ControlsMode _m, bool _isBanController)
     {
         switch (_m)
         {
             // Change scheme and devices to a Keyboard use
             case ControlsMode.Keyboard:
+
                 inputBan.SwitchCurrentControlScheme("Keyboard", Keyboard.current);
                 inputLux.SwitchCurrentControlScheme("Keyboard", Keyboard.current);
                 return true;

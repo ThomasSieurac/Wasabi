@@ -40,7 +40,7 @@ public class WSB_GameManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(menu.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
 
         // Debug to start game
-        //Resume();
+        Resume();
     }
 
     private void DeviceChange(InputDevice arg1, InputDeviceChange arg2)

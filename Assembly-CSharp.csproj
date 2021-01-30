@@ -64,6 +64,7 @@
     <Compile Include="Assets\Game\Scripts\Switches\WSB_PressurePlate.cs" />
     <Compile Include="Assets\Game\Scripts\Blit_shader_scripts\BlitPass.cs" />
     <Compile Include="Assets\Unity\Scripts\SimpleCameraController.cs" />
+    <Compile Include="Assets\Game\Animations\Level 1\Behaviours\OpenBehaviour.cs" />
     <Compile Include="Assets\Game\Scripts\Player\WSB_Ban.cs" />
     <Compile Include="Assets\Game\Scripts\Plants\WSB_Trampoline.cs" />
     <Compile Include="Assets\Game\Scripts\Blit_shader_scripts\Blit.cs" />
@@ -93,8 +94,8 @@
     <Compile Include="Assets\Game\Scripts\Camera\WSB_CameraManager.cs" />
     <Compile Include="Assets\Tools\SceneLoader\Scripts\SceneLoaderProfile.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_InteractiveElement.cs" />
-    <Compile Include="Assets\Game\Animations\Level 1\Behaviours\OpenBehaviour.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_EventOnDestroy.cs" />
+    <Compile Include="Assets\Game\Scripts\WSB_Elevator.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
