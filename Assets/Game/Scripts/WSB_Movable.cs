@@ -8,6 +8,10 @@ public class WSB_Movable : MonoBehaviour
     protected Rigidbody2D Physic = null;
     protected BoxCollider2D Collider = null;
     [SerializeField] bool canMove = true;
+    [SerializeField] bool lockX = false;
+    [SerializeField] bool ignoreGroundSnap = false;
+    float startX = 0;
+
     public bool CanMove { get { return canMove; } }
 
     #region Unity
@@ -25,6 +29,8 @@ public class WSB_Movable : MonoBehaviour
             Debug.LogError($"Erreur, component Collider2D manquant sur {transform.name}");
             Destroy(this);
         }
+        if (lockX)
+            startX = transform.position.x;
     }
 
     private void Update()
@@ -32,6 +38,12 @@ public class WSB_Movable : MonoBehaviour
         // Hold if game is on Pause
         if (WSB_GameManager.Paused)
             return;
+
+        if (force.y < -20)
+            Physic.position -= Vector2.up * .05f;
+
+        if (lockX)
+            transform.position = new Vector3(startX, transform.position.y, transform.position.z);
 
         if(!IsOnMovingPlateform)
             ApplyGravity();
@@ -90,7 +102,7 @@ public class WSB_Movable : MonoBehaviour
             // Push out Physic position from the collider
             ColliderDistance2D _distance = Collider.Distance(overlapBuffer[i]);
             if (_distance.isOverlapped && (!overlapBuffer[i].transform.GetComponent<PlatformEffector2D>() || _distance.normal.y == -1))
-                Physic.position += _distance.normal * _distance.distance;
+                Physic.position += new Vector2(lockX ? 0 : _distance.normal.x, _distance.normal.y) * _distance.distance;
         }
     }
 
@@ -160,7 +172,8 @@ public class WSB_Movable : MonoBehaviour
         if (_amount == 0)
         {
             Physic.position += _velocity;
-            GroundSnap(_velocity, _normal);
+            if(!ignoreGroundSnap)
+                GroundSnap(_velocity, _normal);
             return;
         }
 
@@ -168,13 +181,13 @@ public class WSB_Movable : MonoBehaviour
         {
             Vector2 _normalizedVelocity = _velocity.normalized;
 
-            Physic.position += _normalizedVelocity * _distance;
+            Physic.position += new Vector2(lockX ? 0 : _normalizedVelocity.x, _normalizedVelocity.y) * _distance;
             _velocity = _normalizedVelocity * (_velocity.magnitude - _distance);
         }
 
         InsertCastBuffer(_amount);
 
-        if (_iteration > 3)
+        if (_iteration > 3 && !ignoreGroundSnap)
         {
             GroundSnap(_velocity, _normal);
             return;
@@ -283,13 +296,13 @@ public class WSB_Movable : MonoBehaviour
 
         if (_amount == 0)
         {
-            Physic.position += _velocity;
+            Physic.position += new Vector2(lockX ? 0 : _velocity.x, _velocity.y);
             _velocity.Set(0, 0);
         }
         else if (_distance != 0 && ((_hit.collider != castBuffer[0].collider) || (_hit.normal != castBuffer[0].normal)))
         {
             Vector2 _normalized = _velocity.normalized;
-            Physic.position += _normalized * _distance;
+            Physic.position += new Vector2(lockX ? 0 : _normalized.x, _normalized.y) * _distance;
             _velocity = _normalized * (_velocity.magnitude - _distance);
 
             InsertCastBuffer(_amount);
@@ -309,7 +322,7 @@ public class WSB_Movable : MonoBehaviour
 
         if (isGrounded && (_velocity.y < 0) && CastCollider(_normal * -1, out RaycastHit2D _snapHit))
         {
-            Physic.position += _normal * -_snapHit.distance;
+            Physic.position += new Vector2(lockX ? 0 : _normal.x, _normal.y) * -_snapHit.distance;
             InsertCastBuffer(1);
         }
     }
