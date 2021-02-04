@@ -29,7 +29,7 @@ public class WSB_CheckpointManager : MonoBehaviour
         // Only goes through when player has hold the button enough
         if (!_ctx.performed)
             return;
-
+        //Debug.Log("in");
         Respawn(WSB_Ban.I);
     }
 

@@ -62,6 +62,7 @@
     <Compile Include="Assets\Game\Scripts\Player\WSB_Spells.cs" />
     <Compile Include="Assets\Game\Scripts\Player\WSB_Player.cs" />
     <Compile Include="Assets\Game\Scripts\Controls\Controls Lux.cs" />
+    <Compile Include="Assets\Game\Scripts\WSB_Elevator.cs" />
     <Compile Include="Assets\Game\Scripts\Switches\WSB_PressurePlate.cs" />
     <Compile Include="Assets\Game\Scripts\Blit_shader_scripts\BlitPass.cs" />
     <Compile Include="Assets\Unity\Scripts\SimpleCameraController.cs" />
@@ -96,7 +97,6 @@
     <Compile Include="Assets\Tools\SceneLoader\Scripts\SceneLoaderProfile.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_InteractiveElement.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_EventOnDestroy.cs" />
-    <Compile Include="Assets\Game\Scripts\WSB_Elevator.cs" />
   </ItemGroup>
   <ItemGroup>
 =======
