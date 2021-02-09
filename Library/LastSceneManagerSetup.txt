@@ -1,5 +1,9 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Game/Scenes/Coline/Coline_test_level_01.unity
+=======
+- path: Assets/Game/Scenes/Camille_3D/camille_level_1_TEST.unity
+>>>>>>> WIP
   isLoaded: 1
   isActive: 1
   isSubScene: 0
