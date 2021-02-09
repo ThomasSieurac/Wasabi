@@ -1,28 +1,19 @@
 fileFormatVersion: 2
-guid: 06c812c21388714408b6b15be046d184
+guid: 7fa461963949650458e5d9a0017ee519
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4834021125973313640
-    second: Portrait_Coline
+      213: 956831031497205927
+    second: Purification_V2
   - first:
-      213: 3233759886014530255
-    second: Hugo
+      213: 7933134865627527650
+    second: Vent_V2
   - first:
-      213: -2527901973142380759
-    second: Portrait_Hugo
+      213: -5183237790685786912
+    second: Reducion_V2
   - first:
-      213: 2212114089706121700
-    second: Portrait_Camille
-  - first:
-      213: -704432203084853629
-    second: Coline
-  - first:
-      213: 7900967060690340070
-    second: Sprit_perso_pnj_5
-  - first:
-      213: 7810172233330126565
-    second: Camille
+      213: 4935273415880330406
+    second: Terre_V2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -148,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Portrait_Coline
+      name: Purification_V2
       rect:
         serializedVersion: 2
-        x: 174
-        y: 685
-        width: 293
-        height: 371
+        x: 16
+        y: 255
+        width: 212
+        height: 212
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8688f523a94e51340800000000000000
-      internalID: 4834021125973313640
+      spriteID: 7a8267ee0c8574d00800000000000000
+      internalID: 956831031497205927
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hugo
+      name: Vent_V2
       rect:
         serializedVersion: 2
-        x: 519
-        y: 40
-        width: 385
-        height: 700
+        x: 288
+        y: 255
+        width: 212
+        height: 212
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fc2cdceab7f90ec20800000000000000
-      internalID: 3233759886014530255
+      spriteID: 2e9bef4f028281e60800000000000000
+      internalID: 7933134865627527650
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Portrait_Hugo
+      name: Reducion_V2
       rect:
         serializedVersion: 2
-        x: 937
-        y: 666
-        width: 404
-        height: 346
+        x: 15
+        y: 15
+        width: 212
+        height: 212
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -204,20 +195,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 92fd6df7c861becd0800000000000000
-      internalID: -2527901973142380759
+      spriteID: 0ec0bcbf0b07118b0800000000000000
+      internalID: -5183237790685786912
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Portrait_Camille
+      name: Terre_V2
       rect:
         serializedVersion: 2
-        x: 1607
-        y: 664
-        width: 264
-        height: 355
+        x: 288
+        y: 15
+        width: 212
+        height: 212
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,71 +216,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4e9e1975b0203be10800000000000000
-      internalID: 2212114089706121700
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Coline
-      rect:
-        serializedVersion: 2
-        x: 20
-        y: 9
-        width: 258
-        height: 615
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 38e08ceb4aa5936f0800000000000000
-      internalID: -704432203084853629
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprit_perso_pnj_5
-      rect:
-        serializedVersion: 2
-        x: 907
-        y: 316
-        width: 12
-        height: 42
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6e8828a3eafd5ad60800000000000000
-      internalID: 7900967060690340070
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Camille
-      rect:
-        serializedVersion: 2
-        x: 1362
-        y: 48
-        width: 183
-        height: 581
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5eee242244e436c60800000000000000
-      internalID: 7810172233330126565
+      spriteID: 6acc9f6060d9d7440800000000000000
+      internalID: 4935273415880330406
       vertices: []
       indices: 
       edges: []
@@ -297,7 +225,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: ec47fb08821771f4fb5cffbe0f054ab6
+    spriteID: 3873f59dad567a940984ba9372c336ac
     internalID: 0
     vertices: []
     indices: 

@@ -1,28 +1,31 @@
 fileFormatVersion: 2
-guid: 06c812c21388714408b6b15be046d184
+guid: 910ba4a70a275c2488dfe811fdbe3554
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4834021125973313640
-    second: Portrait_Coline
+      213: 7256984413934132538
+    second: Petite_Plante_Cabane
   - first:
-      213: 3233759886014530255
-    second: Hugo
+      213: -7974640543457149857
+    second: Petit_Pot_Cabane
   - first:
-      213: -2527901973142380759
-    second: Portrait_Hugo
+      213: -660525013136666376
+    second: Sac_Terre_Cabane
   - first:
-      213: 2212114089706121700
-    second: Portrait_Camille
+      213: 4162855313329920608
+    second: Table_Cabane
   - first:
-      213: -704432203084853629
-    second: Coline
+      213: -3318996384882842236
+    second: Pelle_Cabane
   - first:
-      213: 7900967060690340070
-    second: Sprit_perso_pnj_5
+      213: 5508229684430787934
+    second: Poteau_Bois_Cabane
   - first:
-      213: 7810172233330126565
-    second: Camille
+      213: -7459145410144698789
+    second: Toile_Cabane
+  - first:
+      213: -5468945762611319365
+    second: Arbre_Cabane
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -148,13 +151,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Portrait_Coline
+      name: Petite_Plante_Cabane
       rect:
         serializedVersion: 2
-        x: 174
-        y: 685
-        width: 293
-        height: 371
+        x: 2870
+        y: 282
+        width: 53
+        height: 97
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,20 +165,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8688f523a94e51340800000000000000
-      internalID: 4834021125973313640
+      spriteID: a3d171510ecf5b460800000000000000
+      internalID: 7256984413934132538
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hugo
+      name: Petit_Pot_Cabane
       rect:
         serializedVersion: 2
-        x: 519
-        y: 40
-        width: 385
-        height: 700
+        x: 2963
+        y: 279
+        width: 61
+        height: 77
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,20 +186,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fc2cdceab7f90ec20800000000000000
-      internalID: 3233759886014530255
+      spriteID: f5cfecb5da2645190800000000000000
+      internalID: -7974640543457149857
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Portrait_Hugo
+      name: Sac_Terre_Cabane
       rect:
         serializedVersion: 2
-        x: 937
-        y: 666
-        width: 404
-        height: 346
+        x: 3082
+        y: 267
+        width: 239
+        height: 126
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -204,20 +207,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 92fd6df7c861becd0800000000000000
-      internalID: -2527901973142380759
+      spriteID: 8f09aba000855d6f0800000000000000
+      internalID: -660525013136666376
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Portrait_Camille
+      name: Table_Cabane
       rect:
         serializedVersion: 2
-        x: 1607
-        y: 664
-        width: 264
-        height: 355
+        x: 3538
+        y: 282
+        width: 347
+        height: 162
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,20 +228,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4e9e1975b0203be10800000000000000
-      internalID: 2212114089706121700
+      spriteID: 06a906a0ade65c930800000000000000
+      internalID: 4162855313329920608
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Coline
+      name: Pelle_Cabane
       rect:
         serializedVersion: 2
-        x: 20
-        y: 9
-        width: 258
-        height: 615
+        x: 3905
+        y: 284
+        width: 83
+        height: 276
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,20 +249,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 38e08ceb4aa5936f0800000000000000
-      internalID: -704432203084853629
+      spriteID: 485a04c6f5e80f1d0800000000000000
+      internalID: -3318996384882842236
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprit_perso_pnj_5
+      name: Poteau_Bois_Cabane
       rect:
         serializedVersion: 2
-        x: 907
-        y: 316
-        width: 12
-        height: 42
+        x: 4030
+        y: 277
+        width: 154
+        height: 456
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -267,20 +270,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6e8828a3eafd5ad60800000000000000
-      internalID: 7900967060690340070
+      spriteID: e5552c1d6b9217c40800000000000000
+      internalID: 5508229684430787934
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Camille
+      name: Toile_Cabane
       rect:
         serializedVersion: 2
-        x: 1362
-        y: 48
-        width: 183
-        height: 581
+        x: 4221
+        y: 283
+        width: 653
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -288,8 +291,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5eee242244e436c60800000000000000
-      internalID: 7810172233330126565
+      spriteID: b5ef65c05cacb7890800000000000000
+      internalID: -7459145410144698789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Arbre_Cabane
+      rect:
+        serializedVersion: 2
+        x: 5077
+        y: 263
+        width: 678
+        height: 668
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbdacabfdc66a14b0800000000000000
+      internalID: -5468945762611319365
       vertices: []
       indices: 
       edges: []
@@ -297,7 +321,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: ec47fb08821771f4fb5cffbe0f054ab6
+    spriteID: 384b66a92c207934ba9d14a0ad17477e
     internalID: 0
     vertices: []
     indices: 
