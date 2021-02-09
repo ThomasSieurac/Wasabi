@@ -36,8 +36,9 @@ public class WSB_Pot : MonoBehaviour
 
             foreach (RaycastHit2D hit in _hits)
             {
-                if (hit && hit.transform.gameObject != this.gameObject && !hit.transform.GetComponent<WSB_Player>())
+                if (hit && hit.transform.gameObject != this.gameObject && (transform.parent && hit.transform.gameObject != transform.parent.gameObject) && !hit.transform.GetComponent<WSB_Player>() && hit.transform.gameObject != GrownSeed)
                 {
+                    Debug.LogError(hit.transform.name);
                     BreakSeed();
                     return;
                 }
@@ -77,8 +78,10 @@ public class WSB_Pot : MonoBehaviour
 
         foreach (RaycastHit2D hit in _hits)
         {
-            if (hit && hit.transform.gameObject != this.gameObject)
+            if (hit && hit.transform.gameObject != this.gameObject && (transform.parent && hit.transform.gameObject != transform.parent.gameObject))
+            {
                 return false;
+            }
         }
 
         // Switch on the seed name to spawn corresponding prefab
@@ -124,7 +127,8 @@ public class WSB_Pot : MonoBehaviour
         if(_state)
         {
             BreakSeed();
-            rend.material = cursedMat;
+            if(rend)
+                rend.material = cursedMat;
             isCursed = true;
         }
         // If the pot isn't cursed change the material to uncursed

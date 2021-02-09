@@ -4,16 +4,16 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -7760678510821816380
-    second: icones_sorts_Lux_0
+    second: icone_trampoline
   - first:
       213: -2848527826029292832
-    second: icones_sorts_Lux_1
+    second: icone_pont
   - first:
       213: 9167346202303935673
-    second: icones_sorts_Lux_2
+    second: icone_carnivore
   - first:
       213: -7349017105824866919
-    second: icones_sorts_Lux_3
+    second: icone_ladder
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -139,7 +139,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icones_sorts_Lux_0
+      name: icone_trampoline
       rect:
         serializedVersion: 2
         x: 0
@@ -147,7 +147,7 @@ TextureImporter:
         width: 213
         height: 212
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -160,7 +160,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icones_sorts_Lux_1
+      name: icone_pont
       rect:
         serializedVersion: 2
         x: 241
@@ -168,7 +168,7 @@ TextureImporter:
         width: 212
         height: 212
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -181,7 +181,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icones_sorts_Lux_2
+      name: icone_carnivore
       rect:
         serializedVersion: 2
         x: 1
@@ -189,7 +189,7 @@ TextureImporter:
         width: 212
         height: 212
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -202,7 +202,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icones_sorts_Lux_3
+      name: icone_ladder
       rect:
         serializedVersion: 2
         x: 240
@@ -210,7 +210,7 @@ TextureImporter:
         width: 213
         height: 212
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

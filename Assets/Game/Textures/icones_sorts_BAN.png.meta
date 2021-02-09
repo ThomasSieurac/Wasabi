@@ -4,16 +4,16 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -6661492071969061954
-    second: icones_sorts_0
+    second: icone_vent
   - first:
       213: 2962770083086255607
-    second: icones_sorts_1
+    second: icone_terre
   - first:
       213: 8732527763894901264
-    second: icones_sorts_2
+    second: icone_light
   - first:
       213: 8055315469682231038
-    second: icones_sorts_3
+    second: icone_shrink
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -139,7 +139,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icones_sorts_0
+      name: icone_vent
       rect:
         serializedVersion: 2
         x: 0
@@ -160,7 +160,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icones_sorts_1
+      name: icone_terre
       rect:
         serializedVersion: 2
         x: 240
@@ -181,7 +181,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icones_sorts_2
+      name: icone_light
       rect:
         serializedVersion: 2
         x: 0
@@ -202,7 +202,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icones_sorts_3
+      name: icone_shrink
       rect:
         serializedVersion: 2
         x: 240

@@ -7,7 +7,6 @@ public class WSB_Camera : MonoBehaviour
     public Camera Cam { get { return cam; } }
 
     Coroutine moveCam = null;
-    float lastTime = 0;
 
     private void Awake()
     {
@@ -66,7 +65,7 @@ public class WSB_Camera : MonoBehaviour
             }
 
             transform.position = Vector3.Lerp(transform.position, new Vector3(_pos.x, _pos.y, transform.position.z), (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed) /*/ 500*/);
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, _zoom, (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed) /*/ 500*/);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, _zoom, (Time.deltaTime * (WSB_CameraManager.I.CamMoveSpeed / 2)) /*/ 500*/);
 
             yield return new WaitForEndOfFrame();
 
@@ -88,7 +87,7 @@ public class WSB_Camera : MonoBehaviour
                 Mathf.Lerp(transform.position.x, _pos.x, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
                 Mathf.Lerp(transform.position.y, _pos.y, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
                 transform.position.z);
-            Cam.orthographicSize = Mathf.Lerp(Cam.orthographicSize, -_pos.z, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed);
+            Cam.orthographicSize = Mathf.Lerp(Cam.orthographicSize, -_pos.z, Time.deltaTime * (WSB_CameraManager.I.CamMoveSpeed / 2));
 
             yield return new WaitForEndOfFrame();
         }

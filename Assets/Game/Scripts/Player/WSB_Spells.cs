@@ -57,9 +57,9 @@ public class WSB_Spells : MonoBehaviour
         else
         {
             currentSpell = 3;
-            images[0].tag = "Ladder";
-            images[1].tag = "Bridge";
-            images[2].tag = "Carnivore";
+            images[0].tag = "Carnivore";
+            images[1].tag = "Ladder";
+            images[2].tag = "Bridge";
             images[3].tag = "Trampoline";
         }
     }
@@ -123,48 +123,50 @@ public class WSB_Spells : MonoBehaviour
         }
     }
 
-    public void UpdateChargesUI(SpellType _type, string _value)
+    public void UpdateChargesUI(string _value)
     {
-        switch (_type)
+        if(images[currentSpell])
+            images[currentSpell].GetComponentInChildren<TMP_Text>().text = _value.ToString();
+    }
+
+    public void UpdateChargesUI(SpellType _t, string _value)
+    {
+        switch (_t)
         {
             case SpellType.Earth:
-            case SpellType.Ladder:
-                texts[1].text = _value.ToString();
+                images[3].GetComponentInChildren<TMP_Text>().text = _value.ToString();
                 break;
             case SpellType.Wind:
-            case SpellType.Bridge:
-                texts[2].text = _value.ToString();
+                images[0].GetComponentInChildren<TMP_Text>().text = _value.ToString();
                 break;
             case SpellType.Light:
-            case SpellType.Carnivore:
-                texts[3].text = _value.ToString();
+                images[1].GetComponentInChildren<TMP_Text>().text = _value.ToString();
                 break;
             case SpellType.Shrink:
-            case SpellType.Trampoline:
-                texts[0].text = _value.ToString();
+                images[2].GetComponentInChildren<TMP_Text>().text = _value.ToString();
                 break;
         }
     }
 
-    public void UpdateEmptyCharges(SpellType _type, float _value)
+    public void UpdateEmptyCharges(float _value)
     {
-        switch (_type)
+        images[currentSpell].fillAmount = _value;
+    }
+    public void UpdateEmptyCharges(SpellType _t, float _value)
+    {
+        switch (_t)
         {
             case SpellType.Earth:
-            case SpellType.Ladder:
-                images[1].fillAmount = _value;
-                break;
-            case SpellType.Wind:
-            case SpellType.Bridge:
-                images[2].fillAmount = _value;
-                break;
-            case SpellType.Light:
-            case SpellType.Carnivore:
                 images[3].fillAmount = _value;
                 break;
-            case SpellType.Shrink:
-            case SpellType.Trampoline:
+            case SpellType.Wind:
                 images[0].fillAmount = _value;
+                break;
+            case SpellType.Light:
+                images[1].fillAmount = _value;
+                break;
+            case SpellType.Shrink:
+                images[2].fillAmount = _value;
                 break;
         }
     }
@@ -176,8 +178,8 @@ public enum SpellType
     Wind,
     Light,
     Shrink,
-    Ladder,
-    Bridge,
-    Trampoline,
-    Carnivore
+    //Ladder,
+    //Bridge,
+    //Trampoline,
+    //Carnivore
 }

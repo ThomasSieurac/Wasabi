@@ -381,8 +381,8 @@ public class WSB_CameraManager : MonoBehaviour
 
             // Calcul and set ban's cam position and zoom
             targetPositionCamBan = new Vector3(
-                _luxOffset.x - (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))),
-                _luxOffset.y - (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))),
+                _luxOffset.x - (_dirOffset.x * (_dist / (maxCamZoom/* * 1.5f*/))),
+                _luxOffset.y - (_dirOffset.y * (_dist /(maxCamZoom/* * 1.5f*/))),
                 targetPositionCamBan.z);
 
             //if(IsOrtho)
@@ -392,8 +392,8 @@ public class WSB_CameraManager : MonoBehaviour
 
             // Calcul and set ban's cam position and zoom
             targetPositionCamLux = new Vector3(
-                _banOffset.x + (_dirOffset.x * (_dist / (maxCamZoom * 1.5f))),
-                _banOffset.y + (_dirOffset.y * (_dist /(maxCamZoom * 1.5f))),
+                _banOffset.x + (_dirOffset.x * (_dist / (maxCamZoom/* * 1.5f*/))),
+                _banOffset.y + (_dirOffset.y * (_dist /(maxCamZoom/* * 1.5f*/))),
                 targetPositionCamLux.z);
 
             //if(IsOrtho)

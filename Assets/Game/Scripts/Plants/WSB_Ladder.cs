@@ -6,7 +6,7 @@ public class WSB_Ladder : MonoBehaviour
 {
     [SerializeField] float maxLength = 10;
     [SerializeField] float growSpeed = 5;
-    [SerializeField] LayerMask stopLayer = 0;
+    [SerializeField] ContactFilter2D stopLayer = new ContactFilter2D();
     [SerializeField] BoxCollider2D ladderCollider = null;
 
     private void Start()
@@ -36,6 +36,12 @@ public class WSB_Ladder : MonoBehaviour
             collision.GetComponent<WSB_Player>().CanClimb(false);
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireCube((Vector2)transform.position + (ladderCollider.offset * 2), ladderCollider.size * transform.localScale);
+    }
+
     IEnumerator DeployLadder()
     {
         // Loop until ladder has reached its definite size
@@ -47,9 +53,19 @@ public class WSB_Ladder : MonoBehaviour
             transform.localScale = Vector3.MoveTowards(transform.localScale, new Vector3(transform.localScale.x, maxLength, .1f), Time.deltaTime * growSpeed);
 
             // Checks if the ladder has a roof above itself and stop if yes
-            Collider2D _hit;
-            if ((_hit = Physics2D.OverlapBox(new Vector2(transform.position.x, transform.position.y + ladderCollider.size.y), Vector2.one, 0, stopLayer)) && _hit.gameObject != transform.parent.gameObject)
-                StopAllCoroutines();
+            RaycastHit2D[] _hits = new RaycastHit2D[5];
+            
+            if (ladderCollider.Cast(Vector2.zero, stopLayer, _hits) > 0)
+            {
+                bool _hit = false;
+                foreach (RaycastHit2D _col in _hits)
+                {
+                    if (_col && _col.transform.gameObject != this.gameObject && _col.transform.gameObject != transform.parent.gameObject)
+                        _hit = true;
+                }
+                if(_hit)
+                    StopAllCoroutines();
+            }
 
             // Stop if the ladder had reached its max size
             if (ladderCollider.bounds.size.y == maxLength)

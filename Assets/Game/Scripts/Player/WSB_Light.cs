@@ -14,10 +14,14 @@ public class WSB_Light : MonoBehaviour
         Gizmos.DrawSphere(transform.position, range);
     }
 
+    private void Start()
+    {
+        Debug.Log(transform.gameObject.layer);
+    }
     void Update()
     {
         // Constantly checks around itself to find all objects in range
-        hits = Physics2D.CircleCastAll(transform.position, range, Vector2.right);
+        hits = Physics2D.CircleCastAll(transform.position, range, Vector2.zero);
         if(hits.Length > 0)
         {
             WSB_Pot _pot;
