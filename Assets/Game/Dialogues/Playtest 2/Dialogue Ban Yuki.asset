@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181ae94814c27a14397084fc8a2b2165, type: 3}
   m_Name: Dialogue Ban Yuki
   m_EditorClassIdentifier: 
-  Image: {fileID: 5410289516259015022, guid: 710d12d1da688fb49a6560688ddf7ae9, type: 3}
+  Image: {fileID: 21300000, guid: 3bd854d82866bb340ac564a5e6af46e6, type: 3}
   IsImageRight: 0
   Character: 1
   Texts:

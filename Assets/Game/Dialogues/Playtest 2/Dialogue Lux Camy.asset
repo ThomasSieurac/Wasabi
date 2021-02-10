@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181ae94814c27a14397084fc8a2b2165, type: 3}
   m_Name: Dialogue Lux Camy
   m_EditorClassIdentifier: 
-  Image: {fileID: 5410289516259015022, guid: 710d12d1da688fb49a6560688ddf7ae9, type: 3}
+  Image: {fileID: 21300000, guid: 60d27e260ae297d4c8e51bb054c25149, type: 3}
   IsImageRight: 0
   Character: 0
   Texts:
