@@ -108,7 +108,7 @@ MonoBehaviour:
   cursedMat: {fileID: 0}
   uncursedMat: {fileID: 2100000, guid: 610bd0df9f90ad549a6247e615fc223d, type: 2}
   rend: {fileID: 0}
-  spawnPos: {x: 0, y: 0.5}
+  spawnPos: {x: 0, y: 0.6}
 --- !u!61 &596624159923289151
 BoxCollider2D:
   m_ObjectHideFlags: 0
