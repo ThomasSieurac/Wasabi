@@ -125,8 +125,10 @@ public class WSB_Spells : MonoBehaviour
 
     public void UpdateChargesUI(string _value)
     {
-        if(images[currentSpell])
-            images[currentSpell].GetComponentInChildren<TMP_Text>().text = _value.ToString();
+        int _spell = currentSpell + 1;
+        _spell = _spell > 3 ? 0 : _spell < 0 ? 3 : _spell;
+        if (images[_spell])
+            images[_spell].GetComponentInChildren<TMP_Text>().text = _value.ToString();
     }
 
     public void UpdateChargesUI(SpellType _t, string _value)
@@ -134,16 +136,16 @@ public class WSB_Spells : MonoBehaviour
         switch (_t)
         {
             case SpellType.Earth:
-                images[3].GetComponentInChildren<TMP_Text>().text = _value.ToString();
-                break;
-            case SpellType.Wind:
-                images[0].GetComponentInChildren<TMP_Text>().text = _value.ToString();
-                break;
-            case SpellType.Light:
                 images[1].GetComponentInChildren<TMP_Text>().text = _value.ToString();
                 break;
-            case SpellType.Shrink:
+            case SpellType.Wind:
                 images[2].GetComponentInChildren<TMP_Text>().text = _value.ToString();
+                break;
+            case SpellType.Light:
+                images[3].GetComponentInChildren<TMP_Text>().text = _value.ToString();
+                break;
+            case SpellType.Shrink:
+                images[0].GetComponentInChildren<TMP_Text>().text = _value.ToString();
                 break;
         }
     }
@@ -157,16 +159,16 @@ public class WSB_Spells : MonoBehaviour
         switch (_t)
         {
             case SpellType.Earth:
-                images[3].fillAmount = _value;
-                break;
-            case SpellType.Wind:
-                images[0].fillAmount = _value;
-                break;
-            case SpellType.Light:
                 images[1].fillAmount = _value;
                 break;
-            case SpellType.Shrink:
+            case SpellType.Wind:
                 images[2].fillAmount = _value;
+                break;
+            case SpellType.Light:
+                images[3].fillAmount = _value;
+                break;
+            case SpellType.Shrink:
+                images[0].fillAmount = _value;
                 break;
         }
     }

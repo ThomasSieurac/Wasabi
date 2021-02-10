@@ -38,7 +38,6 @@ public class WSB_Pot : MonoBehaviour
             {
                 if (hit && hit.transform.gameObject != this.gameObject && (transform.parent && hit.transform.gameObject != transform.parent.gameObject) && !hit.transform.GetComponent<WSB_Player>() && hit.transform.gameObject != GrownSeed)
                 {
-                    Debug.LogError(hit.transform.name);
                     BreakSeed();
                     return;
                 }

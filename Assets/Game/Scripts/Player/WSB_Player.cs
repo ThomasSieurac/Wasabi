@@ -248,9 +248,11 @@ public class WSB_Player : MonoBehaviour
             if (overlapBuffer[i] == ignoredCollider)
                 continue;
 
+            StopJump();
+
             // Push out Physic position from the collider
             ColliderDistance2D _distance = Collider.Distance(overlapBuffer[i]);
-            if (_distance.isOverlapped && (castBuffer[i].transform.gameObject.layer != 13 || _distance.normal.y == -1))
+            if (_distance.isValid && _distance.isOverlapped && ((castBuffer.Length > i && castBuffer[i].transform && castBuffer[i].transform.gameObject && castBuffer[i].transform.gameObject.layer != 13) || _distance.normal.y == -1))
             {
                 Physic.position += _distance.normal * _distance.distance;
             }
@@ -280,6 +282,7 @@ public class WSB_Player : MonoBehaviour
             {
                 // If found set collider in ignoredCollider and don't do the jump
                 ignoredCollider = _hits[0].collider;
+                Physic.position -= Vector2.up * .1f;
                 return;
             }
         }
