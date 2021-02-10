@@ -21,6 +21,17 @@ public class WSB_Dialogue : MonoBehaviour
 
     Coroutine playLine = null;
 
+    private void OnDisable()
+    {
+        currentDialogue = 0;
+        currentChar = 0;
+        currentLine = 0;
+        if (playLine != null)
+        {
+            StopCoroutine(playLine);
+            playLine = null;
+        }
+    }
 
     private void OnEnable()
     {
@@ -141,6 +152,8 @@ public class WSB_Dialogue : MonoBehaviour
         if (dialogue.IsImageRight)
         {
             charImageRight.sprite = dialogue.GetSprite();
+            charImageRight.SetNativeSize();
+            charImageRight.rectTransform.localScale = new Vector3(.4f, .4f, .4f);
             shownNameRight.text = dialogue.GetCharacter();
             shownNameLeft.text = string.Empty;
             charImageRight.enabled = shownNameRight.enabled = true;
@@ -150,6 +163,8 @@ public class WSB_Dialogue : MonoBehaviour
         else
         {
             charImageLeft.sprite = dialogue.GetSprite();
+            charImageLeft.SetNativeSize();
+            charImageLeft.rectTransform.localScale = new Vector3(.4f, .4f, .4f);
             shownNameLeft.text = dialogue.GetCharacter();
             shownNameRight.text = string.Empty;
             charImageLeft.enabled = shownNameLeft.enabled = true;

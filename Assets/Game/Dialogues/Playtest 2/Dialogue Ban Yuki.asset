@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181ae94814c27a14397084fc8a2b2165, type: 3}
+  m_Name: Dialogue Ban Yuki
+  m_EditorClassIdentifier: 
+  Image: {fileID: 5410289516259015022, guid: 710d12d1da688fb49a6560688ddf7ae9, type: 3}
+  IsImageRight: 0
+  Character: 1
+  Texts:
+  - "J'ai h\xE2te de voir ce que \xE7a va donner !"
+  ShowTexts: 0
+  ShowPreview: 00
+  DefaultSize: 36

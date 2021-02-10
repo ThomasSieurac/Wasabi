@@ -250,7 +250,7 @@ public class WSB_Player : MonoBehaviour
 
             // Push out Physic position from the collider
             ColliderDistance2D _distance = Collider.Distance(overlapBuffer[i]);
-            if (_distance.isOverlapped && (castBuffer[i].transform.gameObject.layer != 13 || _distance.normal.y == -1))
+            if (_distance.isOverlapped && ((castBuffer.Length > i && castBuffer[i].transform.gameObject.layer != 13) || _distance.normal.y == -1))
             {
                 Physic.position += _distance.normal * _distance.distance;
             }

@@ -45,7 +45,7 @@ public enum Character
     Lhudo,
     Kristof,
     Wasabi,
-    Korok,
-    Nab,
-    Xul
+    Camy,
+    Yuki,
+    Ugo
 }

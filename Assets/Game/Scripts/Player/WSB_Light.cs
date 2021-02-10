@@ -14,10 +14,6 @@ public class WSB_Light : MonoBehaviour
         Gizmos.DrawSphere(transform.position, range);
     }
 
-    private void Start()
-    {
-        Debug.Log(transform.gameObject.layer);
-    }
     void Update()
     {
         // Constantly checks around itself to find all objects in range
