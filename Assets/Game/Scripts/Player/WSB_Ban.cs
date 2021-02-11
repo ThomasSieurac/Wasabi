@@ -364,17 +364,17 @@ public class WSB_Ban : WSB_Player
             spells.UpdateEmptyCharges(SpellType.Light, lightTimer);
 
         // Create the light and start both Movement and Time coroutines
-        GameObject _light = Instantiate(lightObject, transform.position, Quaternion.identity);
-        StartCoroutine(MoveLight(_light, (Vector2)_light.transform.position + Vector2.up * 2));
+        GameObject _light = Instantiate(lightObject, new Vector3(transform.position.x,transform.position.y,-5), Quaternion.identity);
+        StartCoroutine(MoveLight(_light, _light.transform.position + Vector3.up * 2));
     }
 
 
 
 
-    IEnumerator MoveLight(GameObject _light, Vector2 _target)
+    IEnumerator MoveLight(GameObject _light, Vector3 _target)
     {
         // Moves the light towards its target
-        while(_light && Vector2.Distance(_light.transform.position, _target) != 0)
+        while (_light && Vector3.Distance(_light.transform.position, _target) != 0)
         {
             // Hold if game is in pause
             while (WSB_GameManager.Paused)
@@ -382,7 +382,7 @@ public class WSB_Ban : WSB_Player
                 yield return new WaitForSeconds(.2f);
             }
 
-            _light.transform.position = Vector2.MoveTowards(_light.transform.position, _target, Time.deltaTime * 2);
+            _light.transform.position = Vector3.MoveTowards(_light.transform.position, _target, Time.deltaTime * 2);
             yield return new WaitForEndOfFrame();
         }
     }
