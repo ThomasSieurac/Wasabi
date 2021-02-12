@@ -389,11 +389,6 @@ PrefabInstance:
       propertyPath: callBack.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1827075955}
-    - target: {fileID: 5111625829412618436, guid: ba4f1aded37bf3d4cbaa590429cf5374,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 13
-      objectReference: {fileID: 0}
     - target: {fileID: 5111625829470225970, guid: ba4f1aded37bf3d4cbaa590429cf5374,
         type: 3}
       propertyPath: m_Name
@@ -453,11 +448,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7964938436813975210, guid: ba4f1aded37bf3d4cbaa590429cf5374,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.2664623
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba4f1aded37bf3d4cbaa590429cf5374, type: 3}
