@@ -821,6 +821,21 @@ PrefabInstance:
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 8946431516997133950, guid: 922640511fd77504896600da49c7ead9,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.062399995
+      objectReference: {fileID: 0}
+    - target: {fileID: 8946431516997133950, guid: 922640511fd77504896600da49c7ead9,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.062399995
+      objectReference: {fileID: 0}
+    - target: {fileID: 8946431516997133950, guid: 922640511fd77504896600da49c7ead9,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.062399995
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 922640511fd77504896600da49c7ead9, type: 3}
 --- !u!114 &736248738 stripped
@@ -1100,6 +1115,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5111625827655261423, guid: ba4f1aded37bf3d4cbaa590429cf5374,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 5111625827709156787, guid: ba4f1aded37bf3d4cbaa590429cf5374,
         type: 3}
       propertyPath: callBack.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1109,6 +1129,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111625829304524499, guid: ba4f1aded37bf3d4cbaa590429cf5374,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111625829304524499, guid: ba4f1aded37bf3d4cbaa590429cf5374,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111625829304524499, guid: ba4f1aded37bf3d4cbaa590429cf5374,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111625829304524499, guid: ba4f1aded37bf3d4cbaa590429cf5374,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.549
       objectReference: {fileID: 0}
     - target: {fileID: 5111625829412618434, guid: ba4f1aded37bf3d4cbaa590429cf5374,
         type: 3}

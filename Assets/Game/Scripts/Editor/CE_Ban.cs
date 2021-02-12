@@ -13,7 +13,7 @@ public class CE_Ban : Editor
     bool showLight = false;
     bool showWind = false;
 
-    SerializedProperty nose;
+    SerializedProperty spriteRend;
     SerializedProperty spells;
     SerializedProperty controllerValues;
 
@@ -45,7 +45,7 @@ public class CE_Ban : Editor
     private void OnEnable()
     {
         // Populate the serialized properties
-        nose = serializedObject.FindProperty("nose");
+        spriteRend = serializedObject.FindProperty("spriteRend");
         grabFilter = serializedObject.FindProperty("grabContactFilter");
         semiSolidFilter = serializedObject.FindProperty("semiSolidFilter");
         groundLayer = serializedObject.FindProperty("groundLayer");
@@ -93,7 +93,7 @@ public class CE_Ban : Editor
     void Components()
     {
         // Check if there is no missing components
-        MissingCheck(nose);
+        MissingCheck(spriteRend);
         MissingCheck(spells);
         MissingCheck(earthZone);
         MissingCheck(light);

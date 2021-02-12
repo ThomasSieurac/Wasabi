@@ -8,7 +8,7 @@ public class WSB_Bridge : MonoBehaviour
     [SerializeField] float growSpeed = 5;
     [SerializeField] ContactFilter2D stopLayer = new ContactFilter2D();
     [SerializeField] BoxCollider2D bridgeCollider = null;
-
+    [SerializeField] SpriteRenderer spriteRenderer = null;
 
     private void Start()
     {
@@ -25,6 +25,13 @@ public class WSB_Bridge : MonoBehaviour
     public IEnumerator DeployBridge(bool _right)
     {
         Vector2 _pos = transform.position;
+
+        if(_right)
+        {
+            //Debug.LogError(spriteRenderer.transform.position.x);
+            spriteRenderer.gameObject.transform.localPosition = new Vector3(-spriteRenderer.transform.localPosition.x, spriteRenderer.transform.localPosition.y, spriteRenderer.transform.localPosition.z);
+            spriteRenderer.flipX = true;
+        }
 
         bridgeCollider.transform.localPosition = new Vector3(bridgeCollider.transform.localPosition.x + (_right ? .5f : -.5f), bridgeCollider.transform.localPosition.y, bridgeCollider.transform.localPosition.z);
 

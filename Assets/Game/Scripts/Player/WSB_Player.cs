@@ -8,7 +8,7 @@ public class WSB_Player : MonoBehaviour
 {
     #region debug
 
-    [SerializeField] GameObject nose = null;
+    [SerializeField] SpriteRenderer spriteRend = null;
 
     #endregion
 
@@ -37,7 +37,7 @@ public class WSB_Player : MonoBehaviour
         }
 
         // Set debug nose position
-        nose.transform.localPosition = new Vector3((isRight ? .5f : -.5f), .5f);
+        spriteRend.flipX = !isRight;
     }
 
     protected virtual void Update()
@@ -142,7 +142,7 @@ public class WSB_Player : MonoBehaviour
             isRight = false;
         if (xMovement > 0)
             isRight = true;
-        nose.transform.localPosition = new Vector3((isRight ? .5f : -.5f), .5f);
+        spriteRend.flipX = !isRight;
         yMovement = _context.ReadValue<Vector2>().y;
     }
 

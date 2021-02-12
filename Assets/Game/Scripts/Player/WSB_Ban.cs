@@ -274,7 +274,7 @@ public class WSB_Ban : WSB_Player
         // Loops for x amount from player left to player right below him to find ground
         for (int i = -earthSize; i < earthSize; i++)
         {
-            RaycastHit2D[] _hits = Physics2D.RaycastAll(new Vector2(transform.position.x + (i / 10f), transform.position.y), Vector2.down, 1.5f, groundLayer);
+            RaycastHit2D[] _hits = Physics2D.RaycastAll(new Vector2(transform.position.x + (i / 10f), transform.position.y), Vector2.down, 2f, groundLayer);
             if(_hits.Length != 0)
             {
                 // If ground found, Earth if spawned and exit this method
@@ -317,7 +317,7 @@ public class WSB_Ban : WSB_Player
 
 
             // Raycast below Ban to find ground and Instantiate Earth on this ground
-            RaycastHit2D _hit = Physics2D.Raycast(transform.position, Vector2.down, transform.localScale.y + .5f, groundLayer);
+            RaycastHit2D _hit = Physics2D.Raycast(transform.position, Vector2.down, transform.localScale.y + 1.5f, groundLayer);
             GameObject _zdt = Instantiate(earthZone, _hit.point, Quaternion.identity);
 
             // Set its parent so if the plateform moves, the Earth will move too

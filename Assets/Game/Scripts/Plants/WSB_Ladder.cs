@@ -36,11 +36,6 @@ public class WSB_Ladder : MonoBehaviour
             collision.GetComponent<WSB_Player>().CanClimb(false);
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireCube((Vector2)transform.position + (ladderCollider.offset * 2), ladderCollider.size * transform.localScale);
-    }
 
     IEnumerator DeployLadder()
     {
