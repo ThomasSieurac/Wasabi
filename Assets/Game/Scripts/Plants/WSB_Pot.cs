@@ -13,6 +13,7 @@ public class WSB_Pot : MonoBehaviour
     [SerializeField] Material cursedMat = null;
     [SerializeField] Material uncursedMat = null;
     [SerializeField] Renderer rend = null;
+    [SerializeField] ParticleSystem fx = null;
 
     [SerializeField] Vector2 spawnPos = Vector2.zero;
 
@@ -125,6 +126,8 @@ public class WSB_Pot : MonoBehaviour
         // If the pot is cursed break any seed planted and change the material to cursed
         if(_state)
         {
+            if(fx)
+                fx.Play();
             BreakSeed();
             if(rend)
                 rend.material = cursedMat;
@@ -133,6 +136,8 @@ public class WSB_Pot : MonoBehaviour
         // If the pot isn't cursed change the material to uncursed
         else
         {
+            if (fx)
+                fx.Stop();
             rend.material = uncursedMat;
             isCursed = false;
         }

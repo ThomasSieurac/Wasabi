@@ -17,8 +17,7 @@ MonoBehaviour:
   Character: 7
   Texts:
   - Hey ! Bienvenue dans notre jeu !
-  - "N'h\xE9sitez pas \xE0 nous demander de l'aide"
-  - Et aussi de nous donner un maximum de retours !
+  - "N'h\xE9sitez pas \xE0 nous donner un maximum de retours !"
   ShowTexts: 0
-  ShowPreview: 000000
+  ShowPreview: 0000
   DefaultSize: 36
