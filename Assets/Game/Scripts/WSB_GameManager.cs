@@ -179,7 +179,7 @@ public class WSB_GameManager : MonoBehaviour
         Rigidbody2D[] _physics = FindObjectsOfType<Rigidbody2D>();
         foreach (Rigidbody2D _r in _physics)
         {
-            if (_r.GetComponent<WSB_Player>() || _r.GetComponent<WSB_Movable>() || _r.GetComponent<WSB_MovingPlateform>())
+            if (_r.GetComponent<WSB_Player>() || _r.GetComponent<WSB_Movable>() || _r.GetComponent<WSB_MovingPlateform>() || _r.transform.tag == "Earth")
                 continue;
             _r.isKinematic = false;
         }
