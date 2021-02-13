@@ -22,7 +22,7 @@ public class WSB_InteractiveElement : MonoBehaviour
             animators[i].SetTrigger("Activate");
         }
         if (isOneTimeUse)
-            Destroy(this.gameObject);
+            Destroy(this);
     }
 
 }
