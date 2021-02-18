@@ -92,7 +92,7 @@ public class CE_Button : Editor
                     Object _object = _activate.GetPersistentTarget(i);
                     if (_object)
                     {
-                        GameObject _target = (GameObject)_object;
+                        GameObject _target = /*(GameObject)*/_object as GameObject;
                         if (_target)
                         {
                             // Draw of line from button to object activated by button

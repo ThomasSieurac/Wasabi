@@ -151,17 +151,6 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""5dd5d1c8-f7af-4456-9518-fadefb8a4938"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""down"",
                     ""id"": ""293c4ef1-16b4-4b45-96c5-05698ab895b8"",
                     ""path"": ""<Keyboard>/downArrow"",
@@ -261,39 +250,6 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""1D Axis controller shoulder"",
-                    ""id"": ""02438258-ca85-4f53-9254-1dd30d8e88a6"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate spell"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""6ff008be-b6eb-4917-bd5e-2bac13bd9ead"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Controller 2"",
-                    ""action"": ""Rotate spell"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""f3372fb7-7b9e-420a-9ff1-298272f81ff8"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Controller 2"",
-                    ""action"": ""Rotate spell"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""1D Axis keyboard"",
                     ""id"": ""714ba73a-1e49-42e6-b6d6-fe6928ca0a45"",
                     ""path"": ""1DAxis"",
@@ -327,7 +283,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""1D Axis controller trigger"",
+                    ""name"": ""1D Axis controller shoulder"",
                     ""id"": ""62ac5460-89dd-4cd9-91db-65a53fb2b4d0"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -340,7 +296,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""10b94e2b-4c82-461a-ae85-331349adc157"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller 2"",
@@ -351,7 +307,7 @@ public class @ControlsLux : IInputActionCollection, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""b0f3c363-0bfe-463d-a3da-7ccb6b99fe37"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller 2"",

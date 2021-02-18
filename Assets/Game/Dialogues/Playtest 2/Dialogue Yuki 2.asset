@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181ae94814c27a14397084fc8a2b2165, type: 3}
+  m_Name: Dialogue Yuki 2
+  m_EditorClassIdentifier: 
+  Image: {fileID: 4834021125973313640, guid: 06c812c21388714408b6b15be046d184, type: 3}
+  IsImageRight: 1
+  Character: 8
+  Texts:
+  - Vous pouvez toujours regarder sur les murs de notre salle
+  - "\xC7a vous donnera une id\xE9e !"
+  ShowTexts: 1
+  ShowPreview: 0000
+  DefaultSize: 36

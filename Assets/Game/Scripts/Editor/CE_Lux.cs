@@ -8,7 +8,7 @@ public class CE_Lux : Editor
 {
     bool customEditor = true;
 
-    SerializedProperty nose;
+    SerializedProperty spriteRend;
     SerializedProperty controllerValues;
     SerializedProperty spells;
     SerializedProperty render;
@@ -24,12 +24,12 @@ public class CE_Lux : Editor
     SerializedProperty maxCarnivoreCharges;
 
     SerializedProperty shrinkSpeed;
-    SerializedProperty shrinkDuration;
+    //SerializedProperty shrinkDuration;
 
     private void OnEnable()
     {
         // Populate the serialized properties
-        nose = serializedObject.FindProperty("nose");
+        spriteRend = serializedObject.FindProperty("spriteRend");
         grabFilter = serializedObject.FindProperty("grabContactFilter");
         semiSolidFilter = serializedObject.FindProperty("semiSolidFilter");
         potLayer = serializedObject.FindProperty("potLayer");
@@ -41,7 +41,7 @@ public class CE_Lux : Editor
         maxBridgeCharges = serializedObject.FindProperty("maxBridgeCharges");
         maxCarnivoreCharges = serializedObject.FindProperty("maxCarnivoreCharges");
         shrinkSpeed = serializedObject.FindProperty("shrinkSpeed");
-        shrinkDuration = serializedObject.FindProperty("shrinkDuration");
+        //shrinkDuration = serializedObject.FindProperty("shrinkDuration");
         render = serializedObject.FindProperty("render");
     }
 
@@ -69,7 +69,7 @@ public class CE_Lux : Editor
     void Components()
     {
         // Check if there is no missing components
-        MissingCheck(nose);
+        MissingCheck(spriteRend);
         MissingCheck(spells);
         MissingCheck(render);
         MissingCheck(controllerValues);
@@ -110,7 +110,7 @@ public class CE_Lux : Editor
         Header("Shrink parameters");
         EditorGUILayout.Space();
 
-        EditorGUILayout.PropertyField(shrinkDuration);
+        //EditorGUILayout.PropertyField(shrinkDuration);
         EditorGUILayout.PropertyField(shrinkSpeed);
     }
 

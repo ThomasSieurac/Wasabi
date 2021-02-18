@@ -26,17 +26,16 @@ public class WSB_Ban : WSB_Player
     [SerializeField] GameObject earthZone = null;
 
     [SerializeField] int earthSize = 5;
-    [SerializeField] float earthDuration = 20;
     [SerializeField] float earthChargeDelay = 10;
 
     //Coroutine rechargeEarth = null;
 
     [SerializeField] LayerMask groundLayer = 0;
+    [SerializeField] LayerMask earthLayer = 0;
     #endregion
     #region Light Spell
     [SerializeField] GameObject lightObject = null;
 
-    [SerializeField] float lightDuration = 10;
     [SerializeField] float lightChargeDelay = 10;
 
     //Coroutine rechargeLight = null;
@@ -54,21 +53,21 @@ public class WSB_Ban : WSB_Player
     Coroutine blowCoroutine = null;
     //Coroutine rechargeWind = null;
 
-    [SerializeField] LayerMask moveLayer = 0;
+    [SerializeField] LayerMask windLayer = 0;
 
     #endregion
 
     #region RechargeSpells
 
     float earthTimer = 0;
-    float windTimer = 0;
     float shrinkTimer = 0;
     float lightTimer = 0;
+    float windTimer = 0;
 
-    bool rechargeEarth = false;
+    int rechargeEarth = 0;
+    int rechargeShrink = 0;
+    int rechargeLight = 0;
     bool rechargeWind = false;
-    bool rechargeShrink = false;
-    bool rechargeLight = false;
 
     #endregion
 
@@ -104,7 +103,7 @@ public class WSB_Ban : WSB_Player
         base.Update();
 
         // Recharge the spells
-        if(rechargeEarth)
+        if(rechargeEarth > 0)
         {
             // Increment the timer
             earthTimer += Time.deltaTime;
@@ -116,20 +115,25 @@ public class WSB_Ban : WSB_Player
             // If the timer has finished
             if(earthTimer >= earthChargeDelay)
             {
+                rechargeEarth--;
+
                 // Reset the timer
                 earthTimer = 0;
 
                 // Increment the charges and update the UI
                 earthCharges++;
+                if (earthCharges > maxEarthCharges)
+                    earthCharges = maxEarthCharges;
+
                 spells.UpdateChargesUI(SpellType.Earth, earthCharges.ToString());
                 spells.UpdateEmptyCharges(SpellType.Earth, 1);
 
                 // Check if charges are full and stop the recharge if yes
                 if (earthCharges == maxEarthCharges)
-                    rechargeEarth = false;
+                    rechargeEarth = 0;
             }
         }
-        if(rechargeLight)
+        if(rechargeLight > 0)
         {
             lightTimer += Time.deltaTime;
 
@@ -138,17 +142,22 @@ public class WSB_Ban : WSB_Player
 
             if (lightTimer >= lightChargeDelay)
             {
+                rechargeLight--;
+
                 lightTimer = 0;
 
                 lightCharges++;
+                if (lightCharges > maxLightCharges)
+                    lightCharges = maxLightCharges;
+
                 spells.UpdateChargesUI(SpellType.Light, lightCharges.ToString());
                 spells.UpdateEmptyCharges(SpellType.Light, 1);
 
                 if (lightCharges == maxLightCharges)
-                    rechargeLight = false;
+                    rechargeLight = 0;
             }
         }
-        if(rechargeShrink)
+        if(rechargeShrink > 0)
         {
             shrinkTimer += Time.deltaTime;
 
@@ -157,14 +166,19 @@ public class WSB_Ban : WSB_Player
 
             if (shrinkTimer >= shrinkChargeDelay)
             {
+                rechargeShrink--;
+
                 shrinkTimer = 0;
 
                 shrinkCharges++;
+                if (shrinkCharges > maxShrinkCharges)
+                    shrinkCharges = maxShrinkCharges;
+
                 spells.UpdateChargesUI(SpellType.Shrink, shrinkCharges.ToString());
                 spells.UpdateEmptyCharges(SpellType.Shrink, 1);
 
-                if (shrinkCharges == maxLightCharges)
-                    rechargeShrink = false;
+                if (shrinkCharges == maxShrinkCharges)
+                    rechargeShrink = 0;
             }
         }
         if(rechargeWind)
@@ -179,6 +193,9 @@ public class WSB_Ban : WSB_Player
                 windTimer = 0;
 
                 windCharges++;
+                if (windCharges > maxWindCharges)
+                    windCharges = maxWindCharges;
+
                 spells.UpdateChargesUI(SpellType.Wind, windCharges.ToString());
                 spells.UpdateEmptyCharges(SpellType.Wind, 1);
 
@@ -218,6 +235,7 @@ public class WSB_Ban : WSB_Player
         if (blowCoroutine != null)
         {
             StopCoroutine(blowCoroutine);
+            canMove = true;
             rechargeWind = true;
         }
     }
@@ -231,38 +249,19 @@ public class WSB_Ban : WSB_Player
 
         // Ask Lux to shrink, stop here if he can't
         if (!WSB_Lux.I.Shrink())
+        {
+            rechargeShrink++;
             return;
+        }
 
         // Reduce shrink charges and update corresponding UI
         shrinkCharges--;
         spells.UpdateChargesUI(SpellType.Shrink, shrinkCharges.ToString());
         if (shrinkCharges == 0)
             spells.UpdateEmptyCharges(SpellType.Shrink, shrinkTimer);
-
-        rechargeShrink = true;
-        // Start coroutine to recharge the spell if not existing
-        //if (rechargeShrink != null)
-        //    StopCoroutine(rechargeShrink);
-        //rechargeShrink = StartCoroutine(RechargeShrink());
     }
 
-    //IEnumerator RechargeShrink()
-    //{
-    //    // Wait for shrinkchargesdelay
-    //    yield return new WaitForSeconds(shrinkChargeDelay);
-
-    //    // Increase shrink charges and update corresponding UI
-    //    shrinkCharges++;
-    //    spells.UpdateChargesUI(SpellType.Shrink, shrinkCharges.ToString());
-
-    //    // Checks if shrink charges are full, repeat this coroutine if not
-    //    if (shrinkCharges < maxShrinkCharges)
-    //        rechargeShrink = StartCoroutine(RechargeShrink());
-    //    else
-    //        rechargeShrink = null;
-    //}
     #endregion
-
 
     #region Earth
     void Earth()
@@ -271,18 +270,36 @@ public class WSB_Ban : WSB_Player
         if (earthCharges == 0)
             return;
 
+        bool _spawn = false;
         // Loops for x amount from player left to player right below him to find ground
         for (int i = -earthSize; i < earthSize; i++)
         {
-            RaycastHit2D[] _hits = Physics2D.RaycastAll(new Vector2(transform.position.x + (i / 10f), transform.position.y), Vector2.down, 1.5f, groundLayer);
+            RaycastHit2D[] _hits = Physics2D.RaycastAll(new Vector2(transform.position.x + (i / 10f), transform.position.y), Vector2.down, 2f, groundLayer);
             if(_hits.Length != 0)
             {
                 // If ground found, Earth if spawned and exit this method
-                SpawnEarth(true);
-                return;
+                _spawn = !RetrieveEarth();
+                break;
             }
         }
-        SpawnEarth(false);
+        SpawnEarth(_spawn);
+    }
+
+    bool RetrieveEarth()
+    {
+        RaycastHit2D _hit = Physics2D.Raycast(transform.position, Vector2.down, transform.localScale.y + .5f, earthLayer);
+        if(!_hit)
+            return false;
+        else
+        {
+            if(_hit.transform.tag == "Earth")
+            {
+                Destroy(_hit.transform.gameObject);
+                rechargeEarth++;
+                return true;
+            }
+            return false;
+        }
     }
 
     void SpawnEarth(bool _status)
@@ -300,14 +317,11 @@ public class WSB_Ban : WSB_Player
 
 
             // Raycast below Ban to find ground and Instantiate Earth on this ground
-            RaycastHit2D _hit = Physics2D.Raycast(transform.position, Vector2.down, transform.localScale.y + .5f, groundLayer);
+            RaycastHit2D _hit = Physics2D.Raycast(transform.position, Vector2.down, transform.localScale.y + 1.5f, groundLayer);
             GameObject _zdt = Instantiate(earthZone, _hit.point, Quaternion.identity);
 
             // Set its parent so if the plateform moves, the Earth will move too
             _zdt.transform.SetParent(_hit.transform);
-
-            // Start the coroutine of this Earth
-            StartCoroutine(DelayEarth(_zdt));
         }
         
         // If Earth didn't succesfully spawned
@@ -317,40 +331,28 @@ public class WSB_Ban : WSB_Player
         }
     }
 
-    IEnumerator DelayEarth(GameObject _ref)
-    {
-        // Wait for earthduration
-        yield return new WaitForSeconds(earthDuration);
-
-        rechargeEarth = true;
-        //// Start recharge earth coroutine if not already started
-        //if (rechargeEarth == null)
-        //    rechargeEarth = StartCoroutine(RechargeEarth());
-
-        // Destroy this Earth when time is over
-        Destroy(_ref);
-    }
-
-    //IEnumerator RechargeEarth()
-    //{
-    //    // Wait for earthchargedelay
-    //    yield return new WaitForSeconds(earthChargeDelay);
-
-    //    // Increase earth charges and update corresponding UI
-    //    earthCharges++;
-    //    spells.UpdateChargesUI(SpellType.Earth, earthCharges.ToString());
-
-    //    // Checks if earth charges are full, repeat this coroutine if not
-    //    if (earthCharges < maxEarthCharges) 
-    //        rechargeEarth = StartCoroutine(RechargeEarth());
-    //    else
-    //        rechargeEarth = null;
-    //}
     #endregion
 
     #region Light
+
+    [SerializeField] LayerMask lightLayer = 0;
+
     void Light()
     {
+        // Search and retrieve the first active light found to disable it and recharge
+        RaycastHit2D[] _hits = new RaycastHit2D[1];
+        _hits = Physics2D.CircleCastAll(transform.position, 5, Vector2.right, 1, lightLayer);
+        if(_hits.Length > 0 && _hits[0])
+        {
+            Destroy(_hits[0].transform.gameObject);
+            rechargeLight++;
+            return;
+        }
+
+        // Return is Ban is not grounded
+        if (!isGrounded)
+            return;
+
         // Checks if Ban has enough charges to do it
         if (lightCharges == 0)
             return;
@@ -362,14 +364,17 @@ public class WSB_Ban : WSB_Player
             spells.UpdateEmptyCharges(SpellType.Light, lightTimer);
 
         // Create the light and start both Movement and Time coroutines
-        GameObject _light = Instantiate(lightObject, transform.position, Quaternion.identity);
-        StartCoroutine(MoveLight(_light, (Vector2)_light.transform.position + Vector2.up * 2));
-        StartCoroutine(DelayLight(_light));
+        GameObject _light = Instantiate(lightObject, new Vector3(transform.position.x,transform.position.y,-5), Quaternion.identity);
+        StartCoroutine(MoveLight(_light, _light.transform.position + Vector3.up * 2));
     }
-    IEnumerator MoveLight(GameObject _light, Vector2 _target)
+
+
+
+
+    IEnumerator MoveLight(GameObject _light, Vector3 _target)
     {
         // Moves the light towards its target
-        while(Vector2.Distance(_light.transform.position, _target) != 0)
+        while (_light && Vector3.Distance(_light.transform.position, _target) != 0)
         {
             // Hold if game is in pause
             while (WSB_GameManager.Paused)
@@ -377,47 +382,18 @@ public class WSB_Ban : WSB_Player
                 yield return new WaitForSeconds(.2f);
             }
 
-            _light.transform.position = Vector2.MoveTowards(_light.transform.position, _target, Time.deltaTime * 2);
+            _light.transform.position = Vector3.MoveTowards(_light.transform.position, _target, Time.deltaTime * 2);
             yield return new WaitForEndOfFrame();
         }
     }
 
-    IEnumerator DelayLight(GameObject _ref)
-    {
-        // wait for lightDuration
-        yield return new WaitForSeconds(lightDuration);
-
-        rechargeLight = true;
-        //// Start recharge light coroutine if not already started
-        //if (rechargeLight == null) 
-        //    rechargeLight = StartCoroutine(RechargeLight());
-
-        // Destroy this light when time is over
-        Destroy(_ref);
-    }
-
-    //IEnumerator RechargeLight()
-    //{
-    //    // Wait for lightchargedelay
-    //    yield return new WaitForSeconds(lightChargeDelay);
-
-    //    // Increase light charges and update corresponding UI
-    //    lightCharges++;
-    //    spells.UpdateChargesUI(SpellType.Light, lightCharges.ToString());
-
-    //    // Checks if light charges are full, repeat this coroutine if not
-    //    if (lightCharges < maxLightCharges)
-    //        rechargeLight = StartCoroutine(RechargeLight());
-    //    else
-    //        rechargeLight = null;
-    //}
     #endregion
 
     #region Wind
     void Wind()
     {
         // Checks if Ban has enough charges to do it
-        if (windCharges == 0)
+        if (windCharges == 0 || !isGrounded)
             return;
 
         // Reduce wind charges and update corresponding UI
@@ -426,12 +402,14 @@ public class WSB_Ban : WSB_Player
         if (windCharges == 0)
             spells.UpdateEmptyCharges(SpellType.Wind, windTimer);
 
+        rechargeWind = false;
         blowCoroutine = StartCoroutine(Blow());
     }
 
     IEnumerator Blow()
     {
         WSB_Movable _physics;
+        canMove = false;
 
         // Runs until coroutine is canceled
         while(true)
@@ -443,7 +421,7 @@ public class WSB_Ban : WSB_Player
             }
 
             // Find all corresponding objects in range
-            Collider2D[] _hits = Physics2D.OverlapCircleAll(transform.position, windRange, moveLayer);
+            Collider2D[] _hits = Physics2D.OverlapCircleAll(transform.position, windRange, windLayer);
             Collider2D _hit;
 
             // Loops through found objects
@@ -465,33 +443,19 @@ public class WSB_Ban : WSB_Player
                 if (_physics)
                 {
                     // Checks if object is a pot and try to break the seed in it
-                    if (_hit.GetComponent<WSB_Pot>())
+                    if (_hit.GetComponent<WSB_Pot>() && _physics.CanMove)
+                    {
                         _hit.GetComponent<WSB_Pot>().BreakSeed();
+                    }
 
                     // Add vertical force on the physic of the object
-                    _physics.AddForce(Vector2.up * (windPower - (Vector2.Distance(transform.position, _hit.transform.position) / 2)));
+                    _physics.AddForce(Vector2.up * (windPower/* - (Vector2.Distance(transform.position, _hit.transform.position) / 2)*/));
                 }
             }
             yield return new WaitForEndOfFrame();
         }
     }
 
-    //IEnumerator RechargeWind()
-    //{
-    //    // Wait for windchargedelay
-    //    yield return new WaitForSeconds(windChargeDelay);
-
-    //    // Increase wind charges and update corresponding UI
-    //    windCharges++;
-    //    spells.UpdateChargesUI(SpellType.Wind, windCharges.ToString());
-
-
-    //    // Checks if wind charges are full, repeat this coroutine if not
-    //    if (windCharges < maxWindCharges)
-    //        rechargeWind = StartCoroutine(RechargeWind());
-    //    else
-    //        rechargeWind = null;
-    //}
 
     #endregion
 

@@ -49,18 +49,18 @@ public class WSB_Spells : MonoBehaviour
         // Sets the correct tags for each players
         if(owner.GetComponent<WSB_Ban>())
         {
-            images[0].tag = "Earth";
-            images[1].tag = "Wind";
-            images[2].tag = "Light";
-            images[3].tag = "Shrink";
+            images[3].tag = "Earth";
+            images[0].tag = "Wind";
+            images[1].tag = "Light";
+            images[2].tag = "Shrink";
         }
         else
         {
             currentSpell = 3;
+            images[3].tag = "Carnivore";
             images[0].tag = "Ladder";
             images[1].tag = "Bridge";
-            images[2].tag = "Carnivore";
-            images[3].tag = "Trampoline";
+            images[2].tag = "Trampoline";
         }
     }
 
@@ -123,48 +123,52 @@ public class WSB_Spells : MonoBehaviour
         }
     }
 
-    public void UpdateChargesUI(SpellType _type, string _value)
+    public void UpdateChargesUI(string _value)
     {
-        switch (_type)
+        int _spell = currentSpell + 1;
+        _spell = _spell > 3 ? 0 : _spell < 0 ? 3 : _spell;
+        if (images[_spell])
+            images[_spell].GetComponentInChildren<TMP_Text>().text = _value.ToString();
+    }
+
+    public void UpdateChargesUI(SpellType _t, string _value)
+    {
+        switch (_t)
         {
             case SpellType.Earth:
-            case SpellType.Ladder:
-                texts[0].text = _value.ToString();
+                images[1].GetComponentInChildren<TMP_Text>().text = _value.ToString();
                 break;
             case SpellType.Wind:
-            case SpellType.Bridge:
-                texts[1].text = _value.ToString();
+                images[2].GetComponentInChildren<TMP_Text>().text = _value.ToString();
                 break;
             case SpellType.Light:
-            case SpellType.Carnivore:
-                texts[2].text = _value.ToString();
+                images[3].GetComponentInChildren<TMP_Text>().text = _value.ToString();
                 break;
             case SpellType.Shrink:
-            case SpellType.Trampoline:
-                texts[3].text = _value.ToString();
+                images[0].GetComponentInChildren<TMP_Text>().text = _value.ToString();
                 break;
         }
     }
 
-    public void UpdateEmptyCharges(SpellType _type, float _value)
+    public void UpdateEmptyCharges(float _value)
     {
-        switch (_type)
+        images[currentSpell].fillAmount = _value;
+    }
+    public void UpdateEmptyCharges(SpellType _t, float _value)
+    {
+        switch (_t)
         {
             case SpellType.Earth:
-            case SpellType.Ladder:
-                images[0].fillAmount = _value;
-                break;
-            case SpellType.Wind:
-            case SpellType.Bridge:
                 images[1].fillAmount = _value;
                 break;
-            case SpellType.Light:
-            case SpellType.Carnivore:
+            case SpellType.Wind:
                 images[2].fillAmount = _value;
                 break;
-            case SpellType.Shrink:
-            case SpellType.Trampoline:
+            case SpellType.Light:
                 images[3].fillAmount = _value;
+                break;
+            case SpellType.Shrink:
+                images[0].fillAmount = _value;
                 break;
         }
     }
@@ -176,8 +180,8 @@ public enum SpellType
     Wind,
     Light,
     Shrink,
-    Ladder,
-    Bridge,
-    Trampoline,
-    Carnivore
+    //Ladder,
+    //Bridge,
+    //Trampoline,
+    //Carnivore
 }

@@ -13,6 +13,7 @@ public class WSB_Pot : MonoBehaviour
     [SerializeField] Material cursedMat = null;
     [SerializeField] Material uncursedMat = null;
     [SerializeField] Renderer rend = null;
+    [SerializeField] ParticleSystem fx = null;
 
     [SerializeField] Vector2 spawnPos = Vector2.zero;
 
@@ -26,6 +27,23 @@ public class WSB_Pot : MonoBehaviour
 
         // Initiate the curse of the pot
         SetCurse(isCursed);
+    }
+    private void Update()
+    {
+        if(GrownSeed)
+        {
+            RaycastHit2D[] _hits = new RaycastHit2D[10];
+            Physics2D.RaycastNonAlloc(transform.position, Vector2.up, _hits, 1);
+
+            foreach (RaycastHit2D hit in _hits)
+            {
+                if (hit && hit.transform.gameObject != this.gameObject && (transform.parent && hit.transform.gameObject != transform.parent.gameObject) && !hit.transform.GetComponent<WSB_Player>() && hit.transform.gameObject != GrownSeed)
+                {
+                    BreakSeed();
+                    return;
+                }
+            }
+        }
     }
 
     private void OnDrawGizmos()
@@ -53,6 +71,17 @@ public class WSB_Pot : MonoBehaviour
         {
             BreakSeed();
             return false;
+        }
+
+        RaycastHit2D[] _hits = new RaycastHit2D[10];
+        Physics2D.RaycastNonAlloc(transform.position, Vector2.up, _hits, 1);
+
+        foreach (RaycastHit2D hit in _hits)
+        {
+            if (hit && hit.transform.gameObject != this.gameObject && (transform.parent && hit.transform.gameObject != transform.parent.gameObject))
+            {
+                return false;
+            }
         }
 
         // Switch on the seed name to spawn corresponding prefab
@@ -97,13 +126,18 @@ public class WSB_Pot : MonoBehaviour
         // If the pot is cursed break any seed planted and change the material to cursed
         if(_state)
         {
+            if(fx)
+                fx.Play();
             BreakSeed();
-            rend.material = cursedMat;
+            if(rend)
+                rend.material = cursedMat;
             isCursed = true;
         }
         // If the pot isn't cursed change the material to uncursed
         else
         {
+            if (fx)
+                fx.Stop();
             rend.material = uncursedMat;
             isCursed = false;
         }

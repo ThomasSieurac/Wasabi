@@ -73,14 +73,6 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
-                },
-                {
-                    ""name"": ""Switch"",
-                    ""type"": ""Button"",
-                    ""id"": ""8b94a32e-d58b-4f5b-b999-7aa0bd0d86dc"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -261,39 +253,6 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""1D Axis controller shoulder"",
-                    ""id"": ""8ac9fa70-7cf6-46c8-8d14-8c226bdf95c7"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate spell"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""764a4727-67c4-4616-94f6-c374a2bcfda9"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Controller 1"",
-                    ""action"": ""Rotate spell"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""2252af1f-f9e3-4207-96fe-2384d46c6372"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Controller 1"",
-                    ""action"": ""Rotate spell"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""1D Axis keyboard"",
                     ""id"": ""3c06c162-c451-4019-9628-30f27bb7e123"",
                     ""path"": ""1DAxis"",
@@ -327,7 +286,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""1D Axis controller trigger"",
+                    ""name"": ""1D Axis controller shoulder"",
                     ""id"": ""c7bc045e-ee31-4081-a216-ae261c4ee21b"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -340,7 +299,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""1993b2c9-6fca-4a0d-af83-2207ac6578f7"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller 1"",
@@ -351,7 +310,7 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""01299ff2-1aa9-440a-8e17-e799f97fc7be"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller 1"",
@@ -400,28 +359,6 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b7a10fa3-0561-4aa2-879f-4b309920f780"",
-                    ""path"": ""<Gamepad>/select"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a89f5920-4d9e-43d9-9262-867c2f2c235c"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -473,7 +410,6 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         m_Controlsban_Rotatespell = m_Controlsban.FindAction("Rotate spell", throwIfNotFound: true);
         m_Controlsban_Respawn = m_Controlsban.FindAction("Respawn", throwIfNotFound: true);
         m_Controlsban_Pause = m_Controlsban.FindAction("Pause", throwIfNotFound: true);
-        m_Controlsban_Switch = m_Controlsban.FindAction("Switch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -530,7 +466,6 @@ public class @ControlsBan : IInputActionCollection, IDisposable
     private readonly InputAction m_Controlsban_Rotatespell;
     private readonly InputAction m_Controlsban_Respawn;
     private readonly InputAction m_Controlsban_Pause;
-    private readonly InputAction m_Controlsban_Switch;
     public struct ControlsbanActions
     {
         private @ControlsBan m_Wrapper;
@@ -542,7 +477,6 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         public InputAction @Rotatespell => m_Wrapper.m_Controlsban_Rotatespell;
         public InputAction @Respawn => m_Wrapper.m_Controlsban_Respawn;
         public InputAction @Pause => m_Wrapper.m_Controlsban_Pause;
-        public InputAction @Switch => m_Wrapper.m_Controlsban_Switch;
         public InputActionMap Get() { return m_Wrapper.m_Controlsban; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -573,9 +507,6 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                 @Pause.started -= m_Wrapper.m_ControlsbanActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_ControlsbanActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_ControlsbanActionsCallbackInterface.OnPause;
-                @Switch.started -= m_Wrapper.m_ControlsbanActionsCallbackInterface.OnSwitch;
-                @Switch.performed -= m_Wrapper.m_ControlsbanActionsCallbackInterface.OnSwitch;
-                @Switch.canceled -= m_Wrapper.m_ControlsbanActionsCallbackInterface.OnSwitch;
             }
             m_Wrapper.m_ControlsbanActionsCallbackInterface = instance;
             if (instance != null)
@@ -601,9 +532,6 @@ public class @ControlsBan : IInputActionCollection, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
-                @Switch.started += instance.OnSwitch;
-                @Switch.performed += instance.OnSwitch;
-                @Switch.canceled += instance.OnSwitch;
             }
         }
     }
@@ -644,6 +572,5 @@ public class @ControlsBan : IInputActionCollection, IDisposable
         void OnRotatespell(InputAction.CallbackContext context);
         void OnRespawn(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
-        void OnSwitch(InputAction.CallbackContext context);
     }
 }

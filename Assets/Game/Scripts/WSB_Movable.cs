@@ -7,8 +7,12 @@ public class WSB_Movable : MonoBehaviour
 {
     protected Rigidbody2D Physic = null;
     protected BoxCollider2D Collider = null;
+    [SerializeField] bool canMove = true;
+    [SerializeField] bool lockX = false;
+    [SerializeField] bool ignoreGroundSnap = false;
+    float startX = 0;
 
-
+    public bool CanMove { get { return canMove; } }
 
     #region Unity
     private void Awake()
@@ -25,6 +29,8 @@ public class WSB_Movable : MonoBehaviour
             Debug.LogError($"Erreur, component Collider2D manquant sur {transform.name}");
             Destroy(this);
         }
+        if (lockX)
+            startX = transform.position.x;
     }
 
     private void Update()
@@ -33,7 +39,14 @@ public class WSB_Movable : MonoBehaviour
         if (WSB_GameManager.Paused)
             return;
 
-        ApplyGravity();
+        if (force.y < -20)
+            Physic.position -= Vector2.up * .05f;
+
+        if (lockX)
+            transform.position = new Vector3(startX, transform.position.y, transform.position.z);
+
+        if(!IsOnMovingPlateform)
+            ApplyGravity();
 
         if ((force + instantForce + movement) != Vector2.zero)
         {
@@ -64,6 +77,7 @@ public class WSB_Movable : MonoBehaviour
     [SerializeField] Vector2 groundNormal = new Vector2();
 
     [SerializeField] bool isGrounded = false;
+    public bool IsOnMovingPlateform = false;
 
 
 
@@ -88,7 +102,7 @@ public class WSB_Movable : MonoBehaviour
             // Push out Physic position from the collider
             ColliderDistance2D _distance = Collider.Distance(overlapBuffer[i]);
             if (_distance.isOverlapped && (!overlapBuffer[i].transform.GetComponent<PlatformEffector2D>() || _distance.normal.y == -1))
-                Physic.position += _distance.normal * _distance.distance;
+                Physic.position += new Vector2(lockX ? 0 : _distance.normal.x, _distance.normal.y) * _distance.distance;
         }
     }
 
@@ -137,12 +151,12 @@ public class WSB_Movable : MonoBehaviour
 
         if (!_isGrounded)
         {
-            _isGrounded = CastCollider(Vector2.down * Physics2D.defaultContactOffset * 2, out RaycastHit2D _hit) && (_hit.normal.y > controllerValues.GroundMin) && _hit.collider != ignoredCollider;
+            _isGrounded = (CastCollider(Vector2.down * Physics2D.defaultContactOffset * 2, out RaycastHit2D _hit) && (_hit.normal.y > controllerValues.GroundMin) && _hit.collider != ignoredCollider) || IsOnMovingPlateform;
             groundNormal = _isGrounded ? _hit.normal : Vector2.up;
         }
 
         if (_isGrounded)
-            force.y = 0;
+            force.y = force.x = 0;
 
         if (_isGrounded != isGrounded)
             OnSetGrounded(_isGrounded);
@@ -158,7 +172,8 @@ public class WSB_Movable : MonoBehaviour
         if (_amount == 0)
         {
             Physic.position += _velocity;
-            GroundSnap(_velocity, _normal);
+            if(!ignoreGroundSnap)
+                GroundSnap(_velocity, _normal);
             return;
         }
 
@@ -166,13 +181,13 @@ public class WSB_Movable : MonoBehaviour
         {
             Vector2 _normalizedVelocity = _velocity.normalized;
 
-            Physic.position += _normalizedVelocity * _distance;
+            Physic.position += new Vector2(lockX ? 0 : _normalizedVelocity.x, _normalizedVelocity.y) * _distance;
             _velocity = _normalizedVelocity * (_velocity.magnitude - _distance);
         }
 
         InsertCastBuffer(_amount);
 
-        if (_iteration > 3)
+        if (_iteration > 3 && !ignoreGroundSnap)
         {
             GroundSnap(_velocity, _normal);
             return;
@@ -228,7 +243,9 @@ public class WSB_Movable : MonoBehaviour
 
         for (int i = 0; i < _amount; i++)
         {
-            if ((castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i].normal.y == -1 || (castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i] == ignoredCollider)
+            if ((castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i].normal.y == -1 ||
+                (castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i] == ignoredCollider ||
+                IsOnMovingPlateform && transform.position.y > castBuffer[i].collider.transform.position.y)
             {
                 ignoredCollider = castBuffer[i].collider;
                 _amount = i;
@@ -279,13 +296,13 @@ public class WSB_Movable : MonoBehaviour
 
         if (_amount == 0)
         {
-            Physic.position += _velocity;
+            Physic.position += new Vector2(lockX ? 0 : _velocity.x, _velocity.y);
             _velocity.Set(0, 0);
         }
         else if (_distance != 0 && ((_hit.collider != castBuffer[0].collider) || (_hit.normal != castBuffer[0].normal)))
         {
             Vector2 _normalized = _velocity.normalized;
-            Physic.position += _normalized * _distance;
+            Physic.position += new Vector2(lockX ? 0 : _normalized.x, _normalized.y) * _distance;
             _velocity = _normalized * (_velocity.magnitude - _distance);
 
             InsertCastBuffer(_amount);
@@ -305,7 +322,7 @@ public class WSB_Movable : MonoBehaviour
 
         if (isGrounded && (_velocity.y < 0) && CastCollider(_normal * -1, out RaycastHit2D _snapHit))
         {
-            Physic.position += _normal * -_snapHit.distance;
+            Physic.position += new Vector2(lockX ? 0 : _normal.x, _normal.y) * -_snapHit.distance;
             InsertCastBuffer(1);
         }
     }
@@ -316,7 +333,12 @@ public class WSB_Movable : MonoBehaviour
     #region AddForces
     public void StopVerticalForce() => force.y = 0;
 
-    public void AddForce(Vector2 _force) => force += _force;
+    public void AddForce(Vector2 _force)
+    {
+        force += _force;
+        if (force.y > 10)
+            force.y = 10;
+    }
 
     public void AddInstantForce(Vector2 _velocity) => instantForce += _velocity;
 

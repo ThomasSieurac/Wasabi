@@ -9,7 +9,8 @@ using System.Linq;
 public class WSB_GameManager : MonoBehaviour
 {
     [SerializeField] GameObject menu = null; 
-    [SerializeField] GameObject menuPause = null; 
+    [SerializeField] GameObject menuPause = null;
+    [SerializeField] Animator elevatorAnimator = null;
     public static bool Paused { get; private set; } = true;
     public static bool IsDialogue { get; private set; } = false;
 
@@ -17,12 +18,13 @@ public class WSB_GameManager : MonoBehaviour
     public static event Action OnUpdate = null;
     public static event Action OnPause = null;
     public static event Action OnResume = null;
-
+    string currentLevel = "";
 
     private void Start()
     {
+        currentLevel = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         // Hide the mouse cursor
-        Cursor.visible = false;
+        //Cursor.visible = false;
 
         // Get every Rigidbody in the scene and freeze them
         Rigidbody2D[] _physics = FindObjectsOfType<Rigidbody2D>();
@@ -37,6 +39,9 @@ public class WSB_GameManager : MonoBehaviour
 
         // Select the first item in the menu
         EventSystem.current.SetSelectedGameObject(menu.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
+
+        // Debug to start game
+        //Resume();
     }
 
     private void DeviceChange(InputDevice arg1, InputDeviceChange arg2)
@@ -53,10 +58,74 @@ public class WSB_GameManager : MonoBehaviour
 
     private void Update()
     {
+        // Cheat codes
+        // *   *   *   *   *   *   *
+        if (Keyboard.current.lKey.isPressed)
+            ReloadScene();
+        if(Paused)
+        {
+            if (Keyboard.current.numpad1Key.isPressed)
+                StartGame("Keyboard");
+            if (Keyboard.current.numpad2Key.isPressed)
+                StartGame("Controller");
+            if (Keyboard.current.numpad3Key.isPressed)
+                StartGame("Both");
+        }
+        // *   *   *   *   *   *   *
+
+
         // Invoke the main Update of the game if it is not paused
         if (!Paused)
             OnUpdate?.Invoke();
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<WSB_Player>())
+            WSB_CheckpointManager.I.Respawn(collision.GetComponent<WSB_Player>());
+    }
+
+    // Menu Playtests
+    int currentMenu = 1;
+    [SerializeField] GameObject parent = null;
+    [SerializeField] GameObject bNext = null;
+    [SerializeField] GameObject bPrev = null;
+    Coroutine animateUI = null;
+
+    public void NextMenu()
+    {
+        bPrev.SetActive(true);
+        currentMenu++;
+        if (currentMenu == 3)
+            bNext.SetActive(false);
+
+        if (animateUI != null)
+            StopCoroutine(animateUI);
+        animateUI = StartCoroutine(AnimateUI());
+    }
+
+    public void PreviousMenu()
+    {
+        bNext.SetActive(true);
+        currentMenu--;
+        if (currentMenu == 1)
+            bPrev.SetActive(false);
+
+        if (animateUI != null)
+            StopCoroutine(animateUI);
+        animateUI = StartCoroutine(AnimateUI());
+    }
+
+    IEnumerator AnimateUI()
+    {
+        while(parent.transform.position.x != (currentMenu == 1 ? 960 : currentMenu == 2 ? -960 : -2880))
+        {
+            parent.transform.position = Vector2.MoveTowards(parent.transform.position, new Vector2((currentMenu == 1 ? 960 : currentMenu == 2 ? -960 : -2880), parent.transform.position.y), Time.deltaTime * 2500);
+            yield return new WaitForEndOfFrame();
+        }
+        animateUI = null;
+    }
+    //
 
     public static void SetDialogue(bool _state) => IsDialogue = _state;
 
@@ -93,7 +162,7 @@ public class WSB_GameManager : MonoBehaviour
         isBanController = _isBan;
     }
 
-    bool isBanController = true;
+    bool isBanController = false;
 
     public void StartGame(string _m)
     {
@@ -116,7 +185,7 @@ public class WSB_GameManager : MonoBehaviour
         Rigidbody2D[] _physics = FindObjectsOfType<Rigidbody2D>();
         foreach (Rigidbody2D _r in _physics)
         {
-            if (_r.GetComponent<WSB_Player>() || _r.GetComponent<WSB_Movable>())
+            if (_r.GetComponent<WSB_Player>() || _r.GetComponent<WSB_Movable>() || _r.GetComponent<WSB_MovingPlateform>() || _r.transform.tag == "Earth")
                 continue;
             _r.isKinematic = false;
         }
@@ -138,9 +207,17 @@ public class WSB_GameManager : MonoBehaviour
         OnUpdate = null;
         OnPause = null;
         OnResume = null;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Hogu_PlayTest-1");
+        UnityEngine.SceneManagement.SceneManager.LoadScene(currentLevel);
     }
 
     public void QuitGame() => Application.Quit();
+
+
+
+    public void ElevatorRepaired()
+    {
+        if(elevatorAnimator)
+            elevatorAnimator.SetTrigger("Repaired");
+    }
 
 }

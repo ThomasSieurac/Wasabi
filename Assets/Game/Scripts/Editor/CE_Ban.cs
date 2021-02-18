@@ -13,14 +13,14 @@ public class CE_Ban : Editor
     bool showLight = false;
     bool showWind = false;
 
-    SerializedProperty nose;
+    SerializedProperty spriteRend;
     SerializedProperty spells;
     SerializedProperty controllerValues;
 
     SerializedProperty grabFilter;
     SerializedProperty semiSolidFilter;
     SerializedProperty groundLayer;
-    SerializedProperty moveLayer;
+    //SerializedProperty moveLayer;
 
     SerializedProperty maxEarthCharges;
     SerializedProperty maxWindCharges;
@@ -29,11 +29,11 @@ public class CE_Ban : Editor
 
     SerializedProperty earthZone;
     SerializedProperty earthSize;
-    SerializedProperty earthDuration;
+    //SerializedProperty earthDuration;
     SerializedProperty earthRechargeDelay;
 
     SerializedProperty light;
-    SerializedProperty lightDuration;
+    //SerializedProperty lightDuration;
     SerializedProperty lightRechargeDelay;
 
     SerializedProperty shrinkRechargeDelay;
@@ -45,11 +45,11 @@ public class CE_Ban : Editor
     private void OnEnable()
     {
         // Populate the serialized properties
-        nose = serializedObject.FindProperty("nose");
+        spriteRend = serializedObject.FindProperty("spriteRend");
         grabFilter = serializedObject.FindProperty("grabContactFilter");
         semiSolidFilter = serializedObject.FindProperty("semiSolidFilter");
         groundLayer = serializedObject.FindProperty("groundLayer");
-        moveLayer = serializedObject.FindProperty("moveLayer");
+        //moveLayer = serializedObject.FindProperty("moveLayer");
         controllerValues = serializedObject.FindProperty("controllerValues");
         spells = serializedObject.FindProperty("spells");
         maxEarthCharges = serializedObject.FindProperty("maxEarthCharges");
@@ -58,10 +58,10 @@ public class CE_Ban : Editor
         maxLightCharges = serializedObject.FindProperty("maxLightCharges");
         earthZone = serializedObject.FindProperty("earthZone");
         earthSize = serializedObject.FindProperty("earthSize");
-        earthDuration = serializedObject.FindProperty("earthDuration");
+        //earthDuration = serializedObject.FindProperty("earthDuration");
         earthRechargeDelay = serializedObject.FindProperty("earthChargeDelay");
         light = serializedObject.FindProperty("lightObject");
-        lightDuration = serializedObject.FindProperty("lightDuration");
+        //lightDuration = serializedObject.FindProperty("lightDuration");
         lightRechargeDelay = serializedObject.FindProperty("lightChargeDelay");
         shrinkRechargeDelay = serializedObject.FindProperty("shrinkChargeDelay");
         windRange = serializedObject.FindProperty("windRange");
@@ -93,7 +93,7 @@ public class CE_Ban : Editor
     void Components()
     {
         // Check if there is no missing components
-        MissingCheck(nose);
+        MissingCheck(spriteRend);
         MissingCheck(spells);
         MissingCheck(earthZone);
         MissingCheck(light);
@@ -106,7 +106,7 @@ public class CE_Ban : Editor
         EditorGUILayout.Space();
 
         EditorGUILayout.PropertyField(earthSize);
-        EditorGUILayout.PropertyField(earthDuration);
+        //EditorGUILayout.PropertyField(earthDuration);
         EditorGUILayout.PropertyField(earthRechargeDelay);
         EditorGUILayout.Space();
         EditorGUILayout.Space();
@@ -120,7 +120,7 @@ public class CE_Ban : Editor
         Header("Light parameters");
         EditorGUILayout.Space();
 
-        EditorGUILayout.PropertyField(lightDuration);
+        //EditorGUILayout.PropertyField(lightDuration);
         EditorGUILayout.PropertyField(lightRechargeDelay);
         EditorGUILayout.Space();
         EditorGUILayout.Space();
@@ -164,7 +164,7 @@ public class CE_Ban : Editor
         EditorGUILayout.PropertyField(grabFilter, new GUIContent("Filter of objects to grab"));
         EditorGUILayout.PropertyField(semiSolidFilter, new GUIContent("Filter of semi solid plateforms"));
         EditorGUILayout.PropertyField(groundLayer, new GUIContent("Layer of the ground to spawn earth zone"));
-        EditorGUILayout.PropertyField(moveLayer, new GUIContent("Layer of the pushing/pulling objects"));
+        //EditorGUILayout.PropertyField(moveLayer, new GUIContent("Layer of the pushing/pulling objects"));
         EditorGUILayout.Space();
         EditorGUILayout.Space();
 

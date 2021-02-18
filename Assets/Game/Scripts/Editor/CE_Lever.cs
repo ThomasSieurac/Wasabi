@@ -70,6 +70,10 @@ public class CE_Lever : Editor
         }
         if (obj != null)
         {
+            // A debug
+            return;
+
+
             UnityEvent _activate = (UnityEvent)obj;
             int _length = _activate.GetPersistentEventCount();
             if (_length > 0)

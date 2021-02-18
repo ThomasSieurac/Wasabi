@@ -8,7 +8,7 @@ public class WSB_Player : MonoBehaviour
 {
     #region debug
 
-    [SerializeField] GameObject nose = null;
+    [SerializeField] SpriteRenderer spriteRend = null;
 
     #endregion
 
@@ -37,16 +37,17 @@ public class WSB_Player : MonoBehaviour
         }
 
         // Set debug nose position
-        nose.transform.localPosition = new Vector3((isRight ? .5f : -.5f), .5f);
+        spriteRend.flipX = !isRight;
     }
 
     protected virtual void Update()
     {
         // Adds input's horizontal movement
-        AddHorizontalMovement(xMovement);
+        if(canMove)
+            AddHorizontalMovement(xMovement);
 
         // Check if user wants to climb
-        if (Mathf.Abs(yMovement) > 0 && canClimb)
+        if ((Mathf.Abs(yMovement) > 0 || jumpInput) && canClimb && canMove)
         {
             force.y = 0;
             isClimbing = true;
@@ -57,7 +58,7 @@ public class WSB_Player : MonoBehaviour
             isClimbing = false;
 
         // Makes character jump while input is pressed & grounded or climbing
-        if (jumpInput)
+        if (jumpInput && canMove)
         {
             if (isGrounded || isClimbing || (Time.time - coyoteVar < controllerValues.JumpDelay))
                 Jump();
@@ -71,7 +72,7 @@ public class WSB_Player : MonoBehaviour
             // Stop the jump if input is released & peak of jump icn't reached yet
             if (!jumpInput && jumpVar < .3f)
             {
-                jumpOriginHeight -= controllerValues.JumpCurve.Evaluate(.3f) - controllerValues.JumpCurve.Evaluate(jumpVar);
+                jumpOriginHeight -= (controllerValues.JumpCurve.Evaluate(.3f) - controllerValues.JumpCurve.Evaluate(jumpVar)) / (halfSpeed ? 2 : 1);
                 jumpVar = .3f;
             }
             // Get the value corresponding to the curve set
@@ -86,10 +87,10 @@ public class WSB_Player : MonoBehaviour
                     StopJump();
                 }
 
-                AddVerticalMovement((jumpOriginHeight + controllerValues.JumpCurve.Evaluate(jumpVar) - Physic.position.y) / Time.deltaTime);
+                AddVerticalMovement((jumpOriginHeight + (controllerValues.JumpCurve.Evaluate(jumpVar) / (halfSpeed ? 2 : 1)) - Physic.position.y) / Time.deltaTime);
             }
         }
-        else if (!isClimbing)
+        else if (!isClimbing && !IsOnMovingPlateform)
             ApplyGravity();
 
 
@@ -125,8 +126,8 @@ public class WSB_Player : MonoBehaviour
 
     #region Input Reading
 
-    float xMovement = 0;
-    float yMovement = 0;
+    [SerializeField] float xMovement = 0;
+    [SerializeField] float yMovement = 0;
     [SerializeField] GameObject grabbedObject = null;
     [SerializeField] ContactFilter2D grabContactFilter = new ContactFilter2D();
 
@@ -141,7 +142,7 @@ public class WSB_Player : MonoBehaviour
             isRight = false;
         if (xMovement > 0)
             isRight = true;
-        nose.transform.localPosition = new Vector3((isRight ? .5f : -.5f), .5f);
+        spriteRend.flipX = !isRight;
         yMovement = _context.ReadValue<Vector2>().y;
     }
 
@@ -168,6 +169,8 @@ public class WSB_Player : MonoBehaviour
             // Cast on facing direction to check if there is an object
             if (Collider.Cast(isRight ? Vector2.right : Vector2.left, grabContactFilter, _hit, .8f) > 0)
             {
+                if (_hit[0].transform.GetComponent<WSB_Movable>() && !_hit[0].transform.GetComponent<WSB_Movable>().CanMove)
+                    return;
                 // Search for WSB_Pot component
                 if (_hit[0].transform.GetComponent<WSB_Pot>())
                     // Breaks seed if pot found & not Carnivore or Trampoline seed
@@ -212,12 +215,12 @@ public class WSB_Player : MonoBehaviour
     [SerializeField] float speed = 5;
     [SerializeField] Vector2 groundNormal = new Vector2();
 
-    [SerializeField] bool isGrounded = false;
+    [SerializeField] protected bool isGrounded = false;
     [SerializeField] bool isJumping = false;
     [SerializeField] bool isClimbing = false;
     [SerializeField] bool canClimb = false;
-
-
+    public bool IsOnMovingPlateform = false;
+    [SerializeField] protected bool canMove = true;
 
     void OnAppliedVelocity(Vector2 _velocity)
     {
@@ -245,10 +248,14 @@ public class WSB_Player : MonoBehaviour
             if (overlapBuffer[i] == ignoredCollider)
                 continue;
 
+            StopJump();
+
             // Push out Physic position from the collider
             ColliderDistance2D _distance = Collider.Distance(overlapBuffer[i]);
-            if (_distance.isOverlapped && (!overlapBuffer[i].transform.GetComponent<PlatformEffector2D>() || _distance.normal.y == -1))
+            if (_distance.isValid && _distance.isOverlapped && ((castBuffer.Length > i && castBuffer[i].transform && castBuffer[i].transform.gameObject && castBuffer[i].transform.gameObject.layer != 13) || _distance.normal.y == -1))
+            {
                 Physic.position += _distance.normal * _distance.distance;
+            }
         }
     }
 
@@ -267,7 +274,7 @@ public class WSB_Player : MonoBehaviour
     void Jump()
     {
         // Checks if input was in direction of the ground
-        if(yMovement < -.8f)
+        if(yMovement < 0)
         {
             // Cast below character to found if there is any SemiSolid plateform
             RaycastHit2D[] _hits = new RaycastHit2D[1];
@@ -275,6 +282,7 @@ public class WSB_Player : MonoBehaviour
             {
                 // If found set collider in ignoredCollider and don't do the jump
                 ignoredCollider = _hits[0].collider;
+                Physic.position -= Vector2.up * .1f;
                 return;
             }
         }
@@ -290,7 +298,7 @@ public class WSB_Player : MonoBehaviour
         coyoteVar = -999;
     }
 
-    void StopJump() => isJumping = false;
+    protected void StopJump() => isJumping = false;
 
     public void TrampolineJump(Vector2 _f)
     {
@@ -326,6 +334,7 @@ public class WSB_Player : MonoBehaviour
         }
 
         bufferAmount = 0;
+        
         CalculCollisionRecursively(_velocity, groundNormal);
 
         bool _isGrounded = false;
@@ -337,7 +346,7 @@ public class WSB_Player : MonoBehaviour
 
             if (isJumping && castBuffer[i].normal.y == -1)
             {
-                isJumping = true;
+                StopJump();
                 groundNormal = castBuffer[i].normal;
             }
 
@@ -350,7 +359,7 @@ public class WSB_Player : MonoBehaviour
 
         if (!_isGrounded)
         {
-            _isGrounded = CastCollider(Vector2.down * Physics2D.defaultContactOffset * 2, out RaycastHit2D _hit) && (_hit.normal.y > controllerValues.GroundMin) && _hit.collider != ignoredCollider;
+            _isGrounded = (CastCollider(Vector2.down * Physics2D.defaultContactOffset * 2, out RaycastHit2D _hit) && (_hit.normal.y > controllerValues.GroundMin) && _hit.collider != ignoredCollider) || IsOnMovingPlateform;
             groundNormal = _isGrounded ? _hit.normal : Vector2.up;
         }
 
@@ -424,8 +433,10 @@ public class WSB_Player : MonoBehaviour
 
     bool CastCollider(Vector2 _velocity, out RaycastHit2D _hit)
     {
-        bool _return = (Collider.Cast(_velocity, controllerValues.Contact, castBuffer, _velocity.magnitude) > 0) && (!castBuffer[0].transform.GetComponent<PlatformEffector2D>() && castBuffer[0].normal.y != -1);
+        bool _return = (Collider.Cast(_velocity, controllerValues.Contact, castBuffer, _velocity.magnitude) > 0) /*&& (castBuffer[0].transform.gameObject.layer != 13 && castBuffer[0].normal.y != -1)*/;
         _hit = castBuffer[0];
+        if(_return) 
+            _return = _hit.collider != ignoredCollider;
         return _return;
     }
 
@@ -441,13 +452,15 @@ public class WSB_Player : MonoBehaviour
 
         for (int i = 0; i < _amount; i++)
         {
-            if ((castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i].normal.y == -1 || (castBuffer[i].transform.GetComponent<PlatformEffector2D>() || castBuffer[i].transform.GetComponentInChildren<PlatformEffector2D>()) && castBuffer[i] == ignoredCollider)
+            if ((castBuffer[i].transform.gameObject.layer == 13) && castBuffer[i].normal.y == -1 ||
+                (castBuffer[i].transform.gameObject.layer == 13) && castBuffer[i] == ignoredCollider ||
+                IsOnMovingPlateform && transform.position.y > castBuffer[i].collider.transform.position.y)
             {
                 ignoredCollider = castBuffer[i].collider;
                 _amount = i;
                 break;
             }
-            if (!castBuffer[i].transform.GetComponent<PlatformEffector2D>())
+            if (castBuffer[i].transform.gameObject.layer != 13)
                 ignoredCollider = null;
         }
 
@@ -533,7 +546,7 @@ public class WSB_Player : MonoBehaviour
     #region AddForces
 
     float 所有 = 0;
-
+    protected bool halfSpeed = false;
 
     public void AddForce(Vector2 _force) => force += _force;
 
@@ -550,7 +563,7 @@ public class WSB_Player : MonoBehaviour
         所有 = Mathf.Min(所有 + Time.deltaTime, controllerValues.SpeedCurve[controllerValues.SpeedCurve.length - 1].time);
         speed = controllerValues.SpeedCurve.Evaluate(所有);
 
-        movement.x += _velocity * speed;
+        movement.x += (_velocity * speed) / (halfSpeed ? 2 : 1);
     }
 
     public void AddInstantForce(Vector2 _velocity) => instantForce += _velocity;

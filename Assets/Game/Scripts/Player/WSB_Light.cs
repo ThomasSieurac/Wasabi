@@ -17,7 +17,7 @@ public class WSB_Light : MonoBehaviour
     void Update()
     {
         // Constantly checks around itself to find all objects in range
-        hits = Physics2D.CircleCastAll(transform.position, range, Vector2.right);
+        hits = Physics2D.CircleCastAll(transform.position, range, Vector2.zero);
         if(hits.Length > 0)
         {
             WSB_Pot _pot;
