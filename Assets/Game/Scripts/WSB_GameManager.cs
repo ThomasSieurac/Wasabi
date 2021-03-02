@@ -8,8 +8,10 @@ using System.Linq;
 
 public class WSB_GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject menu = null; 
-    [SerializeField] GameObject menuPause = null;
+    public static WSB_GameManager I { get; private set; }
+
+    //[SerializeField] GameObject menu = null; 
+    //[SerializeField] GameObject menuPause = null;
     [SerializeField] Animator elevatorAnimator = null;
     public static bool Paused { get; private set; } = true;
     public static bool IsDialogue { get; private set; } = false;
@@ -19,6 +21,11 @@ public class WSB_GameManager : MonoBehaviour
     public static event Action OnPause = null;
     public static event Action OnResume = null;
     string currentLevel = "";
+
+    private void Awake()
+    {
+        I = this;
+    }
 
     private void Start()
     {
@@ -37,8 +44,6 @@ public class WSB_GameManager : MonoBehaviour
 
         InputSystem.onDeviceChange += DeviceChange;
 
-        // Select the first item in the menu
-        EventSystem.current.SetSelectedGameObject(menu.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
 
         // Debug to start game
         //Resume();
@@ -51,10 +56,11 @@ public class WSB_GameManager : MonoBehaviour
             Paused = true;
 
             OnPause?.Invoke();
-            menuPause.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(menuPause.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
+            //menuPause.SetActive(true);
+            //EventSystem.current.SetSelectedGameObject(menuPause.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
         }
     }
+
 
     private void Update()
     {
@@ -85,47 +91,47 @@ public class WSB_GameManager : MonoBehaviour
             WSB_CheckpointManager.I.Respawn(collision.GetComponent<WSB_Player>());
     }
 
-    // Menu Playtests
-    int currentMenu = 1;
-    [SerializeField] GameObject parent = null;
-    [SerializeField] GameObject bNext = null;
-    [SerializeField] GameObject bPrev = null;
-    Coroutine animateUI = null;
+    //// Menu Playtests
+    //int currentMenu = 1;
+    //[SerializeField] GameObject parent = null;
+    //[SerializeField] GameObject bNext = null;
+    //[SerializeField] GameObject bPrev = null;
+    //Coroutine animateUI = null;
 
-    public void NextMenu()
-    {
-        bPrev.SetActive(true);
-        currentMenu++;
-        if (currentMenu == 3)
-            bNext.SetActive(false);
+    //public void NextMenu()
+    //{
+    //    bPrev.SetActive(true);
+    //    currentMenu++;
+    //    if (currentMenu == 3)
+    //        bNext.SetActive(false);
 
-        if (animateUI != null)
-            StopCoroutine(animateUI);
-        animateUI = StartCoroutine(AnimateUI());
-    }
+    //    if (animateUI != null)
+    //        StopCoroutine(animateUI);
+    //    animateUI = StartCoroutine(AnimateUI());
+    //}
 
-    public void PreviousMenu()
-    {
-        bNext.SetActive(true);
-        currentMenu--;
-        if (currentMenu == 1)
-            bPrev.SetActive(false);
+    //public void PreviousMenu()
+    //{
+    //    bNext.SetActive(true);
+    //    currentMenu--;
+    //    if (currentMenu == 1)
+    //        bPrev.SetActive(false);
 
-        if (animateUI != null)
-            StopCoroutine(animateUI);
-        animateUI = StartCoroutine(AnimateUI());
-    }
+    //    if (animateUI != null)
+    //        StopCoroutine(animateUI);
+    //    animateUI = StartCoroutine(AnimateUI());
+    //}
 
-    IEnumerator AnimateUI()
-    {
-        while(parent.transform.position.x != (currentMenu == 1 ? 960 : currentMenu == 2 ? -960 : -2880))
-        {
-            parent.transform.position = Vector2.MoveTowards(parent.transform.position, new Vector2((currentMenu == 1 ? 960 : currentMenu == 2 ? -960 : -2880), parent.transform.position.y), Time.deltaTime * 2500);
-            yield return new WaitForEndOfFrame();
-        }
-        animateUI = null;
-    }
-    //
+    //IEnumerator AnimateUI()
+    //{
+    //    while(parent.transform.position.x != (currentMenu == 1 ? 960 : currentMenu == 2 ? -960 : -2880))
+    //    {
+    //        parent.transform.position = Vector2.MoveTowards(parent.transform.position, new Vector2((currentMenu == 1 ? 960 : currentMenu == 2 ? -960 : -2880), parent.transform.position.y), Time.deltaTime * 2500);
+    //        yield return new WaitForEndOfFrame();
+    //    }
+    //    animateUI = null;
+    //}
+    ////
 
     public static void SetDialogue(bool _state) => IsDialogue = _state;
 
@@ -142,8 +148,6 @@ public class WSB_GameManager : MonoBehaviour
         if (Paused)
         {
             OnPause?.Invoke();
-            menuPause.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(menuPause.GetComponentInChildren<UnityEngine.UI.Button>().gameObject);
         }
         else
             Resume();
@@ -154,7 +158,6 @@ public class WSB_GameManager : MonoBehaviour
         // Set Pause state to false, invoke resume event, hide pause menu
         Paused = false;
         OnResume?.Invoke();
-        menuPause.SetActive(false);
     }
 
     public void SetBanController(bool _isBan)
@@ -166,6 +169,7 @@ public class WSB_GameManager : MonoBehaviour
 
     public void StartGame(string _m)
     {
+
         switch (_m)
         {
             case "Controller":
@@ -197,8 +201,8 @@ public class WSB_GameManager : MonoBehaviour
 
         OnResume?.Invoke();
 
-        // Hide menu
-        menu.SetActive(false);
+        //// Hide menu
+        //menu.SetActive(false);
     }
 
     public void ReloadScene()
