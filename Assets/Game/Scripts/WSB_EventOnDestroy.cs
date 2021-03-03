@@ -5,9 +5,9 @@ using UnityEngine.Events;
 
 public class WSB_EventOnDestroy : MonoBehaviour
 {
-    [SerializeField] UnityEvent callBack = null;
+    public UnityEvent CallBack = null;
     private void OnDestroy()
     {
-        callBack.Invoke();
+        CallBack?.Invoke();
     }
 }
