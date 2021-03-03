@@ -75,3 +75,4 @@ Library/
 *.csproj
 
 Library/SceneVisibilityState.asset
+*.log
