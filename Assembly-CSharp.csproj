@@ -63,6 +63,7 @@
     <Compile Include="Assets\Game\Scripts\Controls\Controls Lux.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_Elevator.cs" />
     <Compile Include="Assets\Game\Scripts\Switches\WSB_PressurePlate.cs" />
+    <Compile Include="Assets\Game\Scripts\WSB_MenuManager.cs" />
     <Compile Include="Assets\Game\Scripts\Blit_shader_scripts\BlitPass.cs" />
     <Compile Include="Assets\Unity\Scripts\SimpleCameraController.cs" />
     <Compile Include="Assets\Game\Animations\Level 1\Behaviours\OpenBehaviour.cs" />
@@ -96,7 +97,7 @@
     <Compile Include="Assets\Tools\SceneLoader\Scripts\SceneLoaderProfile.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_InteractiveElement.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_EventOnDestroy.cs" />
-    <Compile Include="Assets\Game\Scripts\WSB_MenuManager.cs" />
+    <Compile Include="Assets\Game\Scripts\WSB_SceneLoader.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

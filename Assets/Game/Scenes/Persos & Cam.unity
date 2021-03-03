@@ -971,12 +971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00e05d2ec7e44304389287d236677503, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menu: {fileID: 0}
-  menuPause: {fileID: 0}
   elevatorAnimator: {fileID: 0}
-  parent: {fileID: 0}
-  bNext: {fileID: 0}
-  bPrev: {fileID: 0}
 --- !u!1 &1025220014611113701
 GameObject:
   m_ObjectHideFlags: 0
@@ -990,6 +985,7 @@ GameObject:
   - component: {fileID: 1025220014611113700}
   - component: {fileID: 1025220014611113697}
   - component: {fileID: 1025220014611113696}
+  - component: {fileID: 1025220014611113704}
   - component: {fileID: 2116998977}
   m_Layer: 0
   m_Name: LOGIC
@@ -1040,6 +1036,26 @@ MonoBehaviour:
   lastTriggered: []
   targetPositionCamBan: {x: 0, y: 0, z: 0}
   targetPositionCamLux: {x: 0, y: 0, z: 0}
+--- !u!114 &1025220014611113704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025220014611113701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 093ec8c4f899be74cb665c1f371aebdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allScenesInOrder:
+  - Menus
+  - Interactables
+  - Plateformes
+  - PNJ
+  - "D\xE9cor"
+  - Lights
+  - FX
 --- !u!1001 &1259251896004170305
 PrefabInstance:
   m_ObjectHideFlags: 0

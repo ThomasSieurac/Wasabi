@@ -7,7 +7,14 @@ public class WSB_Elevator : MonoBehaviour
     [SerializeField] GameObject pivotLeft = null;
     [SerializeField] GameObject pivotRight = null;
     [SerializeField] LineRenderer line = null;
+    [SerializeField] Animator animator = null;
+    [SerializeField] WSB_EventOnDestroy destroyEvent = null;
 
+    private void Start()
+    {
+        WSB_GameManager.I.RegisterElevator(animator);
+        destroyEvent.CallBack.AddListener(WSB_GameManager.I.ElevatorRepaired);
+    }
 
     private void Update()
     {

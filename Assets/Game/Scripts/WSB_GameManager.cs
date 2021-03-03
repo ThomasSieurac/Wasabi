@@ -167,6 +167,10 @@ public class WSB_GameManager : MonoBehaviour
 
     bool isBanController = false;
 
+    public void RegisterElevator(Animator _a)
+    {
+        elevatorAnimator = _a;
+    }
     public void StartGame(string _m)
     {
 
