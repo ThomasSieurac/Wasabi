@@ -1,0 +1,902 @@
+﻿// ======= Created by Lucas Guibert - https://github.com/LucasJoestar ======= //
+//
+// Notes : merci de me laisser te voler ton script <3
+//
+// ========================================================================== //
+
+using System;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace Nowhere
+{
+    /// <summary>
+    /// Used to determine collision contacts 
+    /// when calculating object movement.
+    /// </summary>
+    public enum CollisionSystem
+    {
+        Simple,
+        Complex,
+        Physics,
+        Custom
+    }
+
+    [RequireComponent(typeof(Rigidbody2D))]
+    public class LG_Movable : MonoBehaviour
+    {
+        #region Fields / Properties
+        protected const float castMaxDistanceDetection = .001f;
+        protected const int collisionSystemRecursionCeil = 3;
+
+        // -----------------------
+
+
+        [SerializeField] protected new Collider2D collider = null;
+        [SerializeField] protected new Rigidbody2D rigidbody = null;
+
+        [SerializeField] protected bool isAwake = true;
+        [SerializeField] protected bool useGravity = true;
+
+        public bool IsAwake
+        {
+            get { return isAwake; }
+            protected set
+            {
+#if UNITY_EDITOR
+                if (!Application.isPlaying) return;
+#endif
+
+                if (value != isAwake)
+                {
+                    isAwake = value;
+                }
+            }
+        }
+
+        public bool UseGravity
+        {
+            get { return useGravity; }
+            protected set
+            {
+#if UNITY_EDITOR
+                if (!Application.isPlaying) return;
+#endif
+
+                if (value != useGravity)
+                {
+                    useGravity = value;
+                }
+
+            }
+        }
+
+
+        [SerializeField] protected int facingSide = 1;
+        [SerializeField] protected bool isGrounded = false;
+
+        public int FacingSide { get { return facingSide; } }
+        public bool IsGrounded { get { return isGrounded; } }
+
+        [SerializeField, Min(0)] protected float speed = 1;
+        [SerializeField, Min(0)] protected float speedCoef = 1;
+
+        // --------------------------------------------------
+        //
+        // Velocity variables
+        //
+        // Movable class velocity is composed of 3 Vector2 :
+        //  • Force, which is related to external forces, having an impact in duration (like wind)
+        //  • Instant Force, also external forces by applied for one frame only (like recoil)
+        //  • Movement, the velocity applied by the object itself (like walking)
+        //
+
+        [SerializeField] protected Vector2 force = Vector2.zero;
+        [SerializeField] protected Vector2 instantForce = Vector2.zero;
+        [SerializeField] protected Vector2 movement = Vector2.zero;
+
+        // -----------------------
+
+#if UNITY_EDITOR
+
+        [SerializeField] protected Vector2 previousPosition = new Vector2();
+#endif
+
+        // -----------------------
+
+        protected ContactFilter2D contactFilter = new ContactFilter2D();
+        protected Vector2 groundNormal = new Vector2();
+        #endregion
+
+        [SerializeField] float xMovement = 0;
+        [SerializeField] float yMovement = 0;
+        [SerializeField] bool jumpInput = false;
+        
+        // Reads x & y movement and sets it in xMovement & yMovement
+        public void Move(InputAction.CallbackContext _context)
+        {
+            if (_context.valueType != typeof(Vector2)) return;
+            xMovement = _context.ReadValue<Vector2>().x;
+            yMovement = _context.ReadValue<Vector2>().y;
+        }
+
+        // Reads jump input and sets it in jumpInput
+        public void Jump(InputAction.CallbackContext _context)
+        {
+            if (_context.valueType == typeof(float))
+                jumpInput = _context.ReadValue<float>() == 1;
+        }
+
+
+        #region Methods
+
+        //#region Flip
+        ///// <summary>
+        ///// Flip the object (face opposite side).
+        ///// </summary>
+        //public virtual void Flip()
+        //{
+        //    facingSide *= -1;
+
+        //    Vector3 _scale = transform.localScale;
+        //    transform.localScale = new Vector3(_scale.x * -1, _scale.y, _scale.z);
+        //}
+
+        ///// <summary>
+        ///// Make the object face an indicated side.
+        ///// </summary>
+        ///// <param name="_facingSide">Side to look (1 for right, -1 for left).</param>
+        //public void Flip(int _facingSide)
+        //{
+        //    if (facingSide != _facingSide)
+        //        Flip();
+        //}
+        //#endregion
+
+        #region Speed
+        /// <summary>
+        /// Adds a speed coefficient to the object velocity.
+        /// </summary>
+        public void AddSpeedCoef(float _coef)
+        {
+            if (_coef != 0)
+                speedCoef *= _coef;
+        }
+
+        /// <summary>
+        /// Remove a speed coefficient from the object velocity.
+        /// </summary>
+        public void RemoveSpeedCoef(float _coef)
+        {
+            if (_coef != 0)
+                speedCoef /= _coef;
+        }
+        #endregion
+
+        #region Velocity
+        /// <summary>
+        /// Adds a force to the object velocity.
+        /// Force value is decreased over time.
+        /// </summary>
+        public virtual void AddForce(Vector2 _force) => force += _force;
+
+        /// <summary>
+        /// Adds a force to the object velocity for this frame only.
+        /// </summary>
+        public virtual void AddInstantForce(Vector2 _instantForce) => instantForce += _instantForce;
+
+        float 所有 = 0;
+        bool halfSpeed = false;
+
+        protected virtual void MoveHorizontally(float _movement)
+        {
+            if (_movement == 0)
+            {
+                所有 = speed = 0;
+                return;
+            }
+
+            所有 = Mathf.Min(所有 + Time.deltaTime, controllerValues.SpeedCurve[controllerValues.SpeedCurve.length - 1].time);
+            speed = controllerValues.SpeedCurve.Evaluate(所有);
+
+            movement.x += (_movement * speed) / (halfSpeed ? 2 : 1);
+        }
+
+        protected virtual void MoveVertically(float _movement) => movement.y += _movement;
+
+        // -----------------------
+
+        /// <summary>
+        /// Get the object velocity movement for this frame.
+        /// </summary>
+        protected virtual Vector2 GetVelocity() => (((force + movement) * Time.deltaTime) + instantForce) * speedCoef;
+
+        // -----------------------
+
+        float previousXForce = 0;
+        float previousXVelocity = 0;
+        [SerializeField] float groundDecelerationForce = 12.5f;
+        [SerializeField] float airDecelerationForce = 5;
+
+        protected virtual void ComputeVelocityBeforeMovement()
+        {
+            // Slowly decrease force over time.
+            if (force.x != 0)
+            {
+                float _maxDelta = isGrounded ?
+                                  groundDecelerationForce :
+                                  airDecelerationForce;
+
+                // Calculs when going to opposite force direction.
+                if (movement.x != 0)
+                {
+                    if (Mathf.Sign(force.x) != Mathf.Sign(movement.x))
+                    {
+                        _maxDelta = Mathf.Max(_maxDelta, Mathf.Abs(movement.x) * 2);
+                        movement.x = Mathf.MoveTowards(movement.x, 0, Mathf.Abs(force.x) * Time.deltaTime);
+                    }
+                    else
+                        movement.x = Mathf.Max(0, Mathf.Abs(movement.x) - Mathf.Abs(force.x)) * Mathf.Sign(movement.x);
+                }
+
+                // Calculs when going to opposite force direction,
+                // compared to previous frame.
+                float _previousXOtherVelocity = previousXVelocity - previousXForce;
+
+                if (_previousXOtherVelocity != 0 && previousXForce != 0 && Mathf.Sign(_previousXOtherVelocity) != Mathf.Sign(previousXForce))
+                {
+                    float _difference = Mathf.Abs(_previousXOtherVelocity);
+
+                    if (!(_previousXOtherVelocity != 0 && instantForce.x + movement.x != 0 && Mathf.Sign(_previousXOtherVelocity) != Mathf.Sign(instantForce.x + movement.x)))
+                        _difference -= Mathf.Abs(instantForce.x + movement.x);
+
+                    if (_difference > 0)
+                        force.x = Mathf.MoveTowards(force.x, 0, _difference);
+                }
+
+                // Reduce force
+                if (_maxDelta != 0)
+                    force.x = Mathf.MoveTowards(force.x, 0, _maxDelta * Time.deltaTime);
+            }
+
+            // -----------------------
+
+            previousXForce = force.x;
+            previousXVelocity = force.x + instantForce.x + movement.x;
+
+            // If going to opposite force direction, accordingly reduce force and movement.
+            if (force.y != 0 && movement.y != 0 && Mathf.Sign(force.y) != Mathf.Sign(movement.y))
+            {
+                float _maxDelta = Mathf.Abs(movement.y);
+
+                movement.y = Mathf.MoveTowards(movement.y, 0, Mathf.Abs(force.y));
+                force.y = Mathf.MoveTowards(force.y, 0, _maxDelta * Time.deltaTime);
+            }
+        }
+        #endregion
+
+        #region Physics
+
+        protected virtual void PhysicsUpdate() => AddGravity();
+
+        // -----------------------
+
+        [SerializeField] float maxGravity = -25;
+
+        protected void AddGravity()
+        {
+            if (force.y > maxGravity)
+            {
+                AddForce(new Vector2(0, Mathf.Max(Physics2D.gravity.y * Time.deltaTime, maxGravity - force.y)));
+            }
+        }
+
+        protected void AddGravity(float _gravityCoef, float _maxGravityCoef)
+        {
+            float _maxGravityValue = maxGravity * _maxGravityCoef;
+            if (force.y > _maxGravityValue)
+            {
+                AddForce(new Vector2(0, Mathf.Max(Physics2D.gravity.y * _gravityCoef * Time.deltaTime, _maxGravityValue - force.y)));
+            }
+        }
+        #endregion
+
+        #region Movements
+
+        protected virtual void MovableUpdate()
+        {
+#if UNITY_EDITOR
+            // Refresh position if object moved in editor
+            if (previousPosition != rigidbody.position) RefreshPosition();
+#endif
+
+            if (!((force + instantForce + movement) == null))
+            {
+                Vector2 _lastPosition = rigidbody.position;
+
+                ComputeVelocityBeforeMovement();
+                ComplexCollisionsSystem();
+                //CollisionSystemDelegate();
+                RefreshPosition();
+
+                Vector2 _finalMovement = rigidbody.position - _lastPosition;
+
+                if (useGravity)
+                    RefreshGroundState(_finalMovement);
+
+                OnAppliedVelocity(_finalMovement);
+            }
+            else
+                OnAppliedVelocity(Vector2.zero);
+
+#if UNITY_EDITOR
+            previousPosition = rigidbody.position;
+#endif
+        }
+
+        /// <summary>
+        /// Set this object position.
+        /// Use this instead of setting <see cref="Transform.position"/>.
+        /// </summary>
+        public void SetPosition(Vector2 _position)
+        {
+            if (rigidbody.position != _position)
+            {
+                rigidbody.position = _position;
+                RefreshPosition();
+            }
+        }
+
+        // -----------------------
+
+        [SerializeField] float groundMinYNormal = .1f;
+
+        private void RefreshGroundState(Vector2 _movement)
+        {
+            if (_movement == Vector2.zero)
+                return;
+
+            // Iterate over movement hits to find if one of these
+            // can be considered as ground.
+            bool _isGrounded = false;
+
+            for (int _i = 0; _i < castBufferCount; _i++)
+            {
+                if (castBuffer[_i].normal.y >= groundMinYNormal)
+                {
+                    _isGrounded = true;
+                    groundNormal = castBuffer[_i].normal;
+                    break;
+                }
+            }
+
+            // If didn't hit ground during movement,
+            // try to get it with last ground normal inverse direction cast.
+            //
+            // Necessary when movement magnitude is inferior to default contact offset.
+            if (!_isGrounded)
+            {
+                _isGrounded = CastCollider(groundNormal * Physics2D.defaultContactOffset * -2, out RaycastHit2D _groundHit) &&
+                                (_groundHit.normal.y >= groundMinYNormal);
+
+                if (_isGrounded)
+                    groundNormal = _groundHit.normal;
+
+                else if (isGrounded)
+                    groundNormal = Vector2.up;
+            }
+
+            if (isGrounded != _isGrounded)
+            {
+                isGrounded = _isGrounded;
+                OnSetGrounded();
+            }
+        }
+
+        private void RefreshPosition()
+        {
+            ExtractFromCollisions();
+
+            if ((Vector2)transform.position != rigidbody.position)
+                transform.position = rigidbody.position;
+        }
+
+        // -----------------------
+
+        /// <summary>
+        /// Called after velocity has been applied.
+        /// </summary>
+        protected virtual void OnAppliedVelocity(Vector2 _movement) { }
+
+
+        [SerializeField] float onGroundedHorizontalForceMultiplier = .35f;
+        /// <summary>
+        /// Called when grounded value has been set.
+        /// </summary>
+        protected virtual void OnSetGrounded()
+        {
+            // Reduce horizontal force if not null when get grounded.
+            if (isGrounded && (force.x != 0))
+            {
+                force.x *= onGroundedHorizontalForceMultiplier;
+            }
+        }
+        #endregion
+
+        #region Collision Calculs
+        protected static int castBufferCount = 0;
+        protected static RaycastHit2D[] castBuffer = new RaycastHit2D[4];
+        protected static RaycastHit2D[] extraCastBuffer = new RaycastHit2D[4];
+
+        // -----------------------
+
+        /// <summary>
+        /// Move rigidbody according to a simple collision system.
+        /// When hitting something, immediatly stop object movement.
+        /// </summary>
+        private void SimpleCollisionsSystem()
+        {
+            Vector2 _velocity = GetVelocity();
+            castBufferCount = CastCollider(_velocity, castBuffer, out float _distance);
+
+            if (castBufferCount != 0)
+            {
+                force.x = force.y = 0;
+                rigidbody.position += _velocity.normalized * _distance;
+            }
+            else
+                rigidbody.position += _velocity;
+
+            // Reset instant force and movement.
+            instantForce = movement = Vector2.zero;
+        }
+
+        /// <summary>
+        /// Move rigidbody according to a complex collision system.
+        /// When hitting something, continue movement all along hit surface.
+        /// Perform movement according to ground surface angle.
+        /// </summary>
+        private void ComplexCollisionsSystem()
+        {
+            // If grounded, adjust velocity according to ground normal.
+            Vector2 _velocity = GetVelocity();
+            if (isGrounded)
+            {
+                Vector2 _x = Vector2.Perpendicular(groundNormal);
+                if (_x.x < 0) _x *= -1;
+                _x *= _velocity.x;
+
+                Vector2 _y = (_velocity.y < 0 ? groundNormal : Vector2.up) * _velocity.y;
+
+                _velocity = _x + _y;
+            }
+
+            castBufferCount = 0;
+            RecursiveComplexCollisions(_velocity, groundNormal);
+
+            // Modify force according to hit surfaces.
+            if (force != null)
+            {
+                for (int _i = 0; _i < castBufferCount; _i++)
+                {
+                    if (isJumping && castBuffer[_i].normal.y == -1)
+                    {
+                        jumpVar = force.y = 0;
+                        isJumping = false;
+                    }
+
+                    if (!(force.x != 0 && castBuffer[_i].normal.x != 0 && Mathf.Sign(force.x) != Mathf.Sign(castBuffer[_i].normal.x)))
+                    {
+                        force.x = 0;
+                        if (force.y == 0) break;
+                    }
+
+                    if ((force.y < 0) && (castBuffer[_i].normal.y > groundMinYNormal))
+                    {
+                        force.y = 0;
+                        if (force.x == 0) break;
+                    }
+
+                }
+            }
+
+            // Reset instant force and movement.
+            instantForce = movement = Vector2.zero;
+        }
+
+        /// <summary>
+        /// Move rigidbody according to a physics approaching collision system.
+        /// When hitting something, continue movement according to physical approach.
+        /// Perform movement according to world space.
+        /// </summary>
+        private void PhysicsCollisionsSystem()
+        {
+            castBufferCount = 0;
+            RecursivePhysicsCollisions(GetVelocity());
+
+            // Reduce force according to hit surfaces.
+            for (int _i = 0; _i < castBufferCount; _i++)
+            {
+                if (force == null)
+                    break;
+
+                force -= castBuffer[_i].normal * Vector2.Dot(force, castBuffer[_i].normal);
+            }
+
+            // Reset instant force and movement.
+            instantForce = movement = Vector2.zero;
+        }
+
+        /// <summary>
+        /// Custom collision system.
+        /// 
+        /// Override this method to implement a new and specific behaviour
+        /// for collision calculs.
+        /// </summary>
+        protected virtual void CustomCollisionsSystem() { }
+
+        // -------------------------------------------
+        // Recursive Calculs
+        // -------------------------------------------
+
+        /// <summary>
+        /// Calculates complex collisions recursively.
+        /// </summary>
+        private void RecursiveComplexCollisions(Vector2 _velocity, Vector2 _normal, int _recursiveCount = 0)
+        {
+            int _amount = CastCollider(_velocity, extraCastBuffer, out float _distance);
+
+            // No movement mean object is stuck into something, so return.
+            if (_distance == 0)
+                return;
+
+            if (_amount == 0)
+            {
+                rigidbody.position += _velocity;
+                GroundSnap(_velocity, _normal);
+                return;
+            }
+
+
+            // Move rigidbody and get extra cast velocity.
+            if ((_distance -= Physics2D.defaultContactOffset) > 0)
+            {
+                Vector2 _normalizedVelocity = _velocity.normalized;
+
+                rigidbody.position += _normalizedVelocity * _distance;
+                _velocity = _normalizedVelocity * (_velocity.magnitude - _distance);
+            }
+
+            // If reached recursion limit, stop.
+            if (_recursiveCount > collisionSystemRecursionCeil)
+            {
+                InsertCastInfos(extraCastBuffer, _amount);
+                GroundSnap(_velocity, _normal);
+                return;
+            }
+
+            // Get velocity outside normal surface, as pure value.
+            float _angle = Vector2.SignedAngle(_normal, _velocity);
+            _normal.Set(0, 1);
+            _velocity = RotateVector(_normal, _angle) * _velocity.magnitude;
+
+            Vector2 _hitNormal = extraCastBuffer[0].normal;
+            _velocity = ClimbStep(_velocity, extraCastBuffer[0]);
+
+            if ((Mathf.Abs(extraCastBuffer[0].normal.x) == 1) && (_velocity.x != 0))
+            {
+                for (int _i = 1; _i < _amount; _i++)
+                {
+                    InsertCastInfo(extraCastBuffer[_i]);
+                }
+            }
+            else
+                InsertCastInfos(extraCastBuffer, _amount);
+
+            if (_velocity != null)
+            {
+                // Reduce extra movement according to main impact normals.
+                _velocity -= _hitNormal * Vector2.Dot(_velocity, _hitNormal);
+                if (_velocity != null)
+                {
+                    RecursiveComplexCollisions(_velocity, _normal, _recursiveCount + 1);
+                }
+            }
+        }
+        public Vector2 RotateVector(Vector2 _vector, float _angle)
+        {
+            // Equivalent :
+            // Quaternion.AngleAxis(_angle, Vector3.forward) * _vector;
+
+            float _sin = Mathf.Sin(_angle * Mathf.Deg2Rad);
+            float _cos = Mathf.Cos(_angle * Mathf.Deg2Rad);
+
+            return new Vector2()
+            {
+                x = (_cos * _vector.x) - (_sin * _vector.y),
+                y = (_sin * _vector.x) + (_cos * _vector.y)
+            };
+        }
+
+        /// <summary>
+        /// Calculates physics collisions recursively.
+        /// </summary>
+        private void RecursivePhysicsCollisions(Vector2 _velocity, int _recursiveCount = 0)
+        {
+            int _amount = CastCollider(_velocity, extraCastBuffer, out float _distance);
+
+            // No movement mean object is stuck into something, so return.
+            if (_distance == 0)
+                return;
+
+            if (_amount == 0)
+            {
+                rigidbody.position += _velocity;
+                return;
+            }
+
+            InsertCastInfos(extraCastBuffer, _amount);
+
+            // Move rigidbody and get extra cast velocity.
+            if ((_distance -= Physics2D.defaultContactOffset) > 0)
+            {
+                Vector2 _normalizedVelocity = _velocity.normalized;
+
+                rigidbody.position += _normalizedVelocity * _distance;
+                _velocity = _normalizedVelocity * (_velocity.magnitude - _distance);
+            }
+
+            // If reached recursion limit, stop.
+            if (_recursiveCount > collisionSystemRecursionCeil)
+                return;
+
+            // Reduce extra movement according to main impact normals.
+            _velocity -= extraCastBuffer[0].normal * Vector2.Dot(_velocity, extraCastBuffer[0].normal);
+            if (_velocity != null)
+            {
+                RecursivePhysicsCollisions(_velocity, _recursiveCount + 1);
+            }
+        }
+
+        // -------------------------------------------
+        // Buffer Utilities
+        // -------------------------------------------
+
+        /// <summary>
+        /// Inserts a RaycastHit information into the <see cref="castBuffer"/> buffer.
+        /// </summary>
+        protected void InsertCastInfo(RaycastHit2D _hit)
+        {
+            // Add new hit if there is enough space, or replace the last one.
+            if (castBufferCount < castBuffer.Length)
+            {
+                castBuffer[castBufferCount] = _hit;
+                castBufferCount++;
+            }
+            else
+                castBuffer[castBufferCount - 1] = _hit;
+        }
+
+        /// <summary>
+        /// Inserts an array of RaycastHit informations into the <see cref="castBuffer"/> buffer.
+        /// </summary>
+        protected void InsertCastInfos(RaycastHit2D[] _hits, int _amount)
+        {
+            // Add as many hits as possible while there is enough space,
+            // or replace the last one if the buffer is already full.
+            if (castBufferCount < castBuffer.Length)
+            {
+                for (int _i = 0; _i < _amount; _i++)
+                {
+                    castBuffer[castBufferCount + _i] = _hits[_i];
+                    castBufferCount++;
+
+                    if (castBufferCount == castBuffer.Length)
+                        return;
+                }
+            }
+            else
+                castBuffer[castBufferCount - 1] = _hits[0];
+        }
+
+        // -------------------------------------------
+        // Special Movements
+        // -------------------------------------------
+
+        [SerializeField] float groundClimbHeight = .7f;
+
+        /// <summary>
+        /// Make the object climb a surface, if possible.
+        /// Climb cast infos are automatically added to the <see cref="castBuffer"/> buffer.
+        /// </summary>
+        protected Vector2 ClimbStep(Vector2 _velocity, RaycastHit2D _stepHit)
+        {
+            // If climbing is not necessary, return.
+            if (!((_stepHit.normal.y == 0) && (_velocity.y <= 0) && (_velocity.x != 0)))
+                return _velocity;
+
+
+            // Heighten the rigidbody position and add opposite velocity,
+            // then cast collider and get hit informations.
+            rigidbody.position += new Vector2(0, groundClimbHeight);
+            _velocity.y -= groundClimbHeight;
+
+            int _amount = CastCollider(_velocity, extraCastBuffer, out float _climbDistance);
+
+            if (_amount == 0)
+            {
+                rigidbody.position += _velocity;
+                _velocity.Set(0, 0);
+            }
+            // If hit something, check if it's a different surface than the one trying to climb
+            // and that the rigidbody is not stuck in ; when so, distance is equal to zero.
+            else if ((_climbDistance != 0) && ((_stepHit.collider != extraCastBuffer[0].collider) || (_stepHit.normal != extraCastBuffer[0].normal)))
+            {
+                Vector2 _normalized = _velocity.normalized;
+                rigidbody.position += _normalized * _climbDistance;
+                _velocity = _normalized * (_velocity.magnitude - _climbDistance);
+
+                InsertCastInfos(extraCastBuffer, _amount);
+            }
+            // If not, climb is failed so just reset position and velocity.
+            else
+            {
+                rigidbody.position -= new Vector2(0, groundClimbHeight);
+                _velocity.y += groundClimbHeight;
+                _velocity.x = 0;
+            }
+
+            return _velocity;
+        }
+
+        // -----------------------
+
+        /// <summary>
+        /// Snap the object to the ground only if already grounded
+        /// and movement is going down.
+        /// Used for slopes & steps movements.
+        /// Ground cast info is automatically added to the <see cref="castBuffer"/> buffer.
+        /// </summary>
+        protected bool GroundSnap(Vector2 _velocity, Vector2 _normal)
+        {
+            // Get going down velocity.
+            _velocity = _normal * Vector2.Dot(_velocity, _normal);
+
+            // If object was grounded and going down, try to snap to ground (slope & steps).
+            if (isGrounded && (_velocity.y < 0))
+                return GroundSnap(_normal);
+
+            return false;
+        }
+
+        [SerializeField] float groundSnapHeight = .5f;
+
+        /// <summary>
+        /// Snap the object to the ground.
+        /// Used for slopes & steps movements.
+        /// Ground cast info is automatically added to the <see cref="castBuffer"/> buffer.
+        /// </summary>
+        protected bool GroundSnap(Vector2 _normal)
+        {
+            if (CastCollider(_normal * -groundSnapHeight, out RaycastHit2D _snapHit))
+            {
+                rigidbody.position += _normal * -_snapHit.distance;
+                InsertCastInfo(_snapHit);
+                return true;
+            }
+
+            return false;
+        }
+        #endregion
+
+        #region Collider Operations
+        private static RaycastHit2D[] singleCastBuffer = new RaycastHit2D[1];
+
+        protected bool CastCollider(Vector2 _movement, out RaycastHit2D _hit)
+        {
+            bool _result = collider.Cast(_movement, contactFilter, singleCastBuffer, _movement.magnitude) > 0;
+
+            _hit = singleCastBuffer[0];
+            return _result;
+        }
+
+        protected int CastCollider(Vector2 _movement, RaycastHit2D[] _hitBuffer, out float _distance)
+        {
+            _distance = _movement.magnitude;
+
+            int _hitAmount = collider.Cast(_movement, contactFilter, _hitBuffer, _distance);
+            if (_hitAmount > 0)
+            {
+                // Hits are already sorted by distance, so simply get closest one.
+                _distance = Mathf.Max(0, _hitBuffer[0].distance - Physics2D.defaultContactOffset);
+
+                // Retains only closest hits by ignoring those with too distants.
+                for (int _i = 1; _i < _hitAmount; _i++)
+                {
+                    if ((_hitBuffer[_i].distance + castMaxDistanceDetection) > _hitBuffer[0].distance) return _i;
+                }
+            }
+            return _hitAmount;
+        }
+
+        // -----------------------
+
+        protected static Collider2D[] overlapBuffer = new Collider2D[6];
+
+        private void ExtractFromCollisions()
+        {
+            int _count = collider.OverlapCollider(contactFilter, overlapBuffer);
+            ColliderDistance2D _distance;
+
+            for (int _i = 0; _i < _count; _i++)
+            {
+                // If overlap, extract from collision.
+                _distance = collider.Distance(overlapBuffer[_i]);
+
+                if (_distance.isOverlapped)
+                    rigidbody.position += _distance.normal * _distance.distance;
+            }
+        }
+        #endregion
+
+        float jumpOriginHeight = 0;
+        float jumpVar = 0;
+        [SerializeField] bool isJumping = false;
+        [SerializeField] SO_ControllerValues controllerValues;
+        #region Monobehaviour
+        protected virtual void Start()
+        {
+#if UNITY_EDITOR
+            previousPosition = transform.position;
+#endif
+
+            // Initialize object contact filter.
+            contactFilter.layerMask = Physics2D.GetLayerCollisionMask(gameObject.layer);
+            contactFilter.useLayerMask = true;
+
+            groundNormal = Vector2.up;
+            //CollisionSystem = collisionSystem;
+        }
+        private void Update()
+        {
+            MoveHorizontally(xMovement);
+
+            if(IsGrounded)
+            {
+                jumpVar = force.y = 0;
+                jumpOriginHeight = transform.position.y;
+                if (jumpInput)
+                    isJumping = true;
+            }
+            if(isJumping)
+            {
+                // Stop the jump if input is released & peak of jump icn't reached yet
+                if (!jumpInput && jumpVar < .3f)
+                {
+                    jumpOriginHeight -= (controllerValues.JumpCurve.Evaluate(.3f) - controllerValues.JumpCurve.Evaluate(jumpVar));
+                    jumpVar = .3f;
+                }
+                // Get the value corresponding to the curve set
+                else
+                {
+                    jumpVar += Time.deltaTime;
+
+                    // Stop jump if peak reached
+                    if (jumpVar > controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time)
+                    {
+                        jumpVar = controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time;
+                        isJumping = false;
+                    }
+
+                   MoveVertically((jumpOriginHeight + (controllerValues.JumpCurve.Evaluate(jumpVar)) - rigidbody.position.y) / Time.deltaTime);
+                }
+            }
+
+            PhysicsUpdate();
+            MovableUpdate();
+        }
+        #endregion
+
+        #endregion
+    }
+}
