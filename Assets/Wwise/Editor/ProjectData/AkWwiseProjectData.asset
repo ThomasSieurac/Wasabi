@@ -49,8 +49,26 @@ MonoBehaviour:
     ParentPath: Default Work Unit
     guid: b9fae272c2867e4eb9d90338b3cf36b8
     GuidInternal: 
-    m_lastTime: -8585866533874775808
+    m_lastTime: -8585863920744775808
     List: []
+  - PhysicalPath: SoundBanks/Nico_WU.wwu
+    PathAndIcons:
+    - ElementName: Nico_WU
+      ObjectType: 12
+    ParentPath: Nico_WU
+    guid: cfac2003e4adb145938d70abee3112ba
+    GuidInternal: 
+    m_lastTime: -8585863920744775808
+    List:
+    - name: WASABI_WU_NS
+      guid: 7e41d4b5d17237408a3881e48241e8ae
+      id: 3291955309
+      PathAndIcons:
+      - ElementName: Nico_WU
+        ObjectType: 12
+      - ElementName: WASABI_WU_NS
+        ObjectType: 7
+      Path: Nico_WU/WASABI_WU_NS
   EventWwu:
   - PhysicalPath: Events/Default Work Unit.wwu
     PathAndIcons:
@@ -101,6 +119,9 @@ MonoBehaviour:
     GuidInternal: 
     m_lastTime: -8585866533864775808
     List: []
-  ExpandedItems: []
+  ExpandedItems:
+  - /Wasabi_WwiseProject
+  - /Wasabi_WwiseProject/SoundBanks
+  - /Wasabi_WwiseProject/SoundBanks/Nico_WU
   autoPopulateEnabled: 1
   CurrentPluginConfig: 

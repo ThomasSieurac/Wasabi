@@ -1,8 +1,4 @@
 sceneSetups:
-- path: Assets/Game/Scenes/Persos & Cam.unity
-  isLoaded: 1
-  isActive: 1
-  isSubScene: 0
 - path: "Assets/Game/Scenes/D\xE9cor.unity"
   isLoaded: 1
   isActive: 0
@@ -23,6 +19,10 @@ sceneSetups:
   isLoaded: 1
   isActive: 0
   isSubScene: 0
+- path: Assets/Game/Scenes/Persos & Cam.unity
+  isLoaded: 1
+  isActive: 0
+  isSubScene: 0
 - path: Assets/Game/Scenes/Plateformes.unity
   isLoaded: 1
   isActive: 0
@@ -30,4 +30,8 @@ sceneSetups:
 - path: Assets/Game/Scenes/PNJ.unity
   isLoaded: 1
   isActive: 0
+  isSubScene: 0
+- path: Assets/Game/Scenes/Sound_Design.unity
+  isLoaded: 1
+  isActive: 1
   isSubScene: 0
