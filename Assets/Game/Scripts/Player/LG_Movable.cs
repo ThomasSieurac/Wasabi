@@ -5,6 +5,7 @@
 // ========================================================================== //
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -32,7 +33,7 @@ namespace Nowhere
         // -----------------------
 
 
-        [SerializeField] protected new Collider2D collider = null;
+        [SerializeField] protected new BoxCollider2D collider = null;
         [SerializeField] protected new Rigidbody2D rigidbody = null;
 
         [SerializeField] protected bool isAwake = true;
@@ -108,50 +109,31 @@ namespace Nowhere
         protected Vector2 groundNormal = new Vector2();
         #endregion
 
-        [SerializeField] float xMovement = 0;
-        [SerializeField] float yMovement = 0;
-        [SerializeField] bool jumpInput = false;
-        
-        // Reads x & y movement and sets it in xMovement & yMovement
-        public void Move(InputAction.CallbackContext _context)
-        {
-            if (_context.valueType != typeof(Vector2)) return;
-            xMovement = _context.ReadValue<Vector2>().x;
-            yMovement = _context.ReadValue<Vector2>().y;
-        }
-
-        // Reads jump input and sets it in jumpInput
-        public void Jump(InputAction.CallbackContext _context)
-        {
-            if (_context.valueType == typeof(float))
-                jumpInput = _context.ReadValue<float>() == 1;
-        }
-
 
         #region Methods
 
-        //#region Flip
-        ///// <summary>
-        ///// Flip the object (face opposite side).
-        ///// </summary>
-        //public virtual void Flip()
-        //{
-        //    facingSide *= -1;
+        #region Public
 
-        //    Vector3 _scale = transform.localScale;
-        //    transform.localScale = new Vector3(_scale.x * -1, _scale.y, _scale.z);
-        //}
+        bool isOnMovingPlateform = false;
+        List<Collider2D> ignoredColliders = new List<Collider2D>();
 
-        ///// <summary>
-        ///// Make the object face an indicated side.
-        ///// </summary>
-        ///// <param name="_facingSide">Side to look (1 for right, -1 for left).</param>
-        //public void Flip(int _facingSide)
-        //{
-        //    if (facingSide != _facingSide)
-        //        Flip();
-        //}
-        //#endregion
+        public void SetOnMovingPlateform(bool _state, Collider2D _plateformCollider)
+        {
+            isOnMovingPlateform = _state;
+            if(_state)
+            {
+                if (!ignoredColliders.Contains(_plateformCollider))
+                    ignoredColliders.Add(_plateformCollider);
+            }
+
+            else
+            {
+                if (ignoredColliders.Contains(_plateformCollider))
+                    ignoredColliders.Remove(_plateformCollider);
+            }
+        }
+
+        #endregion
 
         #region Speed
         /// <summary>
@@ -186,7 +168,7 @@ namespace Nowhere
         public virtual void AddInstantForce(Vector2 _instantForce) => instantForce += _instantForce;
 
         float 所有 = 0;
-        bool halfSpeed = false;
+        protected bool halfSpeed = false;
 
         protected virtual void MoveHorizontally(float _movement)
         {
@@ -377,7 +359,7 @@ namespace Nowhere
             if (!_isGrounded)
             {
                 _isGrounded = CastCollider(groundNormal * Physics2D.defaultContactOffset * -2, out RaycastHit2D _groundHit) &&
-                                (_groundHit.normal.y >= groundMinYNormal);
+                                (_groundHit.normal.y >= groundMinYNormal) && _groundHit.collider != semiSolidCollider || isOnMovingPlateform;
 
                 if (_isGrounded)
                     groundNormal = _groundHit.normal;
@@ -385,6 +367,9 @@ namespace Nowhere
                 else if (isGrounded)
                     groundNormal = Vector2.up;
             }
+
+            if (isOnMovingPlateform)
+                isGrounded = true;
 
             if (isGrounded != _isGrounded)
             {
@@ -429,27 +414,6 @@ namespace Nowhere
         protected static RaycastHit2D[] extraCastBuffer = new RaycastHit2D[4];
 
         // -----------------------
-
-        /// <summary>
-        /// Move rigidbody according to a simple collision system.
-        /// When hitting something, immediatly stop object movement.
-        /// </summary>
-        private void SimpleCollisionsSystem()
-        {
-            Vector2 _velocity = GetVelocity();
-            castBufferCount = CastCollider(_velocity, castBuffer, out float _distance);
-
-            if (castBufferCount != 0)
-            {
-                force.x = force.y = 0;
-                rigidbody.position += _velocity.normalized * _distance;
-            }
-            else
-                rigidbody.position += _velocity;
-
-            // Reset instant force and movement.
-            instantForce = movement = Vector2.zero;
-        }
 
         /// <summary>
         /// Move rigidbody according to a complex collision system.
@@ -504,36 +468,6 @@ namespace Nowhere
             instantForce = movement = Vector2.zero;
         }
 
-        /// <summary>
-        /// Move rigidbody according to a physics approaching collision system.
-        /// When hitting something, continue movement according to physical approach.
-        /// Perform movement according to world space.
-        /// </summary>
-        private void PhysicsCollisionsSystem()
-        {
-            castBufferCount = 0;
-            RecursivePhysicsCollisions(GetVelocity());
-
-            // Reduce force according to hit surfaces.
-            for (int _i = 0; _i < castBufferCount; _i++)
-            {
-                if (force == null)
-                    break;
-
-                force -= castBuffer[_i].normal * Vector2.Dot(force, castBuffer[_i].normal);
-            }
-
-            // Reset instant force and movement.
-            instantForce = movement = Vector2.zero;
-        }
-
-        /// <summary>
-        /// Custom collision system.
-        /// 
-        /// Override this method to implement a new and specific behaviour
-        /// for collision calculs.
-        /// </summary>
-        protected virtual void CustomCollisionsSystem() { }
 
         // -------------------------------------------
         // Recursive Calculs
@@ -616,46 +550,6 @@ namespace Nowhere
                 x = (_cos * _vector.x) - (_sin * _vector.y),
                 y = (_sin * _vector.x) + (_cos * _vector.y)
             };
-        }
-
-        /// <summary>
-        /// Calculates physics collisions recursively.
-        /// </summary>
-        private void RecursivePhysicsCollisions(Vector2 _velocity, int _recursiveCount = 0)
-        {
-            int _amount = CastCollider(_velocity, extraCastBuffer, out float _distance);
-
-            // No movement mean object is stuck into something, so return.
-            if (_distance == 0)
-                return;
-
-            if (_amount == 0)
-            {
-                rigidbody.position += _velocity;
-                return;
-            }
-
-            InsertCastInfos(extraCastBuffer, _amount);
-
-            // Move rigidbody and get extra cast velocity.
-            if ((_distance -= Physics2D.defaultContactOffset) > 0)
-            {
-                Vector2 _normalizedVelocity = _velocity.normalized;
-
-                rigidbody.position += _normalizedVelocity * _distance;
-                _velocity = _normalizedVelocity * (_velocity.magnitude - _distance);
-            }
-
-            // If reached recursion limit, stop.
-            if (_recursiveCount > collisionSystemRecursionCeil)
-                return;
-
-            // Reduce extra movement according to main impact normals.
-            _velocity -= extraCastBuffer[0].normal * Vector2.Dot(_velocity, extraCastBuffer[0].normal);
-            if (_velocity != null)
-            {
-                RecursivePhysicsCollisions(_velocity, _recursiveCount + 1);
-            }
         }
 
         // -------------------------------------------
@@ -790,13 +684,19 @@ namespace Nowhere
         #endregion
 
         #region Collider Operations
+
+        [SerializeField] protected Collider2D semiSolidCollider = null;
+        [SerializeField] LayerMask semiSolidLayer = 0;
+
         private static RaycastHit2D[] singleCastBuffer = new RaycastHit2D[1];
 
         protected bool CastCollider(Vector2 _movement, out RaycastHit2D _hit)
         {
             bool _result = collider.Cast(_movement, contactFilter, singleCastBuffer, _movement.magnitude) > 0;
-
             _hit = singleCastBuffer[0];
+
+            if (_result)
+                _result = _hit.collider != semiSolidCollider;
             return _result;
         }
 
@@ -805,6 +705,24 @@ namespace Nowhere
             _distance = _movement.magnitude;
 
             int _hitAmount = collider.Cast(_movement, contactFilter, _hitBuffer, _distance);
+
+            if (_hitAmount == 0)
+                semiSolidCollider = null;
+
+            for (int i = 0; i < _hitAmount; i++)
+            {
+                if ((_hitBuffer[i].transform.gameObject.layer == 13) && _hitBuffer[i].normal.y == -1 ||
+                    (_hitBuffer[i].transform.gameObject.layer == 13) && _hitBuffer[i] == semiSolidCollider ||
+                    isOnMovingPlateform && transform.position.y > _hitBuffer[i].collider.transform.position.y)
+                {
+                    semiSolidCollider = castBuffer[i].collider;
+                    _hitAmount = i;
+                    break;
+                }
+                if (_hitBuffer[i].transform.gameObject.layer != 13)
+                    semiSolidCollider = null;
+            }
+
             if (_hitAmount > 0)
             {
                 // Hits are already sorted by distance, so simply get closest one.
@@ -830,21 +748,24 @@ namespace Nowhere
 
             for (int _i = 0; _i < _count; _i++)
             {
+                if (ignoredColliders.Contains(collider))
+                    continue;
+
                 // If overlap, extract from collision.
                 _distance = collider.Distance(overlapBuffer[_i]);
 
-                if (_distance.isOverlapped)
+                if (_distance.isOverlapped && ((overlapBuffer.Length > _i && overlapBuffer[_i].transform && overlapBuffer[_i].transform.gameObject && overlapBuffer[_i].transform.gameObject.layer != 13) || _distance.normal.y == -1))
                     rigidbody.position += _distance.normal * _distance.distance;
             }
         }
         #endregion
 
-        float jumpOriginHeight = 0;
-        float jumpVar = 0;
-        [SerializeField] bool isJumping = false;
-        [SerializeField] SO_ControllerValues controllerValues;
+        protected float jumpVar = 0;
+        [SerializeField] protected bool isJumping = false;
+        [SerializeField] protected SO_ControllerValues controllerValues;
+
         #region Monobehaviour
-        protected virtual void Start()
+        public virtual void Start()
         {
 #if UNITY_EDITOR
             previousPosition = transform.position;
@@ -857,41 +778,9 @@ namespace Nowhere
             groundNormal = Vector2.up;
             //CollisionSystem = collisionSystem;
         }
-        private void Update()
+
+        public virtual void Update()
         {
-            MoveHorizontally(xMovement);
-
-            if(IsGrounded)
-            {
-                jumpVar = force.y = 0;
-                jumpOriginHeight = transform.position.y;
-                if (jumpInput)
-                    isJumping = true;
-            }
-            if(isJumping)
-            {
-                // Stop the jump if input is released & peak of jump icn't reached yet
-                if (!jumpInput && jumpVar < .3f)
-                {
-                    jumpOriginHeight -= (controllerValues.JumpCurve.Evaluate(.3f) - controllerValues.JumpCurve.Evaluate(jumpVar));
-                    jumpVar = .3f;
-                }
-                // Get the value corresponding to the curve set
-                else
-                {
-                    jumpVar += Time.deltaTime;
-
-                    // Stop jump if peak reached
-                    if (jumpVar > controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time)
-                    {
-                        jumpVar = controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time;
-                        isJumping = false;
-                    }
-
-                   MoveVertically((jumpOriginHeight + (controllerValues.JumpCurve.Evaluate(jumpVar)) - rigidbody.position.y) / Time.deltaTime);
-                }
-            }
-
             PhysicsUpdate();
             MovableUpdate();
         }

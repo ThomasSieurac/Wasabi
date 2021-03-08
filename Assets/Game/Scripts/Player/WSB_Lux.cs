@@ -36,17 +36,16 @@ public class WSB_Lux : WSB_Player
     Vector3 startRenderSize = Vector3.zero;
 
     // Populate the Instance of this script
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         I = this;
     }
 
     // Set default calues to charges and adds custom update in game global update
-    void Start()
+    public override void Start()
     {
         WSB_GameManager.OnUpdate += MyUpdate;
-        startSize = Collider.size;
+        startSize = collider.size;
         startRenderSize = render.transform.localScale;
         bridgeCharges = maxBridgeCharges;
         trampolineCharges = maxTrampolineCharges;
@@ -59,7 +58,7 @@ public class WSB_Lux : WSB_Player
     }
 
 
-    protected override void Update()
+    public override void Update()
     {
         // Has to be here and empty to override Unity update and use MyUpdate below
     }
@@ -79,7 +78,7 @@ public class WSB_Lux : WSB_Player
             return;
 
         // Search for pot in corresponding direction
-        RaycastHit2D _hit = Physics2D.BoxCast(transform.position, Collider.size, 0, isRight ? Vector2.right : Vector2.left, range, potLayer);
+        RaycastHit2D _hit = Physics2D.BoxCast(transform.position, collider.size, 0, isRight ? Vector2.right : Vector2.left, range, potLayer);
         //RaycastHit2D _hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - (shrinked ? .4f : .8f)), isRight ? Vector2.right : Vector2.left, range, potLayer);
 
         if(_hit)
@@ -171,9 +170,9 @@ public class WSB_Lux : WSB_Player
     IEnumerator ShrinkCoroutine()
     {
         // Reduce size to half of the start's
-        while (Collider.size != startSize / 2)
+        while (collider.size != startSize / 2)
         {
-            Collider.size = Vector2.MoveTowards(Collider.size, startSize / 2, Time.deltaTime * shrinkSpeed);
+            collider.size = Vector2.MoveTowards(collider.size, startSize / 2, Time.deltaTime * shrinkSpeed);
             render.transform.localScale = Vector3.MoveTowards(render.transform.localScale, startRenderSize / 2, Time.deltaTime * shrinkSpeed);
             yield return new WaitForEndOfFrame();
         }
@@ -187,9 +186,9 @@ public class WSB_Lux : WSB_Player
             yield return new WaitForSeconds(.1f);
 
         // Increase size back to the stocked start size
-        while (Collider.size != startSize)
+        while (collider.size != startSize)
         {
-            Collider.size = Vector2.MoveTowards(Collider.size, startSize, Time.deltaTime * shrinkSpeed);
+            collider.size = Vector2.MoveTowards(collider.size, startSize, Time.deltaTime * shrinkSpeed);
             render.transform.localScale = Vector3.MoveTowards(render.transform.localScale, startRenderSize, Time.deltaTime * shrinkSpeed);
             yield return new WaitForEndOfFrame();
         }
