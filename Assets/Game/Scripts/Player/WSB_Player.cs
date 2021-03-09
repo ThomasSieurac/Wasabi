@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Nowhere;
+//using Nowhere;
 
 //[RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D))]
 public class WSB_Player : LG_Movable
@@ -698,10 +698,10 @@ public class WSB_Player : LG_Movable
             RaycastHit2D[] _hits = new RaycastHit2D[1];
             if (collider.Cast(Vector3.down, semiSolidFilter, _hits) > 0)
             {
-                Debug.LogError("in");
+
                 // If found set collider in ignoredCollider and don't do the jump
                 semiSolidCollider = _hits[0].collider;
-                transform.position -= Vector3.up * .5f;
+                transform.position -= Vector3.up * .1f;
                 return;
             }
         }
