@@ -172,7 +172,9 @@ public class LG_Movable : MonoBehaviour
     {
         if (_movement == 0)
         {
-            所有 = speed = 0;
+            if(speed != 0)
+                speed = Mathf.MoveTowards(speed, 0, Time.deltaTime * (IsGrounded ? movableValues.GroundDeceleration : movableValues.AirDeceleration));
+            所有 = speed;
             return;
         }
 
@@ -752,17 +754,9 @@ public class LG_Movable : MonoBehaviour
             if (
                    _distance.isValid
                 && _distance.isOverlapped
-                &&
-                    (
-                               overlapBuffer.Length > _i
-                            && overlapBuffer[_i].transform
-                            && overlapBuffer[_i].transform.gameObject
-                            && overlapBuffer[_i].transform.gameObject.layer != Mathf.Log(movableValues.SemisolidFilter.layerMask.value, 2)
-
-                    //|| _distance.normal.y == -1
-                    )
-                )
-
+                && overlapBuffer.Length > _i
+                && overlapBuffer[_i].transform.gameObject.layer != Mathf.Log(movableValues.SemisolidFilter.layerMask.value, 2)
+               )
             {
                 rigidbody.position += _distance.normal * _distance.distance;
             }

@@ -582,6 +582,8 @@ public class WSB_Player : LG_Movable
     {
         MoveHorizontally(xMovement);
 
+        playerAnimator.SetFloat("Run", speed / movableValues.SpeedCurve.Evaluate(movableValues.SpeedCurve[movableValues.SpeedCurve.length - 1].time));
+
         if (IsGrounded)
         {
             jumpVar = force.y = 0;
@@ -621,6 +623,8 @@ public class WSB_Player : LG_Movable
     [SerializeField] float yMovement = 0;
     [SerializeField] bool jumpInput = false;
     [SerializeField] SO_ControllerValues controllerValues = null;
+    [SerializeField] GameObject render = null;
+    [SerializeField] Animator playerAnimator = null;
     protected bool isRight = true;
 
     // Reads x & y movement and sets it in xMovement & yMovement
@@ -629,6 +633,8 @@ public class WSB_Player : LG_Movable
         if (_context.valueType != typeof(Vector2)) return;
         xMovement = _context.ReadValue<Vector2>().x;
         yMovement = _context.ReadValue<Vector2>().y;
+        if (xMovement != 0)
+            render.transform.eulerAngles = new Vector3(render.transform.eulerAngles.x, xMovement < 0 ? -90 : 90, render.transform.eulerAngles.z);
     }
 
     // Reads jump input and sets it in jumpInput
@@ -684,8 +690,6 @@ public class WSB_Player : LG_Movable
         if (grabbedObject)
             return;
     }
-
-    [SerializeField] ContactFilter2D semiSolidFilter = new ContactFilter2D();
     float coyoteVar = -999;
     float jumpBufferVar = -999;
 
@@ -697,7 +701,7 @@ public class WSB_Player : LG_Movable
         {
             // Cast below character to found if there is any SemiSolid plateform
             RaycastHit2D[] _hits = new RaycastHit2D[1];
-            if (collider.Cast(Vector3.down, semiSolidFilter, _hits) > 0)
+            if (collider.Cast(Vector3.down, movableValues.SemisolidFilter, _hits) > 0)
             {
 
                 // If found set collider in ignoredCollider and don't do the jump
