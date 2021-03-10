@@ -620,6 +620,7 @@ public class WSB_Player : LG_Movable
     [SerializeField] float xMovement = 0;
     [SerializeField] float yMovement = 0;
     [SerializeField] bool jumpInput = false;
+    [SerializeField] SO_ControllerValues controllerValues = null;
     protected bool isRight = true;
 
     // Reads x & y movement and sets it in xMovement & yMovement
@@ -701,7 +702,7 @@ public class WSB_Player : LG_Movable
 
                 // If found set collider in ignoredCollider and don't do the jump
                 semiSolidCollider = _hits[0].collider;
-                transform.position -= Vector3.up * .1f;
+                rigidbody.position -= Vector2.up * .1f;
                 return;
             }
         }

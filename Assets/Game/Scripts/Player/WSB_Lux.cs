@@ -143,8 +143,8 @@ public class WSB_Lux : WSB_Player
         StopJump();
         if (shrinked)
         {
-            halfSpeed = false;
             shrinked = false;
+            AddSpeedCoef(2);
             if(shrink != null)
             {
                 StopCoroutine(shrink);
@@ -155,7 +155,7 @@ public class WSB_Lux : WSB_Player
         }
         else
         {
-            halfSpeed = true;
+            RemoveSpeedCoef(2);
             shrinked = true;
             if(unshrink != null)
             {

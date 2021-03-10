@@ -686,20 +686,31 @@ MonoBehaviour:
   instantForce: {x: 0, y: 0}
   movement: {x: 0, y: 0}
   previousPosition: {x: 0, y: 0}
-  groundDecelerationForce: 12.5
-  airDecelerationForce: 5
-  maxGravity: -25
-  groundMinYNormal: 0.1
-  onGroundedHorizontalForceMultiplier: 0.35
-  groundClimbHeight: 0.7
-  groundSnapHeight: 0.5
   semiSolidCollider: {fileID: 0}
+  mask:
+    serializedVersion: 2
+    m_Bits: 8192
+  filter:
+    useTriggers: 0
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 8192
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
   isJumping: 0
-  controllerValues: {fileID: 11400000, guid: c75d547f7cba61d4e860f56cbc581edf, type: 2}
+  movableValues: {fileID: 0}
   canMove: 1
   xMovement: 0
   yMovement: 0
   jumpInput: 0
+  controllerValues: {fileID: 11400000, guid: c75d547f7cba61d4e860f56cbc581edf, type: 2}
   grabbedObject: {fileID: 0}
   grabContactFilter:
     useTriggers: 0

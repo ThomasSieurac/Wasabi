@@ -105,7 +105,6 @@ public class LG_Movable : MonoBehaviour
 
     // -----------------------
 
-    protected ContactFilter2D contactFilter = new ContactFilter2D();
     protected Vector2 groundNormal = new Vector2();
     #endregion
 
@@ -168,7 +167,6 @@ public class LG_Movable : MonoBehaviour
     public virtual void AddInstantForce(Vector2 _instantForce) => instantForce += _instantForce;
 
     float 所有 = 0;
-    protected bool halfSpeed = false;
 
     protected virtual void MoveHorizontally(float _movement)
     {
@@ -178,10 +176,10 @@ public class LG_Movable : MonoBehaviour
             return;
         }
 
-        所有 = Mathf.Min(所有 + Time.deltaTime, controllerValues.SpeedCurve[controllerValues.SpeedCurve.length - 1].time);
-        speed = controllerValues.SpeedCurve.Evaluate(所有);
+        所有 = Mathf.Min(所有 + Time.deltaTime, movableValues.SpeedCurve[movableValues.SpeedCurve.length - 1].time);
+        speed = movableValues.SpeedCurve.Evaluate(所有);
 
-        movement.x += (_movement * speed) / (halfSpeed ? 2 : 1);
+        movement.x += (_movement * speed);
     }
 
     protected virtual void MoveVertically(float _movement) => movement.y += _movement;
@@ -197,17 +195,14 @@ public class LG_Movable : MonoBehaviour
 
     float previousXForce = 0;
     float previousXVelocity = 0;
-    [SerializeField] float groundDecelerationForce = 12.5f;
-    [SerializeField] float airDecelerationForce = 5;
-
     protected virtual void ComputeVelocityBeforeMovement()
     {
         // Slowly decrease force over time.
         if (force.x != 0)
         {
             float _maxDelta = isGrounded ?
-                              groundDecelerationForce :
-                              airDecelerationForce;
+                              movableValues.GroundDeceleration :
+                              movableValues.AirDeceleration;
 
             // Calculs when going to opposite force direction.
             if (movement.x != 0)
@@ -263,19 +258,17 @@ public class LG_Movable : MonoBehaviour
 
     // -----------------------
 
-    [SerializeField] float maxGravity = -25;
-
     protected void AddGravity()
     {
-        if (force.y > maxGravity)
+        if (force.y > -movableValues.MaxGravity)
         {
-            AddForce(new Vector2(0, Mathf.Max(Physics2D.gravity.y * Time.deltaTime, maxGravity - force.y)));
+            AddForce(new Vector2(0, Mathf.Max(Physics2D.gravity.y * Time.deltaTime, -movableValues.MaxGravity - force.y)));
         }
     }
 
     protected void AddGravity(float _gravityCoef, float _maxGravityCoef)
     {
-        float _maxGravityValue = maxGravity * _maxGravityCoef;
+        float _maxGravityValue = -movableValues.MaxGravity * _maxGravityCoef;
         if (force.y > _maxGravityValue)
         {
             AddForce(new Vector2(0, Mathf.Max(Physics2D.gravity.y * _gravityCoef * Time.deltaTime, _maxGravityValue - force.y)));
@@ -331,8 +324,6 @@ public class LG_Movable : MonoBehaviour
 
     // -----------------------
 
-    [SerializeField] float groundMinYNormal = .1f;
-
     private void RefreshGroundState(Vector2 _movement)
     {
         if (_movement == Vector2.zero)
@@ -344,7 +335,7 @@ public class LG_Movable : MonoBehaviour
 
         for (int _i = 0; _i < castBufferCount; _i++)
         {
-            if (castBuffer[_i].normal.y >= groundMinYNormal)
+            if (castBuffer[_i].normal.y >= movableValues.GroundClimbHeight)
             {
                 _isGrounded = true;
                 groundNormal = castBuffer[_i].normal;
@@ -359,7 +350,7 @@ public class LG_Movable : MonoBehaviour
         if (!_isGrounded)
         {
             _isGrounded = CastCollider(groundNormal * Physics2D.defaultContactOffset * -2, out RaycastHit2D _groundHit) &&
-                            (_groundHit.normal.y >= groundMinYNormal) && _groundHit.collider != semiSolidCollider || isOnMovingPlateform;
+                            (_groundHit.normal.y >= movableValues.GroundClimbHeight) && _groundHit.collider != semiSolidCollider || isOnMovingPlateform;
 
             if (_isGrounded)
                 groundNormal = _groundHit.normal;
@@ -394,7 +385,6 @@ public class LG_Movable : MonoBehaviour
     protected virtual void OnAppliedVelocity(Vector2 _movement) { }
 
 
-    [SerializeField] float onGroundedHorizontalForceMultiplier = .35f;
     /// <summary>
     /// Called when grounded value has been set.
     /// </summary>
@@ -407,7 +397,7 @@ public class LG_Movable : MonoBehaviour
                 semiSolidCollider = null;
 
             if (force.x != 0)
-                force.x *= onGroundedHorizontalForceMultiplier;
+                force.x *= movableValues.OnGroundedHorizontalForceMultiplier;
         }
     }
     #endregion
@@ -459,7 +449,7 @@ public class LG_Movable : MonoBehaviour
                     if (force.y == 0) break;
                 }
 
-                if ((force.y < 0) && (castBuffer[_i].normal.y > groundMinYNormal))
+                if ((force.y < 0) && (castBuffer[_i].normal.y > movableValues.GroundClimbHeight))
                 {
                     force.y = 0;
                     if (force.x == 0) break;
@@ -602,7 +592,7 @@ public class LG_Movable : MonoBehaviour
     // Special Movements
     // -------------------------------------------
 
-    [SerializeField] float groundClimbHeight = .7f;
+    //[SerializeField] float groundClimbHeight = .7f;
 
     /// <summary>
     /// Make the object climb a surface, if possible.
@@ -617,8 +607,8 @@ public class LG_Movable : MonoBehaviour
 
         // Heighten the rigidbody position and add opposite velocity,
         // then cast collider and get hit informations.
-        rigidbody.position += new Vector2(0, groundClimbHeight);
-        _velocity.y -= groundClimbHeight;
+        rigidbody.position += new Vector2(0, movableValues.MaxHeightClimb);
+        _velocity.y -= movableValues.MaxHeightClimb;
 
         int _amount = CastCollider(_velocity, extraCastBuffer, out float _climbDistance);
 
@@ -640,8 +630,8 @@ public class LG_Movable : MonoBehaviour
         // If not, climb is failed so just reset position and velocity.
         else
         {
-            rigidbody.position -= new Vector2(0, groundClimbHeight);
-            _velocity.y += groundClimbHeight;
+            rigidbody.position -= new Vector2(0, movableValues.MaxHeightClimb);
+            _velocity.y += movableValues.MaxHeightClimb;
             _velocity.x = 0;
         }
 
@@ -668,7 +658,7 @@ public class LG_Movable : MonoBehaviour
         return false;
     }
 
-    [SerializeField] float groundSnapHeight = .5f;
+    //[SerializeField] float groundSnapHeight = .5f;
 
     /// <summary>
     /// Snap the object to the ground.
@@ -677,7 +667,7 @@ public class LG_Movable : MonoBehaviour
     /// </summary>
     protected bool GroundSnap(Vector2 _normal)
     {
-        if (CastCollider(_normal * -groundSnapHeight, out RaycastHit2D _snapHit))
+        if (CastCollider(_normal * -movableValues.GroundSnapHeight, out RaycastHit2D _snapHit))
         {
             rigidbody.position += _normal * -_snapHit.distance;
             InsertCastInfo(_snapHit);
@@ -696,7 +686,7 @@ public class LG_Movable : MonoBehaviour
 
     protected bool CastCollider(Vector2 _movement, out RaycastHit2D _hit)
     {
-        bool _result = collider.Cast(_movement, contactFilter, singleCastBuffer, _movement.magnitude) > 0;
+        bool _result = collider.Cast(_movement, movableValues.Contact, singleCastBuffer, _movement.magnitude) > 0;
         _hit = singleCastBuffer[0];
 
         if (_result)
@@ -709,22 +699,22 @@ public class LG_Movable : MonoBehaviour
     {
         _distance = _movement.magnitude;
 
-        int _hitAmount = collider.Cast(_movement, contactFilter, _hitBuffer, _distance);
+        int _hitAmount = collider.Cast(_movement, movableValues.Contact, _hitBuffer, _distance);
 
         if (_hitAmount == 0)
             semiSolidCollider = null;
 
         for (int i = 0; i < _hitAmount; i++)
         {
-            if ((_hitBuffer[i].transform.gameObject.layer == 13) && _hitBuffer[i].normal.y != 1 ||
-                (_hitBuffer[i].transform.gameObject.layer == 13) && _hitBuffer[i] == semiSolidCollider ||
+            if ((_hitBuffer[i].transform.gameObject.layer == Mathf.Log(movableValues.SemisolidFilter.layerMask.value, 2)) && _hitBuffer[i].normal.y != 1 ||
+                (_hitBuffer[i].transform.gameObject.layer == Mathf.Log(movableValues.SemisolidFilter.layerMask.value, 2)) && _hitBuffer[i] == semiSolidCollider ||
                 isOnMovingPlateform && transform.position.y > _hitBuffer[i].collider.transform.position.y)
             {
                 semiSolidCollider = _hitBuffer[i].collider;
                 _hitAmount = i;
                 break;
             }
-            if (_hitBuffer[i].transform.gameObject.layer != 13)
+            if (_hitBuffer[i].transform.gameObject.layer != Mathf.Log(movableValues.SemisolidFilter.layerMask.value, 2))
                 semiSolidCollider = null;
         }
 
@@ -748,7 +738,7 @@ public class LG_Movable : MonoBehaviour
 
     private void ExtractFromCollisions()
     {
-        int _count = collider.OverlapCollider(contactFilter, overlapBuffer);
+        int _count = collider.OverlapCollider(movableValues.Contact, overlapBuffer);
         ColliderDistance2D _distance;
 
         for (int _i = 0; _i < _count; _i++)
@@ -759,15 +749,30 @@ public class LG_Movable : MonoBehaviour
             // If overlap, extract from collision.
             _distance = collider.Distance(overlapBuffer[_i]);
 
-            if (_distance.isOverlapped && (overlapBuffer.Length > _i && overlapBuffer[_i].transform && overlapBuffer[_i].transform.gameObject && overlapBuffer[_i].transform.gameObject.layer != 13))
+            if (
+                   _distance.isValid
+                && _distance.isOverlapped
+                &&
+                    (
+                               overlapBuffer.Length > _i
+                            && overlapBuffer[_i].transform
+                            && overlapBuffer[_i].transform.gameObject
+                            && overlapBuffer[_i].transform.gameObject.layer != Mathf.Log(movableValues.SemisolidFilter.layerMask.value, 2)
+
+                    //|| _distance.normal.y == -1
+                    )
+                )
+
+            {
                 rigidbody.position += _distance.normal * _distance.distance;
+            }
         }
     }
     #endregion
-
+     
     protected float jumpVar = 0;
     [SerializeField] protected bool isJumping = false;
-    [SerializeField] protected SO_ControllerValues controllerValues;
+    [SerializeField] protected SO_MovableValues movableValues;
 
     #region Monobehaviour
     public virtual void Start()
@@ -777,8 +782,8 @@ public class LG_Movable : MonoBehaviour
 #endif
 
         // Initialize object contact filter.
-        contactFilter.layerMask = Physics2D.GetLayerCollisionMask(gameObject.layer);
-        contactFilter.useLayerMask = true;
+        movableValues.Contact.layerMask = Physics2D.GetLayerCollisionMask(gameObject.layer);
+        movableValues.Contact.useLayerMask = true;
 
         groundNormal = Vector2.up;
         //CollisionSystem = collisionSystem;
