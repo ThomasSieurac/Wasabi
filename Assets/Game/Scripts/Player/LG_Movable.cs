@@ -118,7 +118,9 @@ public class LG_Movable : MonoBehaviour
 
     public void SetOnMovingPlateform(bool _state, Collider2D _plateformCollider)
     {
-        isOnMovingPlateform = _state;
+        isOnMovingPlateform = isGrounded = _state;
+        useGravity = !_state;
+        force.y = 0;
         if (_state)
         {
             if (!ignoredColliders.Contains(_plateformCollider))
@@ -256,7 +258,11 @@ public class LG_Movable : MonoBehaviour
 
     #region Physics
 
-    protected virtual void PhysicsUpdate() => AddGravity();
+    protected virtual void PhysicsUpdate()
+    {
+        if(useGravity)
+            AddGravity();
+    }
 
     // -----------------------
 
@@ -386,6 +392,7 @@ public class LG_Movable : MonoBehaviour
     /// </summary>
     protected virtual void OnAppliedVelocity(Vector2 _movement) { }
 
+    [SerializeField] protected bool dontResetSemiSolid = false;
 
     /// <summary>
     /// Called when grounded value has been set.
@@ -393,7 +400,7 @@ public class LG_Movable : MonoBehaviour
     protected virtual void OnSetGrounded()
     {
         // Reduce horizontal force if not null when get grounded.
-        if (isGrounded)
+        if (isGrounded && !dontResetSemiSolid)
         {
             if (semiSolidCollider)
                 semiSolidCollider = null;
@@ -703,8 +710,10 @@ public class LG_Movable : MonoBehaviour
 
         int _hitAmount = collider.Cast(_movement, movableValues.Contact, _hitBuffer, _distance);
 
-        if (_hitAmount == 0)
+        if (_hitAmount == 0 && !dontResetSemiSolid)
+        {
             semiSolidCollider = null;
+        }
 
         for (int i = 0; i < _hitAmount; i++)
         {
@@ -717,7 +726,9 @@ public class LG_Movable : MonoBehaviour
                 break;
             }
             if (_hitBuffer[i].transform.gameObject.layer != Mathf.Log(movableValues.SemisolidFilter.layerMask.value, 2))
+            {
                 semiSolidCollider = null;
+            }
         }
 
         if (_hitAmount > 0)
@@ -751,15 +762,22 @@ public class LG_Movable : MonoBehaviour
             // If overlap, extract from collision.
             _distance = collider.Distance(overlapBuffer[_i]);
 
-            if (
+            if ((
                    _distance.isValid
                 && _distance.isOverlapped
                 && overlapBuffer.Length > _i
                 && overlapBuffer[_i].transform.gameObject.layer != Mathf.Log(movableValues.SemisolidFilter.layerMask.value, 2)
                )
+            ||
+               (
+                   _distance.normal.y == -1
+                && _distance.pointB.y < transform.position.y
+                && !dontResetSemiSolid
+               ))
             {
                 rigidbody.position += _distance.normal * _distance.distance;
             }
+               
         }
     }
     #endregion

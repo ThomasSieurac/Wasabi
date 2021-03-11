@@ -706,10 +706,12 @@ public class WSB_Player : LG_Movable
 
                 // If found set collider in ignoredCollider and don't do the jump
                 semiSolidCollider = _hits[0].collider;
-                rigidbody.position -= Vector2.up * .1f;
+                dontResetSemiSolid = true;
                 return;
             }
         }
+        
+        dontResetSemiSolid = false;
 
         isJumping = true;
 
