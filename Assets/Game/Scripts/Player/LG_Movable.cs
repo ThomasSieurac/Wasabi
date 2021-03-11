@@ -771,8 +771,9 @@ public class LG_Movable : MonoBehaviour
             ||
                (
                    _distance.normal.y == -1
-                && _distance.pointB.y < transform.position.y
+                && _distance.pointB.y < transform.position.y + .01f
                 && !dontResetSemiSolid
+                && !transform.parent
                ))
             {
                 rigidbody.position += _distance.normal * _distance.distance;
