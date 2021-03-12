@@ -623,7 +623,7 @@ public class WSB_Player : LG_Movable
     [SerializeField] float yMovement = 0;
     [SerializeField] bool jumpInput = false;
     [SerializeField] SO_ControllerValues controllerValues = null;
-    [SerializeField] GameObject render = null;
+    [SerializeField] GameObject rend = null;
     [SerializeField] Animator playerAnimator = null;
     protected bool isRight = true;
 
@@ -634,7 +634,7 @@ public class WSB_Player : LG_Movable
         xMovement = _context.ReadValue<Vector2>().x;
         yMovement = _context.ReadValue<Vector2>().y;
         if (xMovement != 0)
-            render.transform.eulerAngles = new Vector3(render.transform.eulerAngles.x, xMovement < 0 ? -90 : 90, render.transform.eulerAngles.z);
+            rend.transform.eulerAngles = new Vector3(rend.transform.eulerAngles.x, xMovement < 0 ? -90 : 90, rend.transform.eulerAngles.z);
     }
 
     // Reads jump input and sets it in jumpInput

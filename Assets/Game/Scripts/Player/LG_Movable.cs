@@ -105,7 +105,7 @@ public class LG_Movable : MonoBehaviour
 
     // -----------------------
 
-    protected Vector2 groundNormal = new Vector2();
+    [SerializeField] protected Vector2 groundNormal = new Vector2();
     #endregion
 
 
@@ -113,7 +113,7 @@ public class LG_Movable : MonoBehaviour
 
     #region Public
 
-    bool isOnMovingPlateform = false;
+    [SerializeField] bool isOnMovingPlateform = false;
     List<Collider2D> ignoredColliders = new List<Collider2D>();
 
     public void SetOnMovingPlateform(bool _state, Collider2D _plateformCollider)
@@ -123,6 +123,8 @@ public class LG_Movable : MonoBehaviour
         force.y = 0;
         if (_state)
         {
+            isJumping = false;
+            SetPosition(new Vector2(rigidbody.position.x, _plateformCollider.bounds.max.y));
             if (!ignoredColliders.Contains(_plateformCollider))
                 ignoredColliders.Add(_plateformCollider);
         }
@@ -167,6 +169,13 @@ public class LG_Movable : MonoBehaviour
     /// Adds a force to the object velocity for this frame only.
     /// </summary>
     public virtual void AddInstantForce(Vector2 _instantForce) => instantForce += _instantForce;
+
+    public void StopVerticalForce()
+    {
+        semiSolidCollider = null;
+        dontResetSemiSolid = false;
+        force.y = 0;
+    }
 
     float 所有 = 0;
 
@@ -776,7 +785,7 @@ public class LG_Movable : MonoBehaviour
                 && !transform.parent
                ))
             {
-                rigidbody.position += _distance.normal * _distance.distance;
+                rigidbody.position += _distance.normal * _distance.distance * 2;
             }
                
         }
@@ -804,6 +813,17 @@ public class LG_Movable : MonoBehaviour
 
     public virtual void Update()
     {
+        // Cheat codes
+
+        // Reload on L
+        if (Keyboard.current.lKey.isPressed)
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+
+
+
+        //
+
+
         PhysicsUpdate();
         MovableUpdate();
     }
