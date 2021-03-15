@@ -28,6 +28,12 @@ public class WSB_Pot : MonoBehaviour
         // Initiate the curse of the pot
         SetCurse(isCursed);
     }
+
+    private void Start()
+    {
+        GrowSeed("Trampoline");
+    }
+
     private void Update()
     {
         if(GrownSeed)
@@ -55,7 +61,7 @@ public class WSB_Pot : MonoBehaviour
     private void OnDestroy()
     {
         // Calls a recharge on Lux if there was a seed in this pot
-        if(GrownSeed)
+        if(GrownSeed && WSB_Lux.I)
             WSB_Lux.I.RechargeSeed(GrownSeed.tag);
     }
 

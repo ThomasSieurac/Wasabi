@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Game/Scenes/Hogu/Hogu_Level1_V2.unity
+- path: Assets/Game/Scenes/Scene test controller.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

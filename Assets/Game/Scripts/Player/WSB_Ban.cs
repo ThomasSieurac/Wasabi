@@ -72,14 +72,14 @@ public class WSB_Ban : WSB_Player
     #endregion
 
     // Sets instance of this object
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
+        //base.Awake();
         I = this;
     }
 
     // Setup variables and events
-    private void Start()
+    public override void Start()
     {
         WSB_GameManager.OnUpdate += MyUpdate;
         WSB_GameManager.OnPause += StopSpell;
@@ -92,7 +92,7 @@ public class WSB_Ban : WSB_Player
         spells.UpdateChargesUI(SpellType.Shrink, shrinkCharges.ToString());
         spells.UpdateChargesUI(SpellType.Wind, windCharges.ToString());
     }
-    protected override void Update()
+    public override void Update()
     {
         // Has to be here and empty to override Unity update and use MyUpdate below
     }
