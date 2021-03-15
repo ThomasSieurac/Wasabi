@@ -12,27 +12,27 @@ public class WSB_Ban : WSB_Player
     [SerializeField] WSB_Spells spells = null;
 
     #region Spell Charges
-    [SerializeField] int maxEarthCharges = 10;
+    //[SerializeField] int maxEarthCharges = 10;
     [SerializeField] int maxShrinkCharges = 10;
     [SerializeField] int maxWindCharges = 10;
     [SerializeField] int maxLightCharges = 10;
 
-    int earthCharges = 10;
+    //int earthCharges = 10;
     int shrinkCharges = 10;
     int windCharges = 10;
     int lightCharges = 10;
     #endregion
-    #region Earth Spell
-    [SerializeField] GameObject earthZone = null;
+    //#region Earth Spell
+    //[SerializeField] GameObject earthZone = null;
 
-    [SerializeField] int earthSize = 5;
-    [SerializeField] float earthChargeDelay = 10;
+    //[SerializeField] int earthSize = 5;
+    //[SerializeField] float earthChargeDelay = 10;
 
-    //Coroutine rechargeEarth = null;
+    ////Coroutine rechargeEarth = null;
 
-    [SerializeField] LayerMask groundLayer = 0;
-    [SerializeField] LayerMask earthLayer = 0;
-    #endregion
+    //[SerializeField] LayerMask groundLayer = 0;
+    //[SerializeField] LayerMask earthLayer = 0;
+    //#endregion
     #region Light Spell
     [SerializeField] GameObject lightObject = null;
 
@@ -47,7 +47,7 @@ public class WSB_Ban : WSB_Player
     #endregion
     #region Wind Spell
     [SerializeField] float windRange = 5;
-    [SerializeField] float windPower = 2;
+    /*[SerializeField]*/ float windPower = 2;
     [SerializeField] float windChargeDelay = 10;
 
     Coroutine blowCoroutine = null;
@@ -59,12 +59,12 @@ public class WSB_Ban : WSB_Player
 
     #region RechargeSpells
 
-    float earthTimer = 0;
+    //float earthTimer = 0;
     float shrinkTimer = 0;
     float lightTimer = 0;
     float windTimer = 0;
 
-    int rechargeEarth = 0;
+    //int rechargeEarth = 0;
     int rechargeShrink = 0;
     int rechargeLight = 0;
     bool rechargeWind = false;
@@ -84,10 +84,10 @@ public class WSB_Ban : WSB_Player
         WSB_GameManager.OnUpdate += MyUpdate;
         WSB_GameManager.OnPause += StopSpell;
         windCharges = maxWindCharges;
-        earthCharges = maxEarthCharges;
+        //earthCharges = maxEarthCharges;
         lightCharges = maxLightCharges;
         shrinkCharges = maxShrinkCharges;
-        spells.UpdateChargesUI(SpellType.Earth, earthCharges.ToString());
+        //spells.UpdateChargesUI(SpellType.Earth, earthCharges.ToString());
         spells.UpdateChargesUI(SpellType.Light, lightCharges.ToString());
         spells.UpdateChargesUI(SpellType.Shrink, shrinkCharges.ToString());
         spells.UpdateChargesUI(SpellType.Wind, windCharges.ToString());
@@ -102,37 +102,37 @@ public class WSB_Ban : WSB_Player
     {
         base.Update();
 
-        // Recharge the spells
-        if(rechargeEarth > 0)
-        {
-            // Increment the timer
-            earthTimer += Time.deltaTime;
+        //// Recharge the spells
+        //if(rechargeEarth > 0)
+        //{
+        //    // Increment the timer
+        //    earthTimer += Time.deltaTime;
 
-            // Update the filled image if there is no charges
-            if(earthCharges == 0)
-                spells.UpdateEmptyCharges(SpellType.Earth, earthTimer / earthChargeDelay);
+        //    // Update the filled image if there is no charges
+        //    if(earthCharges == 0)
+        //        spells.UpdateEmptyCharges(SpellType.Earth, earthTimer / earthChargeDelay);
 
-            // If the timer has finished
-            if(earthTimer >= earthChargeDelay)
-            {
-                rechargeEarth--;
+        //    // If the timer has finished
+        //    if(earthTimer >= earthChargeDelay)
+        //    {
+        //        rechargeEarth--;
 
-                // Reset the timer
-                earthTimer = 0;
+        //        // Reset the timer
+        //        earthTimer = 0;
 
-                // Increment the charges and update the UI
-                earthCharges++;
-                if (earthCharges > maxEarthCharges)
-                    earthCharges = maxEarthCharges;
+        //        // Increment the charges and update the UI
+        //        earthCharges++;
+        //        if (earthCharges > maxEarthCharges)
+        //            earthCharges = maxEarthCharges;
 
-                spells.UpdateChargesUI(SpellType.Earth, earthCharges.ToString());
-                spells.UpdateEmptyCharges(SpellType.Earth, 1);
+        //        spells.UpdateChargesUI(SpellType.Earth, earthCharges.ToString());
+        //        spells.UpdateEmptyCharges(SpellType.Earth, 1);
 
-                // Check if charges are full and stop the recharge if yes
-                if (earthCharges == maxEarthCharges)
-                    rechargeEarth = 0;
-            }
-        }
+        //        // Check if charges are full and stop the recharge if yes
+        //        if (earthCharges == maxEarthCharges)
+        //            rechargeEarth = 0;
+        //    }
+        //}
         if(rechargeLight > 0)
         {
             lightTimer += Time.deltaTime;
@@ -214,10 +214,10 @@ public class WSB_Ban : WSB_Player
             return;
 
         // Search for corresponding spell and calls it
-        if (_s == "Earth" && earthCharges > 0) 
-            Earth();
+        //if (_s == "Earth" && earthCharges > 0) 
+        //    Earth();
 
-        else if (_s == "Light" && lightCharges > 0) 
+        /*else*/ if (_s == "Light" && lightCharges > 0) 
             Light();
 
         else if (_s == "Shrink" && shrinkCharges > 0) 
@@ -235,7 +235,7 @@ public class WSB_Ban : WSB_Player
         if (blowCoroutine != null)
         {
             StopCoroutine(blowCoroutine);
-            canMove = true;
+            CanMove = true;
             rechargeWind = true;
         }
     }
@@ -247,9 +247,14 @@ public class WSB_Ban : WSB_Player
         if (shrinkCharges == 0)
             return;
 
+        bool _canShrink = true;
+
         // Ask Lux to shrink, stop here if he can't
-        if (!WSB_Lux.I.Shrink())
+        if (!WSB_Lux.I.Shrink(out _canShrink))
         {
+            if (!_canShrink)
+                return;
+
             rechargeShrink++;
             return;
         }
@@ -259,76 +264,6 @@ public class WSB_Ban : WSB_Player
         spells.UpdateChargesUI(SpellType.Shrink, shrinkCharges.ToString());
         if (shrinkCharges == 0)
             spells.UpdateEmptyCharges(SpellType.Shrink, shrinkTimer);
-    }
-
-    #endregion
-
-    #region Earth
-    void Earth()
-    {
-        // Checks if Ban has enough charges to do it
-        if (earthCharges == 0)
-            return;
-
-        bool _spawn = false;
-        // Loops for x amount from player left to player right below him to find ground
-        for (int i = -earthSize; i < earthSize; i++)
-        {
-            RaycastHit2D[] _hits = Physics2D.RaycastAll(new Vector2(transform.position.x + (i / 10f), transform.position.y), Vector2.down, 2f, groundLayer);
-            if(_hits.Length != 0)
-            {
-                // If ground found, Earth if spawned and exit this method
-                _spawn = !RetrieveEarth();
-                break;
-            }
-        }
-        SpawnEarth(_spawn);
-    }
-
-    bool RetrieveEarth()
-    {
-        RaycastHit2D _hit = Physics2D.Raycast(transform.position, Vector2.down, transform.localScale.y + .5f, earthLayer);
-        if(!_hit)
-            return false;
-        else
-        {
-            if(_hit.transform.tag == "Earth")
-            {
-                Destroy(_hit.transform.gameObject);
-                rechargeEarth++;
-                return true;
-            }
-            return false;
-        }
-    }
-
-    void SpawnEarth(bool _status)
-    {
-        // If Earth did succesfully spawned
-        if(_status)
-        {
-            // play good FX
-
-            // Reduce earth charges and update corresponding UI
-            earthCharges--;
-            spells.UpdateChargesUI(SpellType.Earth, earthCharges.ToString());
-            if(earthCharges == 0)
-                spells.UpdateEmptyCharges(SpellType.Earth, earthTimer);
-
-
-            // Raycast below Ban to find ground and Instantiate Earth on this ground
-            RaycastHit2D _hit = Physics2D.Raycast(transform.position, Vector2.down, transform.localScale.y + 1.5f, groundLayer);
-            GameObject _zdt = Instantiate(earthZone, _hit.point, Quaternion.identity);
-
-            // Set its parent so if the plateform moves, the Earth will move too
-            _zdt.transform.SetParent(_hit.transform);
-        }
-        
-        // If Earth didn't succesfully spawned
-        else
-        {
-            // play bad FX
-        }
     }
 
     #endregion
@@ -408,8 +343,8 @@ public class WSB_Ban : WSB_Player
 
     IEnumerator Blow()
     {
-        WSB_Movable _physics;
-        canMove = false;
+        LG_Movable _physics;
+        CanMove = false;
 
         // Runs until coroutine is canceled
         while(true)
@@ -436,7 +371,7 @@ public class WSB_Ban : WSB_Player
                     continue;
 
                 // Gets physic of hit object
-                _physics = _hit.gameObject.GetComponent<WSB_Movable>();
+                _physics = _hit.gameObject.GetComponent<LG_Movable>();
 
                 // if(raycast(pos, dir(pos, _hits.pos)) pas gêné, blow
 

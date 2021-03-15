@@ -576,56 +576,66 @@ public class WSB_Player : LG_Movable
     //#endregion
 
     float jumpOriginHeight = 0;
-    [SerializeField] protected bool canMove = true;
 
     public override void Update()
     {
-        MoveHorizontally(xMovement);
+        if (WSB_GameManager.Paused)
+            return;
 
-        playerAnimator.SetFloat("Run", speed / movableValues.SpeedCurve.Evaluate(movableValues.SpeedCurve[movableValues.SpeedCurve.length - 1].time));
+        if(CanMove)
+        {
+            MoveHorizontally(xMovement);
 
-        if (IsGrounded)
-        {
-            jumpVar = force.y = 0;
-            jumpOriginHeight = transform.position.y;
-            if (jumpInput && canMove)
-                if(IsGrounded || (Time.time - coyoteVar < controllerValues.JumpDelay))
-                    Jump();
-        }
-        if (isJumping)
-        {
-            // Stop the jump if input is released & peak of jump icn't reached yet
-            if (!jumpInput && jumpVar < .3f)
+            if (playerAnimator)
+                playerAnimator.SetFloat("Run", speed / movableValues.SpeedCurve.Evaluate(movableValues.SpeedCurve[movableValues.SpeedCurve.length - 1].time));
+
+            if (IsGrounded)
             {
-                jumpOriginHeight -= (controllerValues.JumpCurve.Evaluate(.3f) - controllerValues.JumpCurve.Evaluate(jumpVar));
-                jumpVar = .3f;
+                jumpVar = force.y = 0;
+                jumpOriginHeight = transform.position.y;
+                if (jumpInput && CanMove)
+                    if (IsGrounded || (Time.time - coyoteVar < controllerValues.JumpDelay))
+                        Jump();
             }
-            // Get the value corresponding to the curve set
-            else
+            if (isJumping)
             {
-                jumpVar += Time.deltaTime;
-
-                // Stop jump if peak reached
-                if (jumpVar > controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time)
+                // Stop the jump if input is released & peak of jump icn't reached yet
+                if (!jumpInput && jumpVar < .3f)
                 {
-                    jumpVar = controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time;
-                    isJumping = false;
+                    jumpOriginHeight -= (controllerValues.JumpCurve.Evaluate(.3f) - controllerValues.JumpCurve.Evaluate(jumpVar));
+                    jumpVar = .3f;
                 }
+                // Get the value corresponding to the curve set
+                else
+                {
+                    jumpVar += Time.deltaTime;
 
-                MoveVertically((jumpOriginHeight + (controllerValues.JumpCurve.Evaluate(jumpVar)) - rigidbody.position.y) / Time.deltaTime);
+                    // Stop jump if peak reached
+                    if (jumpVar > controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time)
+                    {
+                        jumpVar = controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time;
+                        isJumping = false;
+                    }
+
+                    MoveVertically((jumpOriginHeight + (controllerValues.JumpCurve.Evaluate(jumpVar)) - rigidbody.position.y) / Time.deltaTime);
+                }
             }
+
+            if (xMovement != 0)
+                isRight = movement.x > 0;
         }
+            
 
         base.Update();
     }
 
-    [SerializeField] float xMovement = 0;
-    [SerializeField] float yMovement = 0;
-    [SerializeField] bool jumpInput = false;
+    /*[SerializeField] */float xMovement = 0;
+    /*[SerializeField] */float yMovement = 0;
+    /*[SerializeField] */bool jumpInput = false;
     [SerializeField] SO_ControllerValues controllerValues = null;
     [SerializeField] GameObject rend = null;
     [SerializeField] Animator playerAnimator = null;
-    protected bool isRight = true;
+    /*[SerializeField]*/ protected bool isRight = true;
 
     // Reads x & y movement and sets it in xMovement & yMovement
     public void Move(InputAction.CallbackContext _context)
@@ -645,7 +655,7 @@ public class WSB_Player : LG_Movable
     }
 
 
-    [SerializeField] GameObject grabbedObject = null;
+    /*[SerializeField] */GameObject grabbedObject = null;
     [SerializeField] ContactFilter2D grabContactFilter = new ContactFilter2D();
     // Reads grab input and try to grab object
     public void GrabObject(InputAction.CallbackContext _context)
@@ -691,7 +701,6 @@ public class WSB_Player : LG_Movable
             return;
     }
     float coyoteVar = -999;
-    float jumpBufferVar = -999;
 
     // Makes the character jump
     void Jump()

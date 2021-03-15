@@ -29,6 +29,7 @@ public class LG_Movable : MonoBehaviour
     #region Fields / Properties
     protected const float castMaxDistanceDetection = .001f;
     protected const int collisionSystemRecursionCeil = 3;
+    public bool CanMove { get; protected set; } = false;
 
     // -----------------------
 
@@ -36,8 +37,8 @@ public class LG_Movable : MonoBehaviour
     [SerializeField] protected new BoxCollider2D collider = null;
     [SerializeField] protected new Rigidbody2D rigidbody = null;
 
-    [SerializeField] protected bool isAwake = true;
-    [SerializeField] protected bool useGravity = true;
+    /*[SerializeField] */protected bool isAwake = true;
+    /*[SerializeField] */protected bool useGravity = true;
 
     public bool IsAwake
     {
@@ -73,14 +74,14 @@ public class LG_Movable : MonoBehaviour
     }
 
 
-    [SerializeField] protected int facingSide = 1;
-    [SerializeField] protected bool isGrounded = false;
+    /*[SerializeField] */protected int facingSide = 1;
+    /*[SerializeField] */protected bool isGrounded = false;
 
     public int FacingSide { get { return facingSide; } }
     public bool IsGrounded { get { return isGrounded; } }
 
-    [SerializeField, Min(0)] protected float speed = 1;
-    [SerializeField, Min(0)] protected float speedCoef = 1;
+    /*[SerializeField, Min(0)] */protected float speed = 1;
+    /*[SerializeField, Min(0)] */protected float speedCoef = 1;
 
     // --------------------------------------------------
     //
@@ -92,20 +93,20 @@ public class LG_Movable : MonoBehaviour
     //  • Movement, the velocity applied by the object itself (like walking)
     //
 
-    [SerializeField] protected Vector2 force = Vector2.zero;
-    [SerializeField] protected Vector2 instantForce = Vector2.zero;
-    [SerializeField] protected Vector2 movement = Vector2.zero;
+    /*[SerializeField] */protected Vector2 force = Vector2.zero;
+    /*[SerializeField] */protected Vector2 instantForce = Vector2.zero;
+    /*[SerializeField] */protected Vector2 movement = Vector2.zero;
 
     // -----------------------
 
 #if UNITY_EDITOR
 
-    [SerializeField] protected Vector2 previousPosition = new Vector2();
+    /*[SerializeField] */protected Vector2 previousPosition = new Vector2();
 #endif
 
     // -----------------------
 
-    [SerializeField] protected Vector2 groundNormal = new Vector2();
+    /*[SerializeField] */protected Vector2 groundNormal = new Vector2();
     #endregion
 
 
@@ -113,7 +114,7 @@ public class LG_Movable : MonoBehaviour
 
     #region Public
 
-    [SerializeField] bool isOnMovingPlateform = false;
+    bool isOnMovingPlateform = false;
     List<Collider2D> ignoredColliders = new List<Collider2D>();
 
     public void SetOnMovingPlateform(bool _state, Collider2D _plateformCollider)
@@ -125,15 +126,25 @@ public class LG_Movable : MonoBehaviour
         {
             isJumping = false;
             SetPosition(new Vector2(rigidbody.position.x, _plateformCollider.bounds.max.y));
-            if (!ignoredColliders.Contains(_plateformCollider))
-                ignoredColliders.Add(_plateformCollider);
+            AddIgnoredCollider(_plateformCollider);
         }
 
         else
         {
-            if (ignoredColliders.Contains(_plateformCollider))
-                ignoredColliders.Remove(_plateformCollider);
+            RemoveIgnoredCollider(_plateformCollider);
         }
+    }
+
+    public void RemoveIgnoredCollider(Collider2D _c)
+    {
+        if (ignoredColliders.Contains(_c))
+            ignoredColliders.Remove(_c);
+    }
+
+    public void AddIgnoredCollider(Collider2D _c)
+    {
+        if (!ignoredColliders.Contains(_c))
+            ignoredColliders.Add(_c);
     }
 
     #endregion
@@ -401,7 +412,7 @@ public class LG_Movable : MonoBehaviour
     /// </summary>
     protected virtual void OnAppliedVelocity(Vector2 _movement) { }
 
-    [SerializeField] protected bool dontResetSemiSolid = false;
+    protected bool dontResetSemiSolid = false;
 
     /// <summary>
     /// Called when grounded value has been set.
@@ -698,7 +709,7 @@ public class LG_Movable : MonoBehaviour
 
     #region Collider Operations
 
-    [SerializeField] protected Collider2D semiSolidCollider = null;
+    protected Collider2D semiSolidCollider = null;
 
     private static RaycastHit2D[] singleCastBuffer = new RaycastHit2D[1];
 
@@ -793,7 +804,7 @@ public class LG_Movable : MonoBehaviour
     #endregion
      
     protected float jumpVar = 0;
-    [SerializeField] protected bool isJumping = false;
+    /*[SerializeField]*/ protected bool isJumping = false;
     [SerializeField] protected SO_MovableValues movableValues;
 
     #region Monobehaviour
@@ -823,6 +834,11 @@ public class LG_Movable : MonoBehaviour
 
         //
 
+        if (WSB_GameManager.Paused)
+            return;
+
+        if (force.y > 5)
+            force.y = 5;
 
         PhysicsUpdate();
         MovableUpdate();
