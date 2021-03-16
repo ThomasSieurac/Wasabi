@@ -26,7 +26,7 @@ public class WSB_Lux : WSB_Player
 
     [SerializeField] float shrinkSpeed = 10;
     [SerializeField] GameObject render = null;
-    bool shrinked = false;
+    public bool Shrinked { get; private set; } = false;
     Coroutine shrink = null;
     Coroutine unshrink = null;
 
@@ -43,11 +43,14 @@ public class WSB_Lux : WSB_Player
     public override void Start()
     {
         WSB_GameManager.OnUpdate += MyUpdate;
+
         startSize = collider.size;
         startRenderSize = render.transform.localScale;
+
         bridgeCharges = maxBridgeCharges;
         trampolineCharges = maxTrampolineCharges;
         carnivoreCharges = maxCarnivoreCharges;
+
         spells.UpdateChargesUI(bridgeCharges.ToString());
         spells.UpdateChargesUI(trampolineCharges.ToString());
         spells.UpdateChargesUI(carnivoreCharges.ToString());
@@ -58,7 +61,9 @@ public class WSB_Lux : WSB_Player
     {
         // Has to be here and empty to override Unity update and use MyUpdate below
     }
-
+    //  |
+    //  |
+    //  V
     // Update called on bound event
     void MyUpdate()
     {
@@ -83,7 +88,6 @@ public class WSB_Lux : WSB_Player
             // Exist if WSB_Pot doesn't exist
             if (!_pot)
                 return;
-
 
             // Switch on the given string to find the corresponding seed to grow
             if (_s == "Trampoline" && trampolineCharges > 0) 
@@ -128,7 +132,7 @@ public class WSB_Lux : WSB_Player
     {
         _canShrink = true;
         StopJump();
-        if (shrinked)
+        if (Shrinked)
         {
             RaycastHit2D[] _hits = new RaycastHit2D[1];
             if (collider.Cast(Vector2.up, shrinkLayer, _hits, 1.5f, true) > 0)
@@ -136,7 +140,7 @@ public class WSB_Lux : WSB_Player
                 _canShrink = false;
                 return false;
             }
-            shrinked = false;
+            Shrinked = false;
             AddSpeedCoef(2);
             if(shrink != null)
             {
@@ -149,7 +153,7 @@ public class WSB_Lux : WSB_Player
         else
         {
             RemoveSpeedCoef(2);
-            shrinked = true;
+            Shrinked = true;
             if(unshrink != null)
             {
                 StopCoroutine(unshrink);
@@ -198,9 +202,9 @@ public class WSB_Lux : WSB_Player
 
         // Reduce trampoline charges and update corresponding UI
         trampolineCharges--;
-        spells.UpdateChargesUI(/*SpellType.Trampoline,*/ trampolineCharges.ToString());
+        spells.UpdateChargesUI(trampolineCharges.ToString());
         if(trampolineCharges == 0)
-            spells.UpdateEmptyCharges(/*SpellType.Trampoline,*/ 0);
+            spells.UpdateEmptyCharges(0);
     }
 
     void Carnivore(WSB_Pot _pot)
@@ -211,9 +215,9 @@ public class WSB_Lux : WSB_Player
 
         // Reduce carnivore charges and update corresponding UI
         carnivoreCharges--;
-        spells.UpdateChargesUI(/*SpellType.Carnivore,*/ carnivoreCharges.ToString());
+        spells.UpdateChargesUI(carnivoreCharges.ToString());
         if(carnivoreCharges == 0)
-            spells.UpdateEmptyCharges(/*SpellType.Carnivore,*/ 0);
+            spells.UpdateEmptyCharges(0);
     }
 
     void Bridge(WSB_Pot _pot)
@@ -227,8 +231,8 @@ public class WSB_Lux : WSB_Player
 
         // Reduce bridge charges and update corresponding UI
         bridgeCharges--;
-        spells.UpdateChargesUI(/*SpellType.Bridge,*/ bridgeCharges.ToString());
+        spells.UpdateChargesUI(bridgeCharges.ToString());
         if (bridgeCharges == 0)
-            spells.UpdateEmptyCharges(/*SpellType.Bridge,*/ 0);
+            spells.UpdateEmptyCharges(0);
     }
 }

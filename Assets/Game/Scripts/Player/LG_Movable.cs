@@ -29,12 +29,13 @@ public class LG_Movable : MonoBehaviour
     #region Fields / Properties
     protected const float castMaxDistanceDetection = .001f;
     protected const int collisionSystemRecursionCeil = 3;
-    public bool CanMove { get; protected set; } = false;
+    public bool CanMove { get; protected set; } = true;
 
     // -----------------------
-
+    
 
     [SerializeField] protected new BoxCollider2D collider = null;
+    public BoxCollider2D MovableCollider { get { return collider; } }
     [SerializeField] protected new Rigidbody2D rigidbody = null;
 
     /*[SerializeField] */protected bool isAwake = true;
@@ -75,7 +76,7 @@ public class LG_Movable : MonoBehaviour
 
 
     /*[SerializeField] */protected int facingSide = 1;
-    /*[SerializeField] */protected bool isGrounded = false;
+    [SerializeField] protected bool isGrounded = false;
 
     public int FacingSide { get { return facingSide; } }
     public bool IsGrounded { get { return isGrounded; } }
@@ -378,10 +379,12 @@ public class LG_Movable : MonoBehaviour
         if (!_isGrounded)
         {
             _isGrounded = CastCollider(groundNormal * Physics2D.defaultContactOffset * -2, out RaycastHit2D _groundHit) &&
-                            (_groundHit.normal.y >= movableValues.GroundClimbHeight) && _groundHit.collider != semiSolidCollider || isOnMovingPlateform;
+                            (_groundHit.normal.y >= movableValues.GroundClimbHeight) &&
+                            _groundHit.collider != semiSolidCollider
+                            || isOnMovingPlateform;
 
             if (_isGrounded)
-                groundNormal = _groundHit.normal;
+            groundNormal = _groundHit.normal;
 
             else if (isGrounded)
                 groundNormal = Vector2.up;

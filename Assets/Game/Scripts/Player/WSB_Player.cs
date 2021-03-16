@@ -599,25 +599,39 @@ public class WSB_Player : LG_Movable
             }
             if (isJumping)
             {
-                // Stop the jump if input is released & peak of jump icn't reached yet
-                if (!jumpInput && jumpVar < .3f)
+                RaycastHit2D[] _hits = new RaycastHit2D[5];
+                bool _jump = true;
+                if(collider.Cast(Vector2.down, _hits, .5f) > 0)
                 {
-                    jumpOriginHeight -= (controllerValues.JumpCurve.Evaluate(.3f) - controllerValues.JumpCurve.Evaluate(jumpVar));
-                    jumpVar = .3f;
-                }
-                // Get the value corresponding to the curve set
-                else
-                {
-                    jumpVar += Time.deltaTime;
-
-                    // Stop jump if peak reached
-                    if (jumpVar > controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time)
+                    for (int i = 0; i < _hits.Length; i++)
                     {
-                        jumpVar = controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time;
-                        isJumping = false;
+                        if (_hits[i] && _hits[i].transform.GetComponent<LG_Movable>() && !_hits[i].transform.GetComponent<LG_Movable>().IsGrounded)
+                            _jump = false;
                     }
+                }
 
-                    MoveVertically((jumpOriginHeight + (controllerValues.JumpCurve.Evaluate(jumpVar)) - rigidbody.position.y) / Time.deltaTime);
+                if(_jump)
+                {
+                    // Stop the jump if input is released & peak of jump icn't reached yet
+                    if (!jumpInput && jumpVar < .3f)
+                    {
+                        jumpOriginHeight -= (controllerValues.JumpCurve.Evaluate(.3f) - controllerValues.JumpCurve.Evaluate(jumpVar));
+                        jumpVar = .3f;
+                    }
+                    // Get the value corresponding to the curve set
+                    else
+                    {
+                        jumpVar += Time.deltaTime;
+
+                        // Stop jump if peak reached
+                        if (jumpVar > controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time)
+                        {
+                            jumpVar = controllerValues.JumpCurve[controllerValues.JumpCurve.length - 1].time;
+                            isJumping = false;
+                        }
+
+                        MoveVertically((jumpOriginHeight + (controllerValues.JumpCurve.Evaluate(jumpVar)) - rigidbody.position.y) / Time.deltaTime);
+                    }
                 }
             }
 
@@ -738,5 +752,12 @@ public class WSB_Player : LG_Movable
     {
         force.y = 0;
         AddForce(_f);
+    }
+
+    protected override void OnSetGrounded()
+    {
+        base.OnSetGrounded();
+        if(IsGrounded)
+            isJumping = false;
     }
 }
