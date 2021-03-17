@@ -90,17 +90,33 @@ public class WSB_Lux : WSB_Player
                 return;
 
             // Switch on the given string to find the corresponding seed to grow
-            if (_s == "Trampoline" && trampolineCharges > 0) 
+            if (_s == "Trampoline" && trampolineCharges > 0)
+            {
                 Trampoline(_pot);
+                if (playerAnimator)
+                    playerAnimator.SetTrigger("Spell");
+            }
 
-            else if (_s == "Bridge" && bridgeCharges > 0) 
+            else if (_s == "Bridge" && bridgeCharges > 0)
+            {
                 Bridge(_pot);
+                if (playerAnimator)
+                    playerAnimator.SetTrigger("Spell");
+            }
 
-            else if (_s == "Carnivore" && carnivoreCharges > 0) 
+            else if (_s == "Carnivore" && carnivoreCharges > 0)
+            {
                 Carnivore(_pot);
+                if (playerAnimator)
+                    playerAnimator.SetTrigger("Spell");
+            }
 
-            else 
+            else
+            {
                 _pot.BreakSeed();
+                if (playerAnimator)
+                    playerAnimator.SetTrigger("Unspell");
+            }
         }
 
     }
@@ -126,6 +142,18 @@ public class WSB_Lux : WSB_Player
             spells.UpdateChargesUI(carnivoreCharges.ToString());
             spells.UpdateEmptyCharges(1);
         }
+    }
+
+    public void AnimateLever()
+    {
+        if (playerAnimator)
+            playerAnimator.SetTrigger("Lever");
+    }
+
+    public void AnimateButton()
+    {
+        if (playerAnimator)
+            playerAnimator.SetTrigger("Button");
     }
 
     public bool Shrink(out bool _canShrink)

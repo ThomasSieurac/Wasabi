@@ -54,6 +54,7 @@ public class WSB_Button : MonoBehaviour
         // Check if the button isn't already active
         if (!active)
         {
+            
             // Activates the button, invoke the event and start the delay for the deactivation
             active = true;
             onActivate?.Invoke();

@@ -586,9 +586,6 @@ public class WSB_Player : LG_Movable
         {
             MoveHorizontally(xMovement);
 
-            if (playerAnimator)
-                playerAnimator.SetFloat("Run", speed / movableValues.SpeedCurve.Evaluate(movableValues.SpeedCurve[movableValues.SpeedCurve.length - 1].time));
-
             if (IsGrounded)
             {
                 jumpVar = force.y = 0;
@@ -596,6 +593,14 @@ public class WSB_Player : LG_Movable
                 if (jumpInput && CanMove)
                     if (IsGrounded || (Time.time - coyoteVar < controllerValues.JumpDelay))
                         Jump();
+            }
+            if (playerAnimator)
+            {
+                playerAnimator.SetBool("Jump", isJumping);
+
+                playerAnimator.SetFloat("Run", speed / movableValues.SpeedCurve.Evaluate(movableValues.SpeedCurve[movableValues.SpeedCurve.length - 1].time) * (isRight ? 1 : -1));
+
+                // Set grab into "Grab" boolean
             }
             if (isJumping)
             {
@@ -648,7 +653,7 @@ public class WSB_Player : LG_Movable
     /*[SerializeField] */bool jumpInput = false;
     [SerializeField] SO_ControllerValues controllerValues = null;
     [SerializeField] GameObject rend = null;
-    [SerializeField] Animator playerAnimator = null;
+    [SerializeField] protected Animator playerAnimator = null;
     /*[SerializeField]*/ protected bool isRight = true;
 
     // Reads x & y movement and sets it in xMovement & yMovement
@@ -759,5 +764,7 @@ public class WSB_Player : LG_Movable
         base.OnSetGrounded();
         if(IsGrounded)
             isJumping = false;
+        if (playerAnimator)
+            playerAnimator.SetBool("Grounded", IsGrounded);
     }
 }
