@@ -648,7 +648,42 @@ public class WSB_Player : LG_Movable
         base.Update();
     }
 
-    /*[SerializeField] */float xMovement = 0;
+    bool canAnimateLever = false;
+    bool canAnimateButton = false;
+
+    public void ToggleLever(bool _s)
+    {
+        canAnimateLever = _s;
+    }
+    public void ToggleButton(bool _s)
+    {
+        canAnimateButton = _s;
+    }
+
+    public void AnimateLever(Vector2 _pos)
+    {
+        if (canAnimateLever && playerAnimator)
+        {
+            SetPosition(_pos);
+            playerAnimator.SetTrigger("Lever");
+            CanMove = false;
+        }
+    }
+
+    public void AnimateButton(Vector2 _pos)
+    {
+        if (canAnimateButton && playerAnimator)
+        {
+            SetPosition(_pos);
+            playerAnimator.SetTrigger("Button");
+            CanMove = false;
+        }
+    }
+
+    public void AnimationFinished() => CanMove = true;
+
+    /*[SerializeField] */
+    float xMovement = 0;
     /*[SerializeField] */float yMovement = 0;
     /*[SerializeField] */bool jumpInput = false;
     [SerializeField] SO_ControllerValues controllerValues = null;

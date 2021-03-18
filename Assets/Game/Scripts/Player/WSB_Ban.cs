@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class WSB_Ban : WSB_Player
 {
@@ -37,6 +38,7 @@ public class WSB_Ban : WSB_Player
     [SerializeField] float windChargeDelay = 10;
 
     Coroutine blowCoroutine = null;
+
 
     [SerializeField] LayerMask windLayer = 0;
 
@@ -189,6 +191,7 @@ public class WSB_Ban : WSB_Player
         }
     }
 
+
     #region Shrink
     void Shrink()
     {
@@ -251,9 +254,6 @@ public class WSB_Ban : WSB_Player
         GameObject _light = Instantiate(lightObject, new Vector3(transform.position.x,transform.position.y,-5), Quaternion.identity);
         StartCoroutine(MoveLight(_light, _light.transform.position + Vector3.up * 2));
     }
-
-
-
 
     IEnumerator MoveLight(GameObject _light, Vector3 _target)
     {

@@ -12,6 +12,7 @@ public class WSB_Lever : MonoBehaviour
     [SerializeField] bool active = false;
     [SerializeField] UnityEvent onActivate = null;
     [SerializeField] UnityEvent onDeactivate = null;
+    [SerializeField] Vector2 characterPosition = Vector2.zero;
 
     [SerializeField] float cooldown = .2f;
     bool canPress = true;
@@ -19,28 +20,41 @@ public class WSB_Lever : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = active ? Color.green : Color.red;
-        Gizmos.DrawSphere(transform.position, .2f);
+        Gizmos.DrawSphere((Vector2)transform.position + characterPosition, .2f);
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // If ban enter this trigger, its Use action is bound to the Interact method
         if (collision.GetComponent<WSB_Ban>())
+        {
             inputBan.FindAction("Interact").performed += Interact;
+            WSB_Ban.I.ToggleLever(true);
+        }
 
         // If lux enter this trigger, its Use action is bound to the Interact method
         if (collision.GetComponent<WSB_Lux>())
+        {
             inputLux.FindAction("Interact").performed += Interact;
+            WSB_Lux.I.ToggleLever(true);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         // If ban exits this trigger, its Interact method is unbound from the Use action
         if (collision.GetComponent<WSB_Ban>())
+        {
             inputBan.FindAction("Interact").performed -= Interact;
+            WSB_Ban.I.ToggleLever(false);
+        }
 
         // If lux exits this trigger, its Interact method is unbound from the Use action
         if (collision.GetComponent<WSB_Lux>())
+        {
             inputLux.FindAction("Interact").performed -= Interact;
+            WSB_Lux.I.ToggleLever(false);
+        }
     }
 
     public void Interact(InputAction.CallbackContext _ctx)
@@ -48,6 +62,8 @@ public class WSB_Lever : MonoBehaviour
         // Call activate event and inverse active bool
         if(active && canPress)
         {
+            WSB_Ban.I.AnimateLever((Vector2)transform.position + characterPosition);
+            WSB_Lux.I.AnimateLever((Vector2)transform.position + characterPosition);
             onDeactivate?.Invoke();
             active = canPress = false;
             StartCoroutine(Cooldown());
@@ -55,6 +71,8 @@ public class WSB_Lever : MonoBehaviour
         // Call deactivate event and inverse active bool
         else if (canPress)
         {
+            WSB_Ban.I.AnimateLever((Vector2)transform.position + characterPosition);
+            WSB_Lux.I.AnimateLever((Vector2)transform.position + characterPosition);
             onActivate?.Invoke();
             active = true;
             canPress = false;

@@ -144,18 +144,6 @@ public class WSB_Lux : WSB_Player
         }
     }
 
-    public void AnimateLever()
-    {
-        if (playerAnimator)
-            playerAnimator.SetTrigger("Lever");
-    }
-
-    public void AnimateButton()
-    {
-        if (playerAnimator)
-            playerAnimator.SetTrigger("Button");
-    }
-
     public bool Shrink(out bool _canShrink)
     {
         _canShrink = true;
@@ -263,4 +251,5 @@ public class WSB_Lux : WSB_Player
         if (bridgeCharges == 0)
             spells.UpdateEmptyCharges(0);
     }
+
 }
