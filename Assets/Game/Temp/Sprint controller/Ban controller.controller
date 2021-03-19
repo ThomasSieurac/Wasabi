@@ -47,7 +47,7 @@ AnimatorStateMachine:
     m_Position: {x: 410, y: -200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4443608816988156120}
-    m_Position: {x: 650, y: -200, z: 0}
+    m_Position: {x: 640, y: -200, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -3754913923338153484}
@@ -98,7 +98,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 2
+    m_ConditionEvent: SpellLoop
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1858735489496567314}
   m_Solo: 0
@@ -108,7 +111,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.75
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -169,8 +172,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 1827226128182048838, guid: 59ddf0a5d45c4e340a819d4f8dc7c142,
-      type: 3}
+    m_Motion: {fileID: 0}
     m_Threshold: -1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1.8
@@ -178,7 +180,7 @@ BlendTree:
     m_DirectBlendParameter: Run
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 2db6baa5923c59f40b4f32bb0c88cd29, type: 2}
+    m_Motion: {fileID: 0}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -186,8 +188,7 @@ BlendTree:
     m_DirectBlendParameter: Run
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 1827226128182048838, guid: 59ddf0a5d45c4e340a819d4f8dc7c142,
-      type: 3}
+    m_Motion: {fileID: 0}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1.8
@@ -336,7 +337,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Retrieve seed
+  m_Name: Use spell loop
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -362,7 +363,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Lux controller
+  m_Name: Ban controller
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Run
@@ -395,8 +396,8 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Unspell
-    m_Type: 9
+  - m_Name: SpellLoop
+    m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -844,7 +845,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Unspell
+    m_ConditionEvent: SpellLoop
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1057714601598054526}
