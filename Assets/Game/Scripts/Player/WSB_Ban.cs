@@ -168,7 +168,7 @@ public class WSB_Ban : WSB_Player
             return;
 
         // Search for corresponding spell and calls it
-        if (_s == "Light" && lightCharges > 0) 
+        if (_s == "Light")
             Light();
 
         else if (_s == "Shrink") 
@@ -185,6 +185,8 @@ public class WSB_Ban : WSB_Player
         // Stops blow method if in use
         if (blowCoroutine != null)
         {
+            if (playerAnimator)
+                playerAnimator.SetBool("SpellLoop", false);
             StopCoroutine(blowCoroutine);
             CanMove = true;
             rechargeWind = true;
@@ -199,10 +201,11 @@ public class WSB_Ban : WSB_Player
         if (shrinkCharges == 0 && !WSB_Lux.I.Shrinked)
             return;
 
-        bool _canShrink = true;
+        if(playerAnimator)
+            playerAnimator.SetTrigger("Spell");
 
         // Ask Lux to shrink, stop here if he can't
-        if (!WSB_Lux.I.Shrink(out _canShrink))
+        if (!WSB_Lux.I.Shrink(out bool _canShrink))
         {
             if (!_canShrink)
                 return;
@@ -233,16 +236,18 @@ public class WSB_Ban : WSB_Player
         {
             Destroy(_hits[0].transform.gameObject);
             rechargeLight++;
+            if (playerAnimator)
+                playerAnimator.SetTrigger("Spell");
             return;
         }
 
+        // Checks if Ban has enough charges to do it
         // Return is Ban is not grounded
-        if (!isGrounded)
+        if (lightCharges == 0 || !isGrounded)
             return;
 
-        // Checks if Ban has enough charges to do it
-        if (lightCharges == 0)
-            return;
+        if (playerAnimator)
+            playerAnimator.SetTrigger("Spell");
 
         // Reduce earth charges and update corresponding UI
         lightCharges--;
@@ -287,6 +292,11 @@ public class WSB_Ban : WSB_Player
             spells.UpdateEmptyCharges(SpellType.Wind, windTimer);
 
         rechargeWind = false;
+        if (playerAnimator)
+        {
+            playerAnimator.SetBool("SpellLoop", true);
+            playerAnimator.SetTrigger("Wind");
+        }
         blowCoroutine = StartCoroutine(Blow());
     }
 

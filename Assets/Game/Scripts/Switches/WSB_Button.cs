@@ -68,8 +68,8 @@ public class WSB_Button : MonoBehaviour
         // Check if the button isn't already active
         if (!active)
         {
-            WSB_Ban.I.AnimateLever((Vector2)transform.position + characterPosition);
-            WSB_Lux.I.AnimateLever((Vector2)transform.position + characterPosition);
+            WSB_Ban.I.AnimateButton((Vector2)transform.position + characterPosition);
+            WSB_Lux.I.AnimateButton((Vector2)transform.position + characterPosition);
             // Activates the button, invoke the event and start the delay for the deactivation
             active = true;
             onActivate?.Invoke();

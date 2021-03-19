@@ -576,7 +576,7 @@ public class WSB_Player : LG_Movable
     //#endregion
 
     float jumpOriginHeight = 0;
-
+    public bool Turning = false;
     public override void Update()
     {
         if (WSB_GameManager.Paused)
@@ -585,6 +585,8 @@ public class WSB_Player : LG_Movable
         if(CanMove)
         {
             MoveHorizontally(xMovement);
+
+            
 
             if (IsGrounded)
             {
@@ -598,7 +600,35 @@ public class WSB_Player : LG_Movable
             {
                 playerAnimator.SetBool("Jump", isJumping);
 
-                playerAnimator.SetFloat("Run", speed / movableValues.SpeedCurve.Evaluate(movableValues.SpeedCurve[movableValues.SpeedCurve.length - 1].time) * (isRight ? 1 : -1));
+                if(CanMove)
+                {
+                    if(xMovement < 0 /*&& rend.transform.rotation.y > 0*/ && isRight)
+                    {
+                        isRight = false;
+                        if (isGrounded)
+                        {
+                            playerAnimator.SetBool("Turning", true);
+                            playerAnimator.SetTrigger("Rotate");
+                        }
+                        else
+                            rend.transform.eulerAngles = new Vector3(rend.transform.eulerAngles.x, -90, rend.transform.eulerAngles.z);
+                    }
+
+                    if (xMovement > 0 /*&& rend.transform.rotation.y < 0*/ && !isRight)
+                    {
+                        isRight = true;
+                        if (isGrounded)
+                        {
+                            playerAnimator.SetBool("Turning", true);
+                            playerAnimator.SetTrigger("Rotate");
+                        }
+                        else
+                            rend.transform.eulerAngles = new Vector3(rend.transform.eulerAngles.x, 90, rend.transform.eulerAngles.z);
+                    }
+
+                    playerAnimator.SetFloat("Run", speed / movableValues.SpeedCurve.Evaluate(movableValues.SpeedCurve[movableValues.SpeedCurve.length - 1].time) * (isRight ? 1 : -1));
+                }
+                
 
                 // Set grab into "Grab" boolean
             }
@@ -694,11 +724,9 @@ public class WSB_Player : LG_Movable
     // Reads x & y movement and sets it in xMovement & yMovement
     public void Move(InputAction.CallbackContext _context)
     {
-        if (_context.valueType != typeof(Vector2)) return;
+        if (_context.valueType != typeof(Vector2) || !CanMove) return;
         xMovement = _context.ReadValue<Vector2>().x;
         yMovement = _context.ReadValue<Vector2>().y;
-        if (xMovement != 0)
-            rend.transform.eulerAngles = new Vector3(rend.transform.eulerAngles.x, xMovement < 0 ? -90 : 90, rend.transform.eulerAngles.z);
     }
 
     // Reads jump input and sets it in jumpInput

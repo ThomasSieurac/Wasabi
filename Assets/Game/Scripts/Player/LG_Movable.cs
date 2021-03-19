@@ -817,9 +817,9 @@ public class LG_Movable : MonoBehaviour
         previousPosition = transform.position;
 #endif
 
-        // Initialize object contact filter.
-        movableValues.Contact.layerMask = Physics2D.GetLayerCollisionMask(gameObject.layer);
-        movableValues.Contact.useLayerMask = true;
+        //// Initialize object contact filter.
+        //movableValues.Contact.layerMask = Physics2D.GetLayerCollisionMask(gameObject.layer);
+        //movableValues.Contact.useLayerMask = true;
 
         groundNormal = Vector2.up;
         //CollisionSystem = collisionSystem;

@@ -93,22 +93,16 @@ public class WSB_Lux : WSB_Player
             if (_s == "Trampoline" && trampolineCharges > 0)
             {
                 Trampoline(_pot);
-                if (playerAnimator)
-                    playerAnimator.SetTrigger("Spell");
             }
 
             else if (_s == "Bridge" && bridgeCharges > 0)
             {
                 Bridge(_pot);
-                if (playerAnimator)
-                    playerAnimator.SetTrigger("Spell");
             }
 
             else if (_s == "Carnivore" && carnivoreCharges > 0)
             {
                 Carnivore(_pot);
-                if (playerAnimator)
-                    playerAnimator.SetTrigger("Spell");
             }
 
             else
@@ -214,7 +208,14 @@ public class WSB_Lux : WSB_Player
     {
         // Exit if growing a seed isn't possible
         if (!_pot.GrowSeed("Trampoline"))
+        {
+            if (playerAnimator)
+                playerAnimator.SetTrigger("Unspell");
             return;
+        }
+
+        if (playerAnimator)
+            playerAnimator.SetTrigger("Spell");
 
         // Reduce trampoline charges and update corresponding UI
         trampolineCharges--;
@@ -227,7 +228,14 @@ public class WSB_Lux : WSB_Player
     {
         // Exit if growing a seed isn't possible
         if (!_pot.GrowSeed("Carnivore"))
+        {
+            if (playerAnimator)
+                playerAnimator.SetTrigger("Unspell");
             return;
+        }
+
+        if (playerAnimator)
+            playerAnimator.SetTrigger("Spell");
 
         // Reduce carnivore charges and update corresponding UI
         carnivoreCharges--;
@@ -240,8 +248,15 @@ public class WSB_Lux : WSB_Player
     {
         // Exit if growing a seed isn't possible
         if (!_pot.GrowSeed("Bridge"))
+        {
+            if (playerAnimator)
+                playerAnimator.SetTrigger("Unspell");
             return;
+        }
 
+        if (playerAnimator)
+            playerAnimator.SetTrigger("Spell");
+        
         // Deploy bridge and gives it the direction it needs to grow
         _pot.GrownSeed.GetComponent<WSB_Bridge>().StartCoroutine(_pot.GrownSeed.GetComponent<WSB_Bridge>().DeployBridge(transform.position.x < _pot.transform.position.x));
 
