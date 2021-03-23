@@ -11,7 +11,6 @@ public class WSB_MovingPlateform2 : MonoBehaviour
         if(collision.transform.GetComponent<LG_Movable>() && collision.bounds.center.y - .25f > col.bounds.max.y)
         {
             collision.transform.GetComponent<LG_Movable>().SetOnMovingPlateform(true, col);
-            collision.transform.SetParent(transform);
         }
     }
 
@@ -20,7 +19,6 @@ public class WSB_MovingPlateform2 : MonoBehaviour
         if (collision.transform.GetComponent<LG_Movable>())
         {
             collision.transform.GetComponent<LG_Movable>().SetOnMovingPlateform(false, col);
-            collision.transform.SetParent(null);
         }
     }
 }

@@ -586,7 +586,17 @@ public class WSB_Player : LG_Movable
         {
             MoveHorizontally(xMovement);
 
-            
+            if (grabbedObject)
+            {
+                grabbedObject.TryGetComponent(out LG_Movable _movable);
+                if (_movable)
+                {
+                    if (!_movable.IsGrounded || !IsGrounded || Vector2.Distance(grabbedObject.GetComponent<Collider2D>().ClosestPoint(transform.position), transform.position) > 1)
+                        DropGrabbedObject();
+                    else
+                        _movable.MoveHorizontally(xMovement);
+                }
+            }
 
             if (IsGrounded)
             {
@@ -743,15 +753,15 @@ public class WSB_Player : LG_Movable
     public void GrabObject(InputAction.CallbackContext _context)
     {
         // Drop object if input canceled
-        if (_context.canceled && grabbedObject)
-            grabbedObject = null;
+        if (_context.canceled)
+            DropGrabbedObject();
 
         else if (_context.started && !grabbedObject)
         {
             RaycastHit2D[] _hit = new RaycastHit2D[1];
 
             // Cast on facing direction to check if there is an object
-            if (collider.Cast(isRight ? Vector2.right : Vector2.left, grabContactFilter, _hit, .8f) > 0)
+            if (collider.Cast(isRight ? Vector2.right : Vector2.left, grabContactFilter, _hit, .5f) > 0)
             {
                 if (_hit[0].transform.GetComponent<WSB_Movable>() && !_hit[0].transform.GetComponent<WSB_Movable>().CanMove)
                     return;
@@ -763,8 +773,23 @@ public class WSB_Player : LG_Movable
 
                 // Sets grabbedObject var
                 grabbedObject = _hit[0].transform.gameObject;
+                grabbedObject.transform.parent = transform;
+
+                if (playerAnimator)
+                    playerAnimator.SetBool("Grab", true);
             }
         }
+    }
+
+    void DropGrabbedObject()
+    {
+        if (!grabbedObject)
+            return;
+
+        grabbedObject.transform.parent = null;
+        grabbedObject = null;
+        if (playerAnimator)
+            playerAnimator.SetBool("Grab", false);
     }
 
     // Virtual method

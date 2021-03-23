@@ -78,6 +78,7 @@
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkQueryRTPCValue.cs" />
     <Compile Include="Assets\Wwise\Deployment\Components\AkRoom.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Handwritten\Common\WwiseTypes\AkWwiseEvent.cs" />
+    <Compile Include="Assets\Game\Scripts\AnimationBehaviours\TurnOnEnd.cs" />
     <Compile Include="Assets\Wwise\Deployment\Components\AkEvent.cs" />
     <Compile Include="Assets\Game\Scripts\Checkpoints\WSB_CheckpointManager.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Handwritten\Common\AkVertex.cs" />
@@ -319,7 +320,6 @@
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkRoomParams.cs" />
     <Compile Include="Assets\Wwise\Deployment\Components\AkTriggerCollisionEnter.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Handwritten\Common\Arrays\AkDiffractionPathInfoArray.cs" />
-    <Compile Include="Assets\Game\Scripts\AnimationBehaviours\TurnOnEnd.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Wwise\Deployment\Plugins\Windows\x86_64\DSP\MSSpatial.dll" />

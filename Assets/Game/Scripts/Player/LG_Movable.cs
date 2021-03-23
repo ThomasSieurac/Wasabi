@@ -115,11 +115,22 @@ public class LG_Movable : MonoBehaviour
 
     #region Public
 
-    bool isOnMovingPlateform = false;
+    [SerializeField] bool isOnMovingPlateform = false;
     List<Collider2D> ignoredColliders = new List<Collider2D>();
+    Collider2D _deb;
+
+    private void OnDrawGizmos()
+    {
+        if(_deb)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawSphere(new Vector2(rigidbody.position.x, _deb.bounds.max.y), .5f);
+        }
+    }
 
     public void SetOnMovingPlateform(bool _state, Collider2D _plateformCollider)
     {
+        _deb = _plateformCollider;
         isOnMovingPlateform = isGrounded = _state;
         useGravity = !_state;
         force.y = 0;
@@ -128,10 +139,14 @@ public class LG_Movable : MonoBehaviour
             isJumping = false;
             SetPosition(new Vector2(rigidbody.position.x, _plateformCollider.bounds.max.y));
             AddIgnoredCollider(_plateformCollider);
+            if(!transform.parent)
+                transform.parent = _plateformCollider.transform;
         }
 
         else
         {
+            if (transform.parent == _plateformCollider.transform)
+                transform.parent = null;
             RemoveIgnoredCollider(_plateformCollider);
         }
     }
@@ -191,7 +206,7 @@ public class LG_Movable : MonoBehaviour
 
     float 所有 = 0;
 
-    protected virtual void MoveHorizontally(float _movement)
+    public virtual void MoveHorizontally(float _movement)
     {
         if (_movement == 0)
         {
