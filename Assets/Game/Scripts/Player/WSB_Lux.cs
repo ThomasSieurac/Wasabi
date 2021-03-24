@@ -42,6 +42,8 @@ public class WSB_Lux : WSB_Player
     // Set default calues to charges and adds custom update in game global update
     public override void Start()
     {
+        base.Start();
+
         WSB_GameManager.OnUpdate += MyUpdate;
 
         startSize = collider.size;

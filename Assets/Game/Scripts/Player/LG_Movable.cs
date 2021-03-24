@@ -115,30 +115,24 @@ public class LG_Movable : MonoBehaviour
 
     #region Public
 
-    [SerializeField] bool isOnMovingPlateform = false;
+    public bool IsOnMovingPlateform { get; private set; } = false;
     List<Collider2D> ignoredColliders = new List<Collider2D>();
-    Collider2D _deb;
-
-    private void OnDrawGizmos()
-    {
-        if(_deb)
-        {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawSphere(new Vector2(rigidbody.position.x, _deb.bounds.max.y), .5f);
-        }
-    }
-
     public void SetOnMovingPlateform(bool _state, Collider2D _plateformCollider)
     {
-        _deb = _plateformCollider;
-        isOnMovingPlateform = isGrounded = _state;
+        IsOnMovingPlateform = isGrounded = _state;
         useGravity = !_state;
         force.y = 0;
         if (_state)
         {
+            LastMovingPlateformCollider = _plateformCollider;
+
             isJumping = false;
-            SetPosition(new Vector2(rigidbody.position.x, _plateformCollider.bounds.max.y));
             AddIgnoredCollider(_plateformCollider);
+
+            Vector2 _p = new Vector2(rigidbody.position.x, _plateformCollider.bounds.max.y);
+            _p.y += Vector2.Distance(_p, transform.position);
+
+            SetPosition(_p);
             if(!transform.parent)
                 transform.parent = _plateformCollider.transform;
         }
@@ -146,10 +140,31 @@ public class LG_Movable : MonoBehaviour
         else
         {
             if (transform.parent == _plateformCollider.transform)
+            {
                 transform.parent = null;
+            }
+
             RemoveIgnoredCollider(_plateformCollider);
         }
     }
+
+    public void RefreshOnMovingPlateform()
+    {
+        RaycastHit2D[] _hits = new RaycastHit2D[4];
+
+        if(collider.Cast(Vector2.down, _hits, 1) > 0)
+        {
+            for (int i = 0; i < _hits.Length; i++)
+            {
+                if(_hits[i] && _hits[i].transform.GetComponent<WSB_MovingPlateform2>() && _hits[i].collider.bounds.max.y < collider.bounds.min.y)
+                {
+                    SetOnMovingPlateform(true, _hits[i].collider);
+                }
+            }
+        }
+    }
+
+    public Collider2D LastMovingPlateformCollider { get; private set; }
 
     public void RemoveIgnoredCollider(Collider2D _c)
     {
@@ -396,7 +411,7 @@ public class LG_Movable : MonoBehaviour
             _isGrounded = CastCollider(groundNormal * Physics2D.defaultContactOffset * -2, out RaycastHit2D _groundHit) &&
                             (_groundHit.normal.y >= movableValues.GroundClimbHeight) &&
                             _groundHit.collider != semiSolidCollider
-                            || isOnMovingPlateform;
+                            || IsOnMovingPlateform;
 
             if (_isGrounded)
             groundNormal = _groundHit.normal;
@@ -405,7 +420,7 @@ public class LG_Movable : MonoBehaviour
                 groundNormal = Vector2.up;
         }
 
-        if (isOnMovingPlateform)
+        if (IsOnMovingPlateform)
             isGrounded = true;
 
         if (isGrounded != _isGrounded)
@@ -757,7 +772,7 @@ public class LG_Movable : MonoBehaviour
         {
             if ((_hitBuffer[i].transform.gameObject.layer == Mathf.Log(movableValues.SemisolidFilter.layerMask.value, 2)) && _hitBuffer[i].normal.y != 1 ||
                 (_hitBuffer[i].transform.gameObject.layer == Mathf.Log(movableValues.SemisolidFilter.layerMask.value, 2)) && _hitBuffer[i] == semiSolidCollider ||
-                isOnMovingPlateform && transform.position.y > _hitBuffer[i].collider.transform.position.y)
+                IsOnMovingPlateform && transform.position.y > _hitBuffer[i].collider.transform.position.y)
             {
                 semiSolidCollider = _hitBuffer[i].collider;
                 _hitAmount = i;

@@ -18,7 +18,8 @@ public class WSB_MovingPlateform2 : MonoBehaviour
     {
         if (collision.transform.GetComponent<LG_Movable>())
         {
-            collision.transform.GetComponent<LG_Movable>().SetOnMovingPlateform(false, col);
+            if(collision.transform.GetComponent<LG_Movable>().IsOnMovingPlateform && collision.transform.parent != WSB_Ban.I.transform && collision.transform.parent != WSB_Lux.I.transform)
+                collision.transform.GetComponent<LG_Movable>().SetOnMovingPlateform(false, col);
         }
     }
 }

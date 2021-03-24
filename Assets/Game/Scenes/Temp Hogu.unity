@@ -932,7 +932,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.9}
   m_EdgeRadius: 0
 --- !u!23 &528478488
 MeshRenderer:
@@ -1378,7 +1378,6 @@ MonoBehaviour:
   collider: {fileID: 707913372}
   rigidbody: {fileID: 707913371}
   isGrounded: 0
-  isOnMovingPlateform: 0
   movableValues: {fileID: 11400000, guid: a50a579a44b5d9841b84265f4897779e, type: 2}
 --- !u!50 &707913371
 Rigidbody2D:
@@ -1484,7 +1483,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 707913369}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.36, y: 11.29, z: 0.0071582794}
+  m_LocalPosition: {x: -7.61, y: 9.34, z: 0.0071582794}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1592,7 +1591,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 777610272}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.71, y: 7.53, z: 0.0071582794}
+  m_LocalPosition: {x: -4.71, y: 5.86, z: 0.0071582794}
   m_LocalScale: {x: 5.25, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

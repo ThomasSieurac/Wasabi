@@ -63,6 +63,8 @@ public class WSB_Ban : WSB_Player
     // Setup variables and events
     public override void Start()
     {
+        base.Start();
+
         WSB_GameManager.OnUpdate += MyUpdate;
         WSB_GameManager.OnPause += StopSpell;
 
