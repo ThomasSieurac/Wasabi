@@ -139,10 +139,8 @@ public class LG_Movable : MonoBehaviour
 
         else
         {
-            Debug.LogError("in");
             if (transform.parent)
             {
-            Debug.LogError("inner");
                 transform.parent = null;
             }
 

@@ -29,14 +29,14 @@ public class WSB_Lever : MonoBehaviour
         if (collision.GetComponent<WSB_Ban>())
         {
             inputBan.FindAction("Interact").performed += Interact;
-            WSB_Ban.I.ToggleLever(true);
+            WSB_Ban.I.ToggleLever(true, active);
         }
 
         // If lux enter this trigger, its Use action is bound to the Interact method
         if (collision.GetComponent<WSB_Lux>())
         {
             inputLux.FindAction("Interact").performed += Interact;
-            WSB_Lux.I.ToggleLever(true);
+            WSB_Lux.I.ToggleLever(true, active);
         }
     }
 

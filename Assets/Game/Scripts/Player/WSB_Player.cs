@@ -116,10 +116,12 @@ public class WSB_Player : LG_Movable
 
     bool canAnimateLever = false;
     bool canAnimateButton = false;
+    bool isLeverRight = false;
 
-    public void ToggleLever(bool _s)
+    public void ToggleLever(bool _s, bool _r = false)
     {
         canAnimateLever = _s;
+        isLeverRight = _r;
     }
     public void ToggleButton(bool _s)
     {
@@ -130,6 +132,7 @@ public class WSB_Player : LG_Movable
     {
         if (canAnimateLever && playerAnimator)
         {
+            rend.transform.eulerAngles = new Vector3(rend.transform.eulerAngles.x, isLeverRight ? 90 : -90, rend.transform.eulerAngles.z);
             SetPosition(_pos);
             playerAnimator.SetTrigger("Lever");
             CanMove = false;
