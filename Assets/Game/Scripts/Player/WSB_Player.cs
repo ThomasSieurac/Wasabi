@@ -214,7 +214,7 @@ public class WSB_Player : LG_Movable
 
         grabbedObject.transform.parent = transform.parent;
 
-        RefreshOnMovingPlateform();
+        grabbedObject.RefreshOnMovingPlateform();
         grabbedObject = null;
         if (playerAnimator)
             playerAnimator.SetBool("Grab", false);

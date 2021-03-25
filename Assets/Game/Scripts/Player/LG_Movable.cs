@@ -139,8 +139,10 @@ public class LG_Movable : MonoBehaviour
 
         else
         {
-            if (transform.parent == _plateformCollider.transform)
+            Debug.LogError("in");
+            if (transform.parent)
             {
+            Debug.LogError("inner");
                 transform.parent = null;
             }
 
@@ -152,16 +154,18 @@ public class LG_Movable : MonoBehaviour
     {
         RaycastHit2D[] _hits = new RaycastHit2D[4];
 
-        if(collider.Cast(Vector2.down, _hits, 1) > 0)
+        if(collider.Cast(Vector2.down, _hits, .1f) > 0)
         {
             for (int i = 0; i < _hits.Length; i++)
             {
                 if(_hits[i] && _hits[i].transform.GetComponent<WSB_MovingPlateform2>() && _hits[i].collider.bounds.max.y < collider.bounds.min.y)
                 {
                     SetOnMovingPlateform(true, _hits[i].collider);
+                    return;
                 }
             }
         }
+        SetOnMovingPlateform(false, LastMovingPlateformCollider);
     }
 
     public Collider2D LastMovingPlateformCollider { get; private set; }
