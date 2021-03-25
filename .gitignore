@@ -76,3 +76,4 @@ Library/
 
 Library/SceneVisibilityState.asset
 *.log
+obj/Debug
