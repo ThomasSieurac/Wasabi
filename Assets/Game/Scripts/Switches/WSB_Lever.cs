@@ -13,9 +13,15 @@ public class WSB_Lever : MonoBehaviour
     [SerializeField] UnityEvent onActivate = null;
     [SerializeField] UnityEvent onDeactivate = null;
     [SerializeField] Vector2 characterPosition = Vector2.zero;
+    [SerializeField] Animator animator = null;
 
     [SerializeField] float cooldown = .2f;
     bool canPress = true;
+
+    private void Start()
+    {
+        TryGetComponent(out animator);
+    }
 
     private void OnDrawGizmos()
     {
@@ -62,6 +68,8 @@ public class WSB_Lever : MonoBehaviour
         // Call activate event and inverse active bool
         if(active && canPress)
         {
+            animator.SetBool("Open", active);
+
             WSB_Ban.I.AnimateLever((Vector2)transform.position + characterPosition);
             WSB_Lux.I.AnimateLever((Vector2)transform.position + characterPosition);
             onDeactivate?.Invoke();
@@ -71,6 +79,8 @@ public class WSB_Lever : MonoBehaviour
         // Call deactivate event and inverse active bool
         else if (canPress)
         {
+            animator.SetBool("Open", active);
+
             WSB_Ban.I.AnimateLever((Vector2)transform.position + characterPosition);
             WSB_Lux.I.AnimateLever((Vector2)transform.position + characterPosition);
             onActivate?.Invoke();
@@ -82,6 +92,7 @@ public class WSB_Lever : MonoBehaviour
 
     IEnumerator Cooldown()
     {
+        animator.SetTrigger("Activate");
         yield return new WaitForSeconds(cooldown);
         canPress = true;
     }

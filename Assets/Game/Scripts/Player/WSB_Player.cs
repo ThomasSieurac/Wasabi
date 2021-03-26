@@ -133,6 +133,7 @@ public class WSB_Player : LG_Movable
         if (canAnimateLever && playerAnimator)
         {
             rend.transform.eulerAngles = new Vector3(rend.transform.eulerAngles.x, isLeverRight ? 90 : -90, rend.transform.eulerAngles.z);
+            isRight = isLeverRight = !isLeverRight;
             SetPosition(_pos);
             playerAnimator.SetTrigger("Lever");
             CanMove = false;
