@@ -78,6 +78,7 @@
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkQueryRTPCValue.cs" />
     <Compile Include="Assets\Wwise\Deployment\Components\AkRoom.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Handwritten\Common\WwiseTypes\AkWwiseEvent.cs" />
+    <Compile Include="Assets\Game\Scripts\AnimationBehaviours\TurnOnEnd.cs" />
     <Compile Include="Assets\Wwise\Deployment\Components\AkEvent.cs" />
     <Compile Include="Assets\Game\Scripts\Checkpoints\WSB_CheckpointManager.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Handwritten\Common\AkVertex.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkIterator.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Handwritten\Linux\AkLinuxSettings.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Mac\AkSoundEnginePINVOKE_Mac.cs" />
+    <Compile Include="Assets\Game\Scripts\AnimationBehaviours\UnluckOnEnd.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_PNJ.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkPlaylistItem.cs" />
     <Compile Include="Assets\Game\Scripts\Player\SO_ControllerValues.cs" />
@@ -200,7 +202,6 @@
     <Compile Include="Assets\Wwise\Deployment\Components\AkTriggerMouseUp.cs" />
     <Compile Include="Assets\Game\Scripts\WSB_Movable.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Handwritten\WAAPI\AkWaapiClient.cs" />
-    <Compile Include="Assets\Game\Scripts\Player\WSB_Light.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkMusicSettings.cs" />
     <Compile Include="Assets\Game\Scripts\Player\WSB_MovingPlateform.cs" />
     <Compile Include="Assets\Game\Scripts\Camera\WSB_TriggerCam.cs" />

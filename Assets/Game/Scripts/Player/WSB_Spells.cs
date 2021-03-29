@@ -49,7 +49,7 @@ public class WSB_Spells : MonoBehaviour
         // Sets the correct tags for each players
         if(owner.GetComponent<WSB_Ban>())
         {
-            images[3].tag = "Earth";
+            //images[3].tag = "Earth";
             images[0].tag = "Wind";
             images[1].tag = "Light";
             images[2].tag = "Shrink";
@@ -58,7 +58,7 @@ public class WSB_Spells : MonoBehaviour
         {
             currentSpell = 3;
             images[3].tag = "Carnivore";
-            images[0].tag = "Ladder";
+            //images[0].tag = "Ladder";
             images[1].tag = "Bridge";
             images[2].tag = "Trampoline";
         }
