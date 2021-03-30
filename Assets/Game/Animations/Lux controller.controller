@@ -941,9 +941,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Rotate
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: Grab
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3516534556328608204}
   m_Solo: 0

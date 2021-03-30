@@ -19,20 +19,6 @@ public class WSB_Camera : MonoBehaviour
         }
     }
 
-    //public void SetCam(Vector2 _pos, float _zoom)
-    //{
-    //    // Exit if the position and zoom are already set to the given position and zoom
-    //    if ((Vector2)transform.position == _pos && Cam.orthographicSize == _zoom)
-    //        return;
-
-    //    // Stop the moveCam coroutine if it is already playing
-    //    if (moveCam != null)
-    //        StopCoroutine(moveCam);
-
-    //    // Start and stock the correct moveCam coroutine
-    //    moveCam = StartCoroutine(MoveCam(_pos, _zoom));
-    //}
-
     public void SetCam(Vector3 _pos, bool _needCallBack = false)
     {
         // Call the callback if the position is already set to the given position
@@ -56,28 +42,6 @@ public class WSB_Camera : MonoBehaviour
         transform.position = new Vector3(_pos.x, _pos.y, transform.position.z);
         cam.orthographicSize = _pos.z;
     }
-
-    //IEnumerator MoveCam(Vector2 _pos, float _zoom)
-    //{
-    //    // Loop until the position and fov of the camera correspond to the required position and fov
-    //    while (Vector2.Distance(transform.position, _pos) > .5f || Cam.orthographicSize != _zoom)
-    //    {
-    //        // Hold if the game is paused
-    //        while (WSB_GameManager.Paused)
-    //        {
-    //            yield return new WaitForSeconds(.2f);
-    //        }
-
-    //        transform.position = Vector3.MoveTowards(transform.position, new Vector3(_pos.x, _pos.y, transform.position.z), (Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed));
-    //        cam.orthographicSize = Mathf.MoveTowards(cam.orthographicSize, _zoom, (Time.deltaTime * (WSB_CameraManager.I.CamZoomSpeed)));
-
-    //        yield return new WaitForEndOfFrame();
-
-    //    }
-    //}
-
-    [SerializeField] bool debDist = false;
-    [SerializeField] bool debZoom = false;
 
     IEnumerator MoveCam(Vector3 _pos, bool _needCallBack)
     {
