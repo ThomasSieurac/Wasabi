@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Wwise\Deployment\Components\AkRTPCTrack.cs" />
+    <Compile Include="Assets\Game\Scripts\Powers\WSB_Wind.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Handwritten\Common\Arrays\AkAuxSendArray.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Handwritten\Common\AkWwiseEditorSettings.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Handwritten\WAAPI\AkWaapiClient_PINVOKE.cs" />
@@ -309,6 +310,7 @@
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkDiffractionPathInfo.cs" />
     <Compile Include="Assets\Wwise\Deployment\Components\AkAmbient.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkEventCallbackInfo.cs" />
+    <Compile Include="Assets\Game\Scripts\Powers\WSB_Shrink.cs" />
     <Compile Include="Assets\Wwise\Deployment\Components\AkAudioListener.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Windows\AkSoundEnginePINVOKE_Windows.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkPanningRule.cs" />
@@ -317,8 +319,6 @@
     <Compile Include="Assets\Wwise\Deployment\API\Generated\Common\AkRoomParams.cs" />
     <Compile Include="Assets\Wwise\Deployment\Components\AkTriggerCollisionEnter.cs" />
     <Compile Include="Assets\Wwise\Deployment\API\Handwritten\Common\Arrays\AkDiffractionPathInfoArray.cs" />
-    <Compile Include="Assets\Game\Scripts\Powers\WSB_Wind.cs" />
-    <Compile Include="Assets\Game\Scripts\Powers\WSB_Shrink.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Wwise\Deployment\Plugins\Windows\x86_64\DSP\MSSpatial.dll" />

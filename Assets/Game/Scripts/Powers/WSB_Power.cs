@@ -7,6 +7,7 @@ public class WSB_Power : LG_Movable
     [SerializeField] Animator animator = null;
     [SerializeField] protected float range = 2;
     [SerializeField] protected bool isActive = true;
+    [SerializeField] WSB_Player owner = null;
 
     public override void Start()
     {
@@ -26,15 +27,17 @@ public class WSB_Power : LG_Movable
 
     public void ActivatePower()
     {
-        isActive = false;
+        isActive = true;
+        owner = null;
 
         if(animator)
             animator.SetTrigger("Grow");
     }
 
-    public void DeactivatePower()
+    public void DeactivatePower(WSB_Player _p)
     {
-        isActive = true;
+        isActive = false;
+        owner = _p;
 
         if (animator)
             animator.SetTrigger("Shrink");
