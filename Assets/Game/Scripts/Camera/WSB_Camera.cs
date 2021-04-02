@@ -29,6 +29,17 @@ public class WSB_Camera : MonoBehaviour
             return;
         }
 
+        transform.position = new Vector3(
+               Mathf.Lerp(transform.position.x, _pos.x, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
+               Mathf.Lerp(transform.position.y, _pos.y, Time.deltaTime * WSB_CameraManager.I.CamMoveSpeed),
+               transform.position.z);
+        Cam.orthographicSize = Mathf.Lerp(Cam.orthographicSize, _pos.z, Time.deltaTime * (WSB_CameraManager.I.CamZoomSpeed));
+
+        if(_needCallBack && Vector2.Distance(transform.position, _pos) < .1f)
+            WSB_CameraManager.I.SwitchCamType(CamType.Dynamic, transform.position);
+
+        return;
+
         // Stop the moveCam coroutine if it is already playing
         if (moveCam != null)
             StopCoroutine(moveCam);
