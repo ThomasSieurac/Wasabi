@@ -53,9 +53,19 @@ public class WSB_Player : LG_Movable
             }
             if (playerAnimator)
             {
+                if (Keyboard.current.yKey.isPressed)
+                {
+                    playerAnimator.SetTrigger("Key");
+                    IsRight = true;
+                    rend.transform.eulerAngles = new Vector3(rend.transform.eulerAngles.x, 90, rend.transform.eulerAngles.z);
+                    CanMove = false;
+                }
+
                 playerAnimator.SetBool("Jump", isJumping);
 
-                if(CanMove)
+                playerAnimator.SetBool("Grounded", IsGrounded ? true : (IsOnMovingPlateform && !isJumping) ? true : false);
+
+                if (CanMove)
                 {
                     if(xMovement < 0 /*&& rend.transform.rotation.y > 0*/ && IsRight)
                     {
@@ -309,7 +319,5 @@ public class WSB_Player : LG_Movable
         base.OnSetGrounded();
         if(IsGrounded)
             isJumping = false;
-        if (playerAnimator)
-            playerAnimator.SetBool("Grounded", IsGrounded);
     }
 }

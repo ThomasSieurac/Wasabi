@@ -517,7 +517,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 6773212c5d87b71468def0b740e2881c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6773212c5d87b71468def0b740e2881c,
         type: 3}
@@ -573,6 +573,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Lux_Base
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6773212c5d87b71468def0b740e2881c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6773212c5d87b71468def0b740e2881c, type: 3}
@@ -728,6 +733,106 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1433720639
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 460986512884628064}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 58aea331293a00b448cf7025fc297a4e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58aea331293a00b448cf7025fc297a4e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58aea331293a00b448cf7025fc297a4e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58aea331293a00b448cf7025fc297a4e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58aea331293a00b448cf7025fc297a4e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58aea331293a00b448cf7025fc297a4e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58aea331293a00b448cf7025fc297a4e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58aea331293a00b448cf7025fc297a4e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58aea331293a00b448cf7025fc297a4e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58aea331293a00b448cf7025fc297a4e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58aea331293a00b448cf7025fc297a4e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 58aea331293a00b448cf7025fc297a4e,
+        type: 3}
+      propertyPath: m_Name
+      value: Lux_character_model
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 58aea331293a00b448cf7025fc297a4e, type: 3}
+--- !u!1 &1433720640 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 58aea331293a00b448cf7025fc297a4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1433720639}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1433720641 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 58aea331293a00b448cf7025fc297a4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1433720639}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1433720642
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433720640}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bdd5df91f3a25ff4ca8f504a728ab169, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!61 &2116998977
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -762,9 +867,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 460986512884628068}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.71, y: 3.98, z: 0}
+  m_LocalPosition: {x: -10.71, y: 3.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1433720641}
   - {fileID: 1225982621}
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -786,13 +892,9 @@ MonoBehaviour:
   isGrounded: 0
   movableValues: {fileID: 11400000, guid: a50a579a44b5d9841b84265f4897779e, type: 2}
   Turning: 0
-  layerGrabbedWall:
-    serializedVersion: 2
-    m_Bits: 24321
-  deb: 0
   controllerValues: {fileID: 11400000, guid: c75d547f7cba61d4e860f56cbc581edf, type: 2}
-  rend: {fileID: 1225982622}
-  playerAnimator: {fileID: 1225982623}
+  rend: {fileID: 1433720640}
+  playerAnimator: {fileID: 1433720642}
   grabContactFilter:
     useTriggers: 0
     useLayerMask: 1
@@ -822,7 +924,7 @@ MonoBehaviour:
     minNormalAngle: 0
     maxNormalAngle: 0
   shrinkSpeed: 10
-  render: {fileID: 1225982622}
+  render: {fileID: 1433720640}
   startSize: {x: 0, y: 0}
   startRenderSize: {x: 0, y: 0, z: 0}
 --- !u!61 &460986512884628066
@@ -2062,10 +2164,6 @@ MonoBehaviour:
   isGrounded: 0
   movableValues: {fileID: 11400000, guid: a50a579a44b5d9841b84265f4897779e, type: 2}
   Turning: 0
-  layerGrabbedWall:
-    serializedVersion: 2
-    m_Bits: 0
-  deb: 0
   controllerValues: {fileID: 11400000, guid: c75d547f7cba61d4e860f56cbc581edf, type: 2}
   rend: {fileID: 779654526}
   playerAnimator: {fileID: 779654528}
