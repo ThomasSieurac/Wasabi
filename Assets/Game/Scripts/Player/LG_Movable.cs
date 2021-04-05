@@ -29,15 +29,17 @@ public class LG_Movable : MonoBehaviour
     #region Fields / Properties
     protected const float castMaxDistanceDetection = .001f;
     protected const int collisionSystemRecursionCeil = 3;
+    public bool CanMove { get; protected set; } = true;
 
     // -----------------------
-
+    
 
     [SerializeField] protected new BoxCollider2D collider = null;
+    public BoxCollider2D MovableCollider { get { return collider; } }
     [SerializeField] protected new Rigidbody2D rigidbody = null;
 
-    [SerializeField] protected bool isAwake = true;
-    [SerializeField] protected bool useGravity = true;
+    /*[SerializeField] */protected bool isAwake = true;
+    /*[SerializeField] */protected bool useGravity = true;
 
     public bool IsAwake
     {
@@ -73,14 +75,14 @@ public class LG_Movable : MonoBehaviour
     }
 
 
-    [SerializeField] protected int facingSide = 1;
+    /*[SerializeField] */protected int facingSide = 1;
     [SerializeField] protected bool isGrounded = false;
 
     public int FacingSide { get { return facingSide; } }
     public bool IsGrounded { get { return isGrounded; } }
 
-    [SerializeField, Min(0)] protected float speed = 1;
-    [SerializeField, Min(0)] protected float speedCoef = 1;
+    /*[SerializeField, Min(0)] */protected float speed = 1;
+    /*[SerializeField, Min(0)] */protected float speedCoef = 1;
 
     // --------------------------------------------------
     //
@@ -92,20 +94,20 @@ public class LG_Movable : MonoBehaviour
     //  • Movement, the velocity applied by the object itself (like walking)
     //
 
-    [SerializeField] protected Vector2 force = Vector2.zero;
-    [SerializeField] protected Vector2 instantForce = Vector2.zero;
-    [SerializeField] protected Vector2 movement = Vector2.zero;
+    /*[SerializeField] */protected Vector2 force = Vector2.zero;
+    /*[SerializeField] */protected Vector2 instantForce = Vector2.zero;
+    /*[SerializeField] */protected Vector2 movement = Vector2.zero;
 
     // -----------------------
 
 #if UNITY_EDITOR
 
-    [SerializeField] protected Vector2 previousPosition = new Vector2();
+    /*[SerializeField] */protected Vector2 previousPosition = new Vector2();
 #endif
 
     // -----------------------
 
-    [SerializeField] protected Vector2 groundNormal = new Vector2();
+    /*[SerializeField] */protected Vector2 groundNormal = new Vector2();
     #endregion
 
 
@@ -113,27 +115,69 @@ public class LG_Movable : MonoBehaviour
 
     #region Public
 
-    [SerializeField] bool isOnMovingPlateform = false;
+    public bool IsOnMovingPlateform { get; private set; } = false;
     List<Collider2D> ignoredColliders = new List<Collider2D>();
-
     public void SetOnMovingPlateform(bool _state, Collider2D _plateformCollider)
     {
-        isOnMovingPlateform = isGrounded = _state;
+        IsOnMovingPlateform = isGrounded = _state;
         useGravity = !_state;
         force.y = 0;
         if (_state)
         {
+            LastMovingPlateformCollider = _plateformCollider;
+
             isJumping = false;
-            SetPosition(new Vector2(rigidbody.position.x, _plateformCollider.bounds.max.y));
-            if (!ignoredColliders.Contains(_plateformCollider))
-                ignoredColliders.Add(_plateformCollider);
+            AddIgnoredCollider(_plateformCollider);
+
+            Vector2 _p = new Vector2(rigidbody.position.x, _plateformCollider.bounds.max.y);
+            _p.y += Vector2.Distance(_p, transform.position);
+
+            SetPosition(_p);
+            if(!transform.parent)
+                transform.parent = _plateformCollider.transform;
         }
 
         else
         {
-            if (ignoredColliders.Contains(_plateformCollider))
-                ignoredColliders.Remove(_plateformCollider);
+            if (transform.parent)
+            {
+                transform.parent = null;
+            }
+
+            RemoveIgnoredCollider(_plateformCollider);
         }
+    }
+
+    public void RefreshOnMovingPlateform()
+    {
+        RaycastHit2D[] _hits = new RaycastHit2D[4];
+
+        if(collider.Cast(Vector2.down, _hits, .1f) > 0)
+        {
+            for (int i = 0; i < _hits.Length; i++)
+            {
+                if(_hits[i] && _hits[i].transform.GetComponent<WSB_MovingPlateform2>() && _hits[i].collider.bounds.max.y < collider.bounds.min.y)
+                {
+                    SetOnMovingPlateform(true, _hits[i].collider);
+                    return;
+                }
+            }
+        }
+        SetOnMovingPlateform(false, LastMovingPlateformCollider);
+    }
+
+    public Collider2D LastMovingPlateformCollider { get; private set; }
+
+    public void RemoveIgnoredCollider(Collider2D _c)
+    {
+        if (ignoredColliders.Contains(_c))
+            ignoredColliders.Remove(_c);
+    }
+
+    public void AddIgnoredCollider(Collider2D _c)
+    {
+        if (!ignoredColliders.Contains(_c))
+            ignoredColliders.Add(_c);
     }
 
     #endregion
@@ -179,7 +223,7 @@ public class LG_Movable : MonoBehaviour
 
     float 所有 = 0;
 
-    protected virtual void MoveHorizontally(float _movement)
+    public virtual void MoveHorizontally(float _movement)
     {
         if (_movement == 0)
         {
@@ -367,16 +411,18 @@ public class LG_Movable : MonoBehaviour
         if (!_isGrounded)
         {
             _isGrounded = CastCollider(groundNormal * Physics2D.defaultContactOffset * -2, out RaycastHit2D _groundHit) &&
-                            (_groundHit.normal.y >= movableValues.GroundClimbHeight) && _groundHit.collider != semiSolidCollider || isOnMovingPlateform;
+                            (_groundHit.normal.y >= movableValues.GroundClimbHeight) &&
+                            _groundHit.collider != semiSolidCollider
+                            || IsOnMovingPlateform;
 
             if (_isGrounded)
-                groundNormal = _groundHit.normal;
+            groundNormal = _groundHit.normal;
 
             else if (isGrounded)
                 groundNormal = Vector2.up;
         }
 
-        if (isOnMovingPlateform)
+        if (IsOnMovingPlateform)
             isGrounded = true;
 
         if (isGrounded != _isGrounded)
@@ -401,7 +447,7 @@ public class LG_Movable : MonoBehaviour
     /// </summary>
     protected virtual void OnAppliedVelocity(Vector2 _movement) { }
 
-    [SerializeField] protected bool dontResetSemiSolid = false;
+    protected bool dontResetSemiSolid = false;
 
     /// <summary>
     /// Called when grounded value has been set.
@@ -698,7 +744,7 @@ public class LG_Movable : MonoBehaviour
 
     #region Collider Operations
 
-    [SerializeField] protected Collider2D semiSolidCollider = null;
+    protected Collider2D semiSolidCollider = null;
 
     private static RaycastHit2D[] singleCastBuffer = new RaycastHit2D[1];
 
@@ -728,7 +774,7 @@ public class LG_Movable : MonoBehaviour
         {
             if ((_hitBuffer[i].transform.gameObject.layer == Mathf.Log(movableValues.SemisolidFilter.layerMask.value, 2)) && _hitBuffer[i].normal.y != 1 ||
                 (_hitBuffer[i].transform.gameObject.layer == Mathf.Log(movableValues.SemisolidFilter.layerMask.value, 2)) && _hitBuffer[i] == semiSolidCollider ||
-                isOnMovingPlateform && transform.position.y > _hitBuffer[i].collider.transform.position.y)
+                IsOnMovingPlateform && transform.position.y > _hitBuffer[i].collider.transform.position.y)
             {
                 semiSolidCollider = _hitBuffer[i].collider;
                 _hitAmount = i;
@@ -793,7 +839,7 @@ public class LG_Movable : MonoBehaviour
     #endregion
      
     protected float jumpVar = 0;
-    [SerializeField] protected bool isJumping = false;
+    /*[SerializeField]*/ protected bool isJumping = false;
     [SerializeField] protected SO_MovableValues movableValues;
 
     #region Monobehaviour
@@ -803,9 +849,9 @@ public class LG_Movable : MonoBehaviour
         previousPosition = transform.position;
 #endif
 
-        // Initialize object contact filter.
-        movableValues.Contact.layerMask = Physics2D.GetLayerCollisionMask(gameObject.layer);
-        movableValues.Contact.useLayerMask = true;
+        //// Initialize object contact filter.
+        //movableValues.Contact.layerMask = Physics2D.GetLayerCollisionMask(gameObject.layer);
+        //movableValues.Contact.useLayerMask = true;
 
         groundNormal = Vector2.up;
         //CollisionSystem = collisionSystem;
@@ -823,6 +869,11 @@ public class LG_Movable : MonoBehaviour
 
         //
 
+        if (WSB_GameManager.Paused)
+            return;
+
+        if (force.y > 5)
+            force.y = 5;
 
         PhysicsUpdate();
         MovableUpdate();
