@@ -1,0 +1,8 @@
+Event	ID	Name			Wwise Object Path	Notes
+	1800177509	Play_Mus_Level1			\Default Work Unit\Music\Level1\Play_Mus_Level1	
+	4037185023	Stop_Mus_Level1			\Default Work Unit\Music\Level1\Stop_Mus_Level1	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	359995617	Mus_Wasabi_Level1_Intro	D:\COURS AUDIO WORKSHOP\PROJET ECOLE\Wasabi\GIT\Wasabi\Wasabi_WwiseProject\.cache\Linux\SFX\Mus_Wasabi_Level1_Intro_D79FB2B7.wem		\Interactive Music Hierarchy\Default Work Unit\Level1\Mus_Wasabi_Level1_Intro\Mus_Wasabi_Level1_Intro		11289664
+	939985149	Mus_Wasabi_Level1_LP	D:\COURS AUDIO WORKSHOP\PROJET ECOLE\Wasabi\GIT\Wasabi\Wasabi_WwiseProject\.cache\Linux\SFX\Mus_Wasabi_Level1_LP_D79FB2B7.wem		\Interactive Music Hierarchy\Default Work Unit\Level1\Mus_Wasabi_Level1_LP\Mus_Wasabi_Level1_LP		18063424
+

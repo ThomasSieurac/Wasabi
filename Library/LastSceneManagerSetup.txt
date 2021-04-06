@@ -7,3 +7,19 @@ sceneSetups:
   isLoaded: 1
   isActive: 0
   isSubScene: 0
+- path: Assets/Game/Scenes/Plateformes.unity
+  isLoaded: 1
+  isActive: 0
+  isSubScene: 0
+- path: "Assets/Game/Scenes/D\xE9cor.unity"
+  isLoaded: 1
+  isActive: 0
+  isSubScene: 0
+- path: Assets/Game/Scenes/Sound_Design.unity
+  isLoaded: 1
+  isActive: 0
+  isSubScene: 0
+- path: Assets/Game/Scenes/FX.unity
+  isLoaded: 1
+  isActive: 0
+  isSubScene: 0
